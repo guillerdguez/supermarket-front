@@ -1,0 +1,673 @@
+@use "./app/theme/styles/tokens";
+@use "./app/theme/styles/mixins" as *;
+
+@import "primeicons/primeicons.css";
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--pos-font-family);
+  font-size: var(--pos-font-size-base);
+  font-weight: var(--pos-font-weight-normal);
+  line-height: 1.5;
+  color: var(--pos-text);
+  background: var(--pos-surface-alt);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--pos-font-family-display);
+  font-weight: var(--pos-font-weight-emphasis);
+  line-height: 1.2;
+  color: var(--pos-text);
+}
+
+h1 {
+  font-size: var(--pos-font-size-lg);
+}
+h2 {
+  font-size: var(--pos-font-size-md);
+}
+h3 {
+  font-size: var(--pos-font-size-base);
+}
+
+p {
+  margin: 0;
+  max-width: 65ch;
+}
+
+a {
+  text-decoration: none;
+  font-weight: var(--pos-font-weight-medium);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--pos-primary);
+  outline-offset: 2px;
+}
+
+/* Botones globales.
+   NOTA DE CONSISTENCIA: la app usa dos sistemas de botón (estos mixins
+   caseros + el pButton de PrimeNG). Se han dejado ambos porque conviven
+   en el proyecto real, pero con esta pasada se ha migrado la mayoría de
+   los formularios (create/edit) a pButton, que es el que ya tematizan los
+   listados (branch/product/sale...). Ver README-MEJORAS.md, punto 4. */
+.btn-primary {
+  @include pos-btn-primary;
+}
+.btn-secondary {
+  @include pos-btn-secondary;
+}
+.btn-ghost {
+  @include pos-btn-ghost;
+}
+
+.btn-danger-link {
+  background: none;
+  border: none;
+  color: var(--pos-danger);
+  cursor: pointer;
+  padding: 0;
+  font-weight: var(--pos-font-weight-emphasis);
+  font-size: var(--pos-font-size-sm);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Utilidades */
+.muted {
+  color: var(--pos-text-muted);
+  font-size: var(--pos-font-size-sm);
+}
+
+.error {
+  color: var(--pos-danger);
+  font-size: var(--pos-font-size-sm);
+}
+
+.toolbar,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pos-space-1);
+  align-items: center;
+}
+
+.toolbar {
+  margin-bottom: var(--pos-space-2);
+}
+
+/*
+  FIX: barra de herramientas única para toda la app.
+  Antes existían DOS definiciones con el mismo propósito:
+  - ".pos-toolbar" aquí en global (simple, sin padding/fondo propio)
+  - ".inv-toolbar" dentro de inventory.component.scss (con padding,
+    borde inferior, fondo e iconos) — pero al estar scoped a ese
+    componente por Angular, cuando notification/report/transfer/user
+    reutilizaban class="inv-toolbar" en su HTML NO recibían ningún
+    estilo (la clase no existía fuera de inventory). Resultado: esas
+    4 pantallas mostraban la barra de filtros/acciones sin flex, sin
+    padding, sin fondo. Se ha unificado todo bajo esta única clase
+    global; los 5 templates afectados ahora usan "pos-toolbar".
+*/
+.pos-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pos-space-1);
+  padding: var(--pos-space-1) var(--pos-space-2);
+  border-bottom: 1px solid var(--pos-border);
+  background: var(--pos-surface-alt);
+
+  i:first-child {
+    color: var(--pos-primary);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  label {
+    font-size: var(--pos-font-size-xs);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+}
+
+.pos-toolbar .pos-filter,
+.pos-toolbar input[type="search"],
+.pos-toolbar input[type="text"] {
+  flex: 1;
+  min-width: 160px;
+}
+
+.pos-toolbar .toolbar-count {
+  margin-left: auto;
+  font-size: var(--pos-font-size-xs);
+  white-space: nowrap;
+  color: var(--pos-text-muted);
+}
+
+/* Inputs genéricos en formularios custom */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+select,
+textarea {
+  @include pos-input;
+}
+
+/*
+  FIX: los <select> nativos que quedan en la app (rol de usuario, algún
+  filtro puntual) usaban el look por defecto del sistema operativo, muy
+  distinto al de p-select (PrimeNG) que se usa en inventario. Esta clase
+  homogeneiza altura/radio/flecha para que, hasta que se migren a
+  p-select, no desentonen tanto. Ver README-MEJORAS.md, punto 5.
+*/
+select.pos-select-native {
+  appearance: none;
+  padding-right: calc(var(--pos-space-2) * 2);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2364748b' stroke-width='1.6'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--pos-space-1) center;
+  background-size: 16px;
+}
+
+label {
+  display: block;
+  font-size: var(--pos-font-size-sm);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+  margin-bottom: 6px;
+}
+
+label.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: var(--pos-font-weight-normal);
+  margin-bottom: 0;
+  cursor: pointer;
+
+  input {
+    width: auto;
+  }
+}
+
+:root {
+  --p-primary-color: var(--pos-primary);
+  --p-content-border-radius: var(--pos-radius-md);
+}
+
+/*  
+.p-datatable {
+  .p-datatable-thead > tr > th {
+    background: var(--pos-surface-alt);
+    color: var(--pos-text-muted);
+    font-weight: var(--pos-font-weight-emphasis);
+    font-size: var(--pos-font-size-sm);
+    border-color: var(--pos-border);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .p-datatable-tbody > tr > td {
+    border-color: var(--pos-border);
+    font-size: var(--pos-font-size-sm);
+  }
+
+  .p-datatable-tbody > tr:hover {
+    background: var(--pos-primary-muted);
+  }
+} */
+.p-datatable {
+  --p-checkbox-width: 16px;
+  --p-checkbox-height: 16px;
+  --p-checkbox-sm-width: 16px;
+  --p-checkbox-sm-height: 16px;
+
+  .p-datatable-thead > tr > th {
+    background: var(--pos-surface-alt);
+    color: var(--pos-text-muted);
+    font-weight: var(--pos-font-weight-emphasis);
+    font-size: var(--pos-font-size-sm);
+    border-color: var(--pos-border);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .p-datatable-tbody > tr > td {
+    border-color: var(--pos-border);
+    font-size: var(--pos-font-size-sm);
+  }
+
+  .p-datatable-tbody > tr:hover {
+    background: var(--pos-primary-muted);
+  }
+
+  .p-datatable-thead > tr > th:first-child,
+  .p-datatable-tbody > tr > td:first-child {
+    width: var(--pos-space-5); /* 40px, ya en tu escala de 8px */
+    text-align: center;
+    padding-inline: var(--pos-space-1);
+  }
+
+  .p-checkbox,
+  .p-checkbox-box {
+    width: 16px;
+    height: 16px;
+  }
+
+  .p-checkbox-icon {
+    font-size: 12px; /* antes 10px — 12 sí está en escala de 4 */
+    width: 12px;
+    height: 12px;
+  }
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pos-space-2);
+  max-width: 480px;
+}
+
+.form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form .req {
+  color: var(--pos-danger);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pos-space-1);
+  margin-top: var(--pos-space-1);
+  align-items: center;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+  min-width: 120px;
+}
+
+.field-error {
+  margin: 0;
+  color: var(--pos-danger);
+  font-size: 13px;
+}
+
+.field-hint {
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.row-warning {
+  background: var(--pos-warning-bg) !important;
+}
+
+.row-danger {
+  background: var(--pos-danger-bg) !important;
+}
+
+.pos-detail-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px 16px;
+  font-size: var(--pos-font-size-sm);
+}
+
+.pos-detail-grid .label {
+  color: var(--pos-text-muted);
+  font-weight: var(--pos-font-weight-emphasis);
+}
+
+.pos-detail-grid .value {
+  color: var(--pos-text);
+  word-break: break-word;
+}
+
+.pos-detail-section {
+  margin-top: var(--pos-space-2);
+}
+
+.pos-detail-section h4 {
+  margin: 0 0 var(--pos-space-1);
+  font-size: 12px;
+  color: var(--pos-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/*
+  FIX: título de sección de formulario, antes solo vivía "de facto" en
+  create-product/edit-product. Se promueve a global para que report,
+  audit-log o cualquier pantalla con secciones lo reutilice en vez de
+  reinventar un <h4> suelto con el margen por defecto del navegador.
+*/
+.pos-section-title {
+  margin: 0 0 var(--pos-space-2);
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: var(--pos-space-1);
+  border-bottom: 1px solid var(--pos-border);
+}
+
+/*
+  FIX: fila de KPIs, antes duplicada casi al carácter entre
+  dashboard.component.scss y (con nombres/valores distintos) lo que
+  hubiera necesitado report.component.scss. Se promueve a global una
+  sola vez; dashboard y reportes la reutilizan.
+  ".kpi-value" es para cifras simples (conteos); ".kpi-value--money"
+  añade tipografía monoespaciada/tabular pensada solo para importes
+  (antes se aplicaba por igual a "Cajas abiertas" o "Stock bajo", que
+  no son dinero y no deberían ir en monoespaciada).
+*/
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--pos-space-1);
+  flex-shrink: 0;
+}
+
+.kpi-card {
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-md);
+  box-shadow: var(--pos-shadow-sm);
+  padding: var(--pos-space-1) var(--pos-space-2) calc(var(--pos-space-1) - 1px);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-top: 3px solid var(--pos-primary);
+  min-width: 0;
+  transition: box-shadow 0.15s ease;
+}
+
+.kpi-card:hover {
+  box-shadow: var(--pos-shadow-md);
+}
+
+.kpi-card--warn {
+  border-top-color: var(--pos-warning);
+  background: var(--pos-warning-bg);
+}
+
+.kpi-card--danger {
+  border-top-color: var(--pos-danger);
+  background: var(--pos-danger-bg);
+}
+
+.kpi-card--ok {
+  border-top-color: var(--pos-success);
+  background: var(--pos-success-bg);
+}
+
+.kpi-label {
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.kpi-value {
+  font-size: var(--pos-font-size-xl);
+  font-weight: 650;
+  line-height: 1.15;
+  color: var(--pos-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpi-value--money {
+  @include pos-money;
+}
+
+.kpi-meta {
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.money {
+  @include pos-money;
+}
+
+/*
+  Estado vacío global.
+  Única definición: reemplaza los .empty-state duplicados que hoy
+  viven sueltos en cada *.component.scss (product, user, branch,
+  inventory, notification, dashboard, transfer, sale...).
+  Compatible con el markup mínimo (i + p) y con el enriquecido
+  (i + p.empty-state__title + p.empty-state__desc + acción).
+*/
+.empty-state {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 48px 20px;
+  color: var(--pos-text-muted);
+}
+
+.empty-state i {
+  font-size: 2.25rem;
+  margin-bottom: 8px;
+  color: var(--pos-text-subtle);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: var(--pos-font-size-sm);
+}
+
+.empty-state__title {
+  font-size: var(--pos-font-size-base);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+}
+
+.empty-state__desc {
+  max-width: 34ch;
+  color: var(--pos-text-muted);
+}
+
+.empty-state__action {
+  margin-top: 12px;
+}
+
+.empty-state-inline {
+  margin: 0;
+  padding: 24px 12px;
+  text-align: center;
+  font-size: var(--pos-font-size-sm);
+  color: var(--pos-text-muted);
+}
+
+/*
+  Skeleton loaders.
+  Reemplazan el "Cargando…" en texto plano que hoy aparece en
+  cada listado (usuarios, productos, ventas, cajas, auditoría...).
+*/
+@keyframes pos-skeleton-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton-table {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 12px;
+}
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--pos-border);
+}
+
+.skeleton-row:last-child {
+  border-bottom: none;
+}
+
+.skeleton-cell {
+  display: block;
+  height: 14px;
+  border-radius: var(--pos-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--pos-surface-alt) 25%,
+    var(--pos-surface-sunken) 37%,
+    var(--pos-surface-alt) 63%
+  );
+  background-size: 400px 100%;
+  animation: pos-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-cell--sm {
+  flex: 0.6;
+}
+.skeleton-cell--md {
+  flex: 1;
+}
+.skeleton-cell--lg {
+  flex: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-cell {
+    animation: none;
+  }
+}
+
+/*
+  Skeleton para formularios de edición de un solo registro
+  (edit-user, edit-branch, edit-product...), reutiliza el mismo
+  shimmer que .skeleton-cell pero con proporciones de campo.
+*/
+.skeleton-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 480px;
+  padding: 4px 0;
+}
+
+.skeleton-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-label,
+.skeleton-input {
+  display: block;
+  border-radius: var(--pos-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--pos-surface-alt) 25%,
+    var(--pos-surface-sunken) 37%,
+    var(--pos-surface-alt) 63%
+  );
+  background-size: 400px 100%;
+  animation: pos-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-label {
+  width: 96px;
+  height: 11px;
+}
+
+.skeleton-input {
+  height: 38px;
+  border-radius: var(--pos-radius-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-label,
+  .skeleton-input {
+    animation: none;
+  }
+}
+
+/*
+  Avatar circular con iniciales, reutilizable (perfil, y cualquier
+  futura lista de usuarios/comentarios que lo necesite).
+*/
+.pos-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--pos-primary-light);
+  color: var(--pos-primary-hover);
+  font-family: var(--pos-font-family-display);
+  font-weight: 700;
+  font-size: var(--pos-font-size-lg);
+  flex-shrink: 0;
+}
+
+.pos-role-pill {
+  display: inline-flex;
+  align-items: center;
+  color: var(--pos-text-muted);
+  font-size: 11px;
+  font-weight: var(--pos-font-weight-emphasis);
+  padding: 2px 8px;
+  background: var(--pos-surface-alt);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

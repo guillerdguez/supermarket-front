@@ -1,0 +1,150 @@
+$pos-primary-50: #eef8f9;
+$pos-primary-100: #d3edf1;
+$pos-primary-200: #a6dbe3;
+$pos-primary-300: #7bc9d4;
+$pos-primary-400: #4fb0c4;
+$pos-primary-500: #1f8aa3;
+$pos-primary-600: #0f6d84;
+$pos-primary-700: #0b5566;
+$pos-primary-800: #083d4a;
+$pos-primary-900: #0a3540;
+
+$pos-grey-50: #f8fafc;
+$pos-grey-100: #f1f5f9;
+$pos-grey-200: #e2e8f0;
+$pos-grey-300: #cbd5e1;
+$pos-grey-400: #94a3b8;
+$pos-grey-500: #64748b;
+// FIX: faltaba el escalón 600 (hueco entre 500 y 700 en la escala de grises).
+$pos-grey-600: #475569;
+$pos-grey-700: #334155;
+$pos-grey-800: #1e293b;
+$pos-grey-900: #0f172a;
+
+// FIX: success/warning/danger solo llegaban a 500. Sin 600/700 no había
+// tono "hover/activo" propio para botones o badges de estos colores,
+// y eso empujaba a usar hex sueltos fuera del sistema de tokens.
+$pos-success-100: #dcfce7;
+$pos-success-200: #86efac;
+$pos-success-300: #4ade80;
+$pos-success-500: #16a34a;
+$pos-success-600: #15803d;
+$pos-success-700: #116932;
+
+$pos-warning-100: #fef3c7;
+$pos-warning-200: #fcd34d;
+$pos-warning-500: #d97706;
+$pos-warning-600: #b45309;
+$pos-warning-700: #92400e;
+
+$pos-danger-100: #fee2e2;
+$pos-danger-200: #fca5a5;
+$pos-danger-500: #dc2626;
+$pos-danger-600: #b91c1c;
+$pos-danger-700: #991b1b;
+
+:root {
+  --pos-primary: #{$pos-primary-600};
+  --pos-primary-hover: #{$pos-primary-700};
+  --pos-primary-light: #{$pos-primary-100};
+  --pos-primary-muted: #{$pos-primary-50};
+  --pos-on-primary: #ffffff;
+
+  --pos-surface: #ffffff;
+  --pos-surface-alt: #{$pos-grey-50};
+  --pos-surface-sunken: #{$pos-grey-100};
+  --pos-border: #{$pos-grey-200};
+  --pos-border-strong: #{$pos-grey-300};
+  --pos-text: #{$pos-grey-900};
+  --pos-text-muted: #{$pos-grey-500};
+  --pos-text-subtle: #{$pos-grey-400};
+  --pos-text-faint: #{$pos-grey-600};
+
+  --pos-success: #{$pos-success-500};
+  --pos-success-hover: #{$pos-success-600};
+  --pos-success-bg: #{$pos-success-100};
+  --pos-success-bg-strong: #{$pos-success-200};
+
+  --pos-warning: #{$pos-warning-500};
+  --pos-warning-hover: #{$pos-warning-600};
+  --pos-warning-bg: #{$pos-warning-100};
+  --pos-warning-bg-strong: #{$pos-warning-200};
+
+  --pos-danger: #{$pos-danger-500};
+  --pos-danger-hover: #{$pos-danger-600};
+  --pos-danger-bg: #{$pos-danger-100};
+  --pos-danger-bg-strong: #{$pos-danger-200};
+
+  --pos-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  --pos-font-family-display:
+    "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
+  --pos-font-family-mono:
+    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --pos-font-size-xs: 12px;
+  --pos-font-size-sm: 14px;
+  --pos-font-size-base: 16px;
+  --pos-font-size-md: 18px;
+  --pos-font-size-lg: 20px;
+  --pos-font-size-xl: 24px;
+  --pos-font-size-2xl: 30px;
+  --pos-font-size-3xl: 36px;
+  --pos-font-size-4xl: 48px;
+  --pos-font-size-5xl: 60px;
+  --pos-font-size-6xl: 72px;
+
+  --pos-font-weight-normal: 400;
+  --pos-font-weight-medium: 500;
+  --pos-font-weight-emphasis: 600;
+
+  --pos-space-1: 8px;
+  --pos-space-2: 16px;
+  --pos-space-3: 24px;
+  --pos-space-4: 32px;
+  --pos-space-5: 40px;
+  --pos-space-6: 48px;
+  --pos-space-8: 64px;
+
+  --pos-radius-sm: 4px;
+  --pos-radius-md: 8px;
+  --pos-radius-lg: 12px;
+  --pos-radius-xl: 16px;
+
+  --pos-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --pos-shadow-md: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --pos-shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  // FIX: las pantallas de "listado + panel lateral" (dashboard, inventario,
+  // formularios de producto...) repetían proporciones de grid ligeramente
+  // distintas (1.65fr/0.95fr, 1.7fr/1fr, 1.6fr/0.9fr) sin motivo funcional.
+  // Con estos dos tokens todas comparten la misma relación por defecto;
+  // una pantalla puntual puede seguir sobreescribiéndolos si lo necesita.
+  --pos-layout-main: 1.65fr;
+  --pos-layout-side: 0.95fr;
+
+  // Alto de la barra de navegación fija. Lo consumen las pantallas que ocupan
+  // el viewport (mixin pos-fit-viewport y el POS), para que exista un único
+  // sitio donde cambiarlo.
+  --pos-nav-height: 56px;
+
+  // Alto del troquelado de tique que se dibuja bajo el panel del carrito. Lo
+  // comparten el mixin pos-receipt-tear y el hueco que le reserva el POS.
+  --pos-receipt-tear-h: 9px;
+
+  // Medidas propias del punto de venta: el carrito tiene ancho fijo para no
+  // cambiar de tamaño con el contenido ni con el de la ventana.
+  // Ancho máximo de las pantallas de formulario: a pantalla completa un
+  // formulario quedaría perdido en 1400px de ancho. 840px da sitio de sobra
+  // a un grid de dos columnas (ver mixin pos-form-page) sin que las líneas
+  // de texto de los inputs se hagan incómodamente largas.
+  --pos-form-width: 840px;
+
+  // Botones-icono redondos de la barra de navegación (campana, salir). Un
+  // solo token para que ambos midan siempre lo mismo por definición, no por
+  // coincidencia entre dos archivos distintos.
+  --pos-nav-icon-btn: 36px;
+
+  --pos-cart-width: 360px;
+  --pos-product-card-min: 144px;
+  --pos-pos-max-width: 1400px;
+}
