@@ -63,12 +63,7 @@ a {
   outline-offset: 2px;
 }
 
-/* Botones globales.
-   NOTA DE CONSISTENCIA: la app usa dos sistemas de botón (estos mixins
-   caseros + el pButton de PrimeNG). Se han dejado ambos porque conviven
-   en el proyecto real, pero con esta pasada se ha migrado la mayoría de
-   los formularios (create/edit) a pButton, que es el que ya tematizan los
-   listados (branch/product/sale...). Ver README-MEJORAS.md, punto 4. */
+
 .btn-primary {
   @include pos-btn-primary;
 }
@@ -93,7 +88,7 @@ a {
   }
 }
 
-/* Utilidades */
+
 .muted {
   color: var(--pos-text-muted);
   font-size: var(--pos-font-size-sm);
@@ -116,19 +111,7 @@ a {
   margin-bottom: var(--pos-space-2);
 }
 
-/*
-  FIX: barra de herramientas única para toda la app.
-  Antes existían DOS definiciones con el mismo propósito:
-  - ".pos-toolbar" aquí en global (simple, sin padding/fondo propio)
-  - ".inv-toolbar" dentro de inventory.component.scss (con padding,
-    borde inferior, fondo e iconos) — pero al estar scoped a ese
-    componente por Angular, cuando notification/report/transfer/user
-    reutilizaban class="inv-toolbar" en su HTML NO recibían ningún
-    estilo (la clase no existía fuera de inventory). Resultado: esas
-    4 pantallas mostraban la barra de filtros/acciones sin flex, sin
-    padding, sin fondo. Se ha unificado todo bajo esta única clase
-    global; los 5 templates afectados ahora usan "pos-toolbar".
-*/
+
 .pos-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -169,7 +152,7 @@ a {
   color: var(--pos-text-muted);
 }
 
-/* Inputs genéricos en formularios custom */
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -181,13 +164,7 @@ textarea {
   @include pos-input;
 }
 
-/*
-  FIX: los <select> nativos que quedan en la app (rol de usuario, algún
-  filtro puntual) usaban el look por defecto del sistema operativo, muy
-  distinto al de p-select (PrimeNG) que se usa en inventario. Esta clase
-  homogeneiza altura/radio/flecha para que, hasta que se migren a
-  p-select, no desentonen tanto. Ver README-MEJORAS.md, punto 5.
-*/
+
 select.pos-select-native {
   appearance: none;
   padding-right: calc(var(--pos-space-2) * 2);
@@ -223,28 +200,7 @@ label.checkbox {
   --p-content-border-radius: var(--pos-radius-md);
 }
 
-/*  
-.p-datatable {
-  .p-datatable-thead > tr > th {
-    background: var(--pos-surface-alt);
-    color: var(--pos-text-muted);
-    font-weight: var(--pos-font-weight-emphasis);
-    font-size: var(--pos-font-size-sm);
-    border-color: var(--pos-border);
-    position: sticky;
-    top: 0;
-    z-index: 2;
-  }
 
-  .p-datatable-tbody > tr > td {
-    border-color: var(--pos-border);
-    font-size: var(--pos-font-size-sm);
-  }
-
-  .p-datatable-tbody > tr:hover {
-    background: var(--pos-primary-muted);
-  }
-} */
 .p-datatable {
   --p-checkbox-width: 16px;
   --p-checkbox-height: 16px;
@@ -273,7 +229,7 @@ label.checkbox {
 
   .p-datatable-thead > tr > th:first-child,
   .p-datatable-tbody > tr > td:first-child {
-    width: var(--pos-space-5); /* 40px, ya en tu escala de 8px */
+    width: var(--pos-space-5); 
     text-align: center;
     padding-inline: var(--pos-space-1);
   }
@@ -285,7 +241,7 @@ label.checkbox {
   }
 
   .p-checkbox-icon {
-    font-size: 12px; /* antes 10px — 12 sí está en escala de 4 */
+    font-size: 12px; 
     width: 12px;
     height: 12px;
   }
@@ -370,12 +326,7 @@ label.checkbox {
   letter-spacing: 0.04em;
 }
 
-/*
-  FIX: título de sección de formulario, antes solo vivía "de facto" en
-  create-product/edit-product. Se promueve a global para que report,
-  audit-log o cualquier pantalla con secciones lo reutilice en vez de
-  reinventar un <h4> suelto con el margen por defecto del navegador.
-*/
+
 .pos-section-title {
   margin: 0 0 var(--pos-space-2);
   font-size: var(--pos-font-size-xs);
@@ -387,16 +338,7 @@ label.checkbox {
   border-bottom: 1px solid var(--pos-border);
 }
 
-/*
-  FIX: fila de KPIs, antes duplicada casi al carácter entre
-  dashboard.component.scss y (con nombres/valores distintos) lo que
-  hubiera necesitado report.component.scss. Se promueve a global una
-  sola vez; dashboard y reportes la reutilizan.
-  ".kpi-value" es para cifras simples (conteos); ".kpi-value--money"
-  añade tipografía monoespaciada/tabular pensada solo para importes
-  (antes se aplicaba por igual a "Cajas abiertas" o "Stock bajo", que
-  no son dinero y no deberían ir en monoespaciada).
-*/
+
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -473,14 +415,7 @@ label.checkbox {
   @include pos-money;
 }
 
-/*
-  Estado vacío global.
-  Única definición: reemplaza los .empty-state duplicados que hoy
-  viven sueltos en cada *.component.scss (product, user, branch,
-  inventory, notification, dashboard, transfer, sale...).
-  Compatible con el markup mínimo (i + p) y con el enriquecido
-  (i + p.empty-state__title + p.empty-state__desc + acción).
-*/
+
 .empty-state {
   flex: 1;
   min-height: 0;
@@ -528,11 +463,7 @@ label.checkbox {
   color: var(--pos-text-muted);
 }
 
-/*
-  Skeleton loaders.
-  Reemplazan el "Cargando…" en texto plano que hoy aparece en
-  cada listado (usuarios, productos, ventas, cajas, auditoría...).
-*/
+
 @keyframes pos-skeleton-shimmer {
   0% {
     background-position: -200px 0;
@@ -590,11 +521,7 @@ label.checkbox {
   }
 }
 
-/*
-  Skeleton para formularios de edición de un solo registro
-  (edit-user, edit-branch, edit-product...), reutiliza el mismo
-  shimmer que .skeleton-cell pero con proporciones de campo.
-*/
+
 .skeleton-form {
   display: flex;
   flex-direction: column;
@@ -640,10 +567,7 @@ label.checkbox {
   }
 }
 
-/*
-  Avatar circular con iniciales, reutilizable (perfil, y cualquier
-  futura lista de usuarios/comentarios que lo necesite).
-*/
+
 .pos-avatar {
   display: inline-flex;
   align-items: center;

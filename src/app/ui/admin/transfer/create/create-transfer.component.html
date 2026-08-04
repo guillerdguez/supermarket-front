@@ -15,9 +15,7 @@
         <div class="form-grid">
           <div class="field">
             <label for="s">Origen <span class="req">*</span></label>
-            <!-- FIX: antes era un <select> nativo; ahora usa p-select, igual que
-                 el selector de sucursal de Inventario, para que todos los
-                 desplegables de la app luzcan iguales. -->
+
             <p-select
               id="s"
               [options]="branchList()"

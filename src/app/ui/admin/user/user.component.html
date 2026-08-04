@@ -1,9 +1,5 @@
 <pos-page-shell>
   <pos-panel title="Usuarios">
-    <!-- FIX: usaba class="inv-toolbar" (sin definir aquí) y por eso el
-         input necesitaba un style="flex:1" a mano que tampoco funcionaba
-         sin un contenedor en flex. Con ".pos-toolbar" ambos problemas
-         desaparecen. -->
     <div class="pos-toolbar">
       <input
         pInputText
@@ -39,7 +35,9 @@
       ></button>
       @if (selectedRows.length > 0) {
         <span class="toolbar-count muted">
-          {{ selectedRows.length }} seleccionado{{ selectedRows.length === 1 ? "" : "s" }}
+          {{ selectedRows.length }} seleccionado{{
+            selectedRows.length === 1 ? "" : "s"
+          }}
         </span>
         <button
           pButton
@@ -122,7 +120,11 @@
                 Sucursal
                 <p-sortIcon field="branchName"></p-sortIcon>
               </th>
-              <th pSortableColumn="active" pResizableColumn style="width: 100px">
+              <th
+                pSortableColumn="active"
+                pResizableColumn
+                style="width: 100px"
+              >
                 Estado
                 <p-sortIcon field="active"></p-sortIcon>
               </th>
@@ -131,18 +133,34 @@
             <tr class="table-filter-row">
               <th></th>
               <th>
-                <p-columnFilter type="text" field="username" display="row"></p-columnFilter>
+                <p-columnFilter
+                  type="text"
+                  field="username"
+                  display="row"
+                ></p-columnFilter>
               </th>
               <th>
-                <p-columnFilter type="text" field="email" display="row"></p-columnFilter>
+                <p-columnFilter
+                  type="text"
+                  field="email"
+                  display="row"
+                ></p-columnFilter>
               </th>
               <th></th>
               <th>
-                <p-columnFilter type="text" field="role" display="row"></p-columnFilter>
+                <p-columnFilter
+                  type="text"
+                  field="role"
+                  display="row"
+                ></p-columnFilter>
               </th>
               <th></th>
               <th>
-                <p-columnFilter type="boolean" field="active" display="row"></p-columnFilter>
+                <p-columnFilter
+                  type="boolean"
+                  field="active"
+                  display="row"
+                ></p-columnFilter>
               </th>
               <th></th>
             </tr>
@@ -182,13 +200,12 @@
         </p-table>
         <pos-table-footer
           [selectedCount]="selectedRows.length"
-          [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+          [visibleCount]="
+            dt.filteredValue ? dt.filteredValue.length : items().length
+          "
           [totalCount]="items().length"
         />
       </div>
-      <p class="hint muted">
-        Usá el menú <i class="pi pi-ellipsis-v" aria-hidden="true"></i> o clic derecho para editar o desactivar
-      </p>
     }
   </pos-panel>
 </pos-page-shell>

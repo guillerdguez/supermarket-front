@@ -38,9 +38,7 @@
   gap: var(--pos-space-1);
 }
 
-/* FIX: .kpi-row / .kpi-card / .kpi-label / .kpi-value / .money ahora viven
-   en styles.scss (globales) porque report.component los necesita también.
-   Aquí solo queda lo que es específico de ESTE dashboard. */
+
 
 .dash-body {
   flex: 1;
