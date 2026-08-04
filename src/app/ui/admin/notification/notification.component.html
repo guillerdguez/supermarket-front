@@ -1,0 +1,71 @@
+<pos-page-shell>
+  <pos-panel title="Mis notificaciones">
+    <div class="pos-toolbar">
+      <p class="muted">
+        <i class="pi pi-bell"></i>
+        {{ unreadCount() }} sin leer
+      </p>
+      <button
+        pButton
+        type="button"
+        label="Marcar todas leídas"
+        icon="pi pi-check"
+        class="p-button-outlined p-button-sm"
+        style="margin-left: auto"
+        (click)="onMarkAll()"
+        [disabled]="unreadCount() === 0"
+      ></button>
+    </div>
+
+    @if (loading()) {
+      <div class="skeleton-table" aria-hidden="true">
+        @for (row of [1, 2, 3, 4]; track row) {
+          <div class="skeleton-row">
+            <span class="skeleton-cell skeleton-cell--lg"></span>
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+          </div>
+        }
+      </div>
+    } @else if (items().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-bell" aria-hidden="true"></i>
+        <p class="empty-state__title">No tenés notificaciones</p>
+        <p class="empty-state__desc">
+          Cuando haya alertas de stock, cierres de caja u otros avisos del
+          sistema, van a aparecer acá.
+        </p>
+      </div>
+    } @else {
+      <ul class="list">
+        @for (n of items(); track n.id) {
+          <li [class.unread]="!n.read">
+            <!-- FIX: antes era un <div> con (click) — no operable por
+                 teclado. Ahora es un <button> real, enfocable y con
+                 Enter/Espacio funcionando de forma nativa. -->
+            <button type="button" class="content" (click)="onMarkRead(n.id)">
+              <i class="pi pi-bell row-icon" aria-hidden="true"></i>
+              <span class="text">
+                <span class="message">{{ n.message }}</span>
+                @if (n.createdAt) {
+                  <span class="date">
+                    {{ n.createdAt | date: "dd/MM/yyyy HH:mm" }}
+                  </span>
+                }
+              </span>
+            </button>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-text p-button-danger p-button-sm"
+              (click)="onDelete(n.id)"
+              title="Eliminar"
+              aria-label="Eliminar notificación"
+            ></button>
+          </li>
+        }
+      </ul>
+    }
+  </pos-panel>
+  <!-- Ver dashboard del cajero: el p-confirmDialog global está en app.html. -->
+</pos-page-shell>

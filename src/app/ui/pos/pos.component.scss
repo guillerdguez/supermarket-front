@@ -1,0 +1,380 @@
+@use "../../theme/styles/mixins" as *;
+
+// El POS ocupa el viewport bajo el nav y no scrollea la página: scrollean el
+// catálogo y la lista del carrito por dentro. Así el panel del carrito llega
+// siempre abajo, al mismo nivel que la columna de la izquierda.
+.pos-layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--pos-nav-height));
+  overflow: hidden;
+}
+
+.pos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pos-space-1);
+  padding: var(--pos-space-1) var(--pos-space-2);
+  background: var(--pos-surface);
+  border-bottom: 1px solid var(--pos-border);
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: var(--pos-space-1);
+    a {
+      font-size: var(--pos-font-size-sm);
+      font-weight: var(--pos-font-weight-emphasis);
+    }
+    strong {
+      font-size: var(--pos-font-size-base);
+    }
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  // Media pastilla de la escala: un badge con 8px arriba y abajo queda
+  // desproporcionado respecto al texto de 12px.
+  gap: calc(var(--pos-space-1) / 2);
+  padding: calc(var(--pos-space-1) / 2) var(--pos-space-1);
+  border-radius: 999px; // píldora: el radio se come la mitad del alto
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+
+  &.open {
+    background: var(--pos-success-bg);
+    color: var(--pos-success-hover);
+  }
+  &.closed {
+    background: var(--pos-danger-bg);
+    color: var(--pos-danger-hover);
+  }
+}
+
+.pos-body {
+  display: grid;
+  // Ancho fijo: el carrito mide siempre lo mismo, no se encoge ni crece con
+  // el contenido ni con el ancho de la ventana. El catálogo absorbe el resto.
+  grid-template-columns: 1fr var(--pos-cart-width);
+  gap: var(--pos-space-2);
+  padding: var(--pos-space-2);
+  flex: 1;
+  min-height: 0;
+  max-width: var(--pos-pos-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  // Misma cadena de estirado que el carrito: el host <pos-panel> es el hijo
+  // flex real, y sin él la section de dentro no tiene contra qué crecer.
+  pos-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  ::ng-deep .pos-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin-bottom: 0;
+  }
+
+  // El buscador queda fijo arriba y solo scrollea la rejilla de productos.
+  ::ng-deep .pos-panel-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.cart {
+  // Reserva el hueco del troquelado para que quede a ras del fondo de la
+  // columna izquierda, sin recortarse.
+  padding-bottom: var(--pos-receipt-tear-h);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  // El hijo flex de .cart es el host <pos-panel>, no la <section> de dentro.
+  // Sin estirar el host, el flex:1 de la section no tiene contra qué crecer y
+  // el panel se queda a la altura de su contenido.
+  pos-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  ::ng-deep .pos-panel {
+    overflow: visible;
+    @include pos-receipt-tear;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    // El panel trae un margin-bottom por defecto que aquí descuadraría el
+    // troquelado respecto al fondo de la columna izquierda.
+    margin-bottom: 0;
+  }
+
+  ::ng-deep .pos-panel-header {
+    border-bottom-style: dashed;
+  }
+
+  ::ng-deep .pos-panel-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.search-row {
+  display: flex;
+  gap: var(--pos-space-1);
+  margin-bottom: var(--pos-space-2);
+
+  input {
+    flex: 1;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--pos-product-card-min), 1fr));
+  align-content: start;
+  gap: var(--pos-space-1);
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pos-space-1);
+  text-align: left;
+  padding: var(--pos-space-2);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-md);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--pos-primary);
+    box-shadow: var(--pos-shadow-sm);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .name {
+    font-weight: var(--pos-font-weight-emphasis);
+    font-size: var(--pos-font-size-sm);
+    color: var(--pos-text);
+  }
+  .meta {
+    font-size: var(--pos-font-size-xs);
+    color: var(--pos-text-muted);
+  }
+  .stock {
+    font-size: var(--pos-font-size-xs);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-text-muted);
+
+    &.out {
+      color: var(--pos-danger);
+    }
+  }
+
+  .price {
+    @include pos-money;
+    margin-top: auto;
+    font-size: var(--pos-font-size-base);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-primary);
+  }
+}
+
+.product-card--skeleton {
+  cursor: default;
+}
+
+.cart-list {
+  list-style: none;
+  margin: 0 0 var(--pos-space-2);
+  padding: 0;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--pos-space-1);
+    align-items: center;
+    padding: var(--pos-space-1) 0;
+    border-bottom: 1px solid var(--pos-border);
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    strong {
+      font-size: var(--pos-font-size-sm);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .unit {
+      @include pos-money;
+      font-size: var(--pos-font-size-xs);
+      color: var(--pos-text-muted);
+    }
+  }
+
+  .qty {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pos-space-1);
+
+    button {
+      width: var(--pos-space-4);
+      height: var(--pos-space-4);
+      border: 1px solid var(--pos-border);
+      border-radius: var(--pos-radius-sm);
+      background: var(--pos-surface-alt);
+      cursor: pointer;
+      font-weight: var(--pos-font-weight-emphasis);
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .line-total {
+    @include pos-money;
+    font-weight: var(--pos-font-weight-emphasis);
+    font-size: var(--pos-font-size-sm);
+    white-space: nowrap;
+  }
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // auto: mantiene el total y el botón pegados al fondo del panel aunque el
+  // carrito esté vacío o tenga pocas líneas.
+  margin: var(--pos-space-2) 0;
+  margin-top: auto;
+  font-size: var(--pos-font-size-md);
+
+  strong {
+    @include pos-money;
+    font-size: var(--pos-font-size-lg);
+  }
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.pay-total {
+  @include pos-money;
+  font-size: var(--pos-font-size-xl);
+  font-weight: var(--pos-font-weight-emphasis);
+  text-align: center;
+  color: var(--pos-text);
+}
+
+.pay-label {
+  text-align: center;
+  margin-bottom: var(--pos-space-2);
+}
+
+.field {
+  margin-bottom: var(--pos-space-2);
+}
+
+.methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--pos-space-1);
+
+  button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--pos-space-1);
+    padding: var(--pos-space-1);
+    border: 1px solid var(--pos-border);
+    border-radius: var(--pos-radius-md);
+    background: var(--pos-surface-alt);
+    cursor: pointer;
+    font-size: var(--pos-font-size-xs);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-text-muted);
+
+    i {
+      font-size: var(--pos-font-size-lg);
+    }
+
+    &.active {
+      border-color: var(--pos-primary);
+      background: var(--pos-primary-light);
+      color: var(--pos-primary);
+    }
+  }
+}
+
+.change {
+  @include pos-money;
+  margin: var(--pos-space-1) 0 0;
+  color: var(--pos-success-hover);
+  font-weight: var(--pos-font-weight-emphasis);
+}
+
+.field-error {
+  margin: var(--pos-space-1) 0 0;
+  color: var(--pos-danger);
+  font-size: var(--pos-font-size-sm);
+}
+
+@media (max-width: 900px) {
+  // En una sola columna el POS vuelve a scrollear como una página normal.
+  .pos-layout {
+    height: auto;
+    min-height: calc(100vh - var(--pos-nav-height));
+    overflow: visible;
+  }
+
+  .pos-body {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    overflow: visible;
+  }
+
+  .cart-list {
+    max-height: 50vh;
+  }
+}

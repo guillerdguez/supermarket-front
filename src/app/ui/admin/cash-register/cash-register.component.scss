@@ -1,0 +1,8 @@
+@use "../../../theme/styles/mixins" as *;
+
+@include pos-fit-panel;
+@include pos-dense-table;
+
+.muted {
+  color: var(--pos-text-muted);
+}

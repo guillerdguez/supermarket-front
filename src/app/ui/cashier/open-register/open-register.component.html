@@ -1,0 +1,68 @@
+<pos-page-shell>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a routerLink="/cashier/dashboard" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver al dashboard
+      </a>
+      <h1>Abrir caja</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de apertura">
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-scroll">
+        <div class="form-grid">
+          @if (assignedBranchId() !== null) {
+            <div class="field">
+              <label for="branchName">Sucursal</label>
+              <input id="branchName" [value]="assignedBranchName() || '—'" disabled />
+              <span class="field-hint">Sucursal asignada a tu usuario</span>
+            </div>
+          } @else {
+            <div class="field">
+              <label for="branchId">Sucursal <span class="req">*</span></label>
+              <p-select
+                id="branchId"
+                [options]="branchList()"
+                optionLabel="name"
+                optionValue="id"
+                [(ngModel)]="form.branchId"
+                name="branchId"
+                placeholder="Seleccionar…"
+                styleClass="w-full"
+                required
+              />
+            </div>
+          }
+          <div class="field">
+            <label for="openingBalance">Saldo inicial <span class="req">*</span></label>
+            <input
+              id="openingBalance"
+              name="openingBalance"
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="form.openingBalance"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/cashier/dashboard" pButton label="Cancelar" severity="secondary" [outlined]="true"></a>
+        <button
+          type="submit"
+          pButton
+          [label]="loading() ? 'Abriendo…' : 'Abrir caja'"
+          [loading]="loading()"
+          [disabled]="loading()"
+        ></button>
+      </div>
+    </form>
+  </pos-panel>
+</pos-page-shell>

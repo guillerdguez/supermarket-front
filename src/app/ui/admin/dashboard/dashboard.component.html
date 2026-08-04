@@ -1,0 +1,162 @@
+<div class="dash-fit">
+  <pos-page-shell>
+    <header class="page-header">
+      <div class="page-header__text">
+        <h1>{{ greeting() }}, {{ firstName() }}</h1>
+        <p class="muted">Resumen operativo del supermercado</p>
+      </div>
+      <div class="page-header__actions">
+        <a routerLink="/pos" pButton label="Ir al POS" icon="pi pi-desktop"></a>
+        <a routerLink="/admin/reports" pButton label="Reportes" icon="pi pi-chart-bar" severity="secondary" [outlined]="true"></a>
+      </div>
+    </header>
+
+    <section class="kpi-row" aria-label="Indicadores">
+      <article class="kpi-card">
+        <span class="kpi-label">Ingresos</span>
+        <strong class="kpi-value kpi-value--money">{{
+          summary()?.totalRevenue | currency: "EUR":"symbol":"1.2-2"
+        }}</strong>
+        <span class="kpi-meta"
+          >{{ summary()?.transactionCount ?? 0 }} transacciones</span
+        >
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-label">Ticket medio</span>
+        <strong class="kpi-value kpi-value--money">{{
+          summary()?.averageTicket | currency: "EUR":"symbol":"1.2-2"
+        }}</strong>
+        <span class="kpi-meta">por venta</span>
+      </article>
+      <article class="kpi-card kpi-card--warn">
+        <span class="kpi-label">Stock bajo</span>
+        <strong class="kpi-value">{{
+          inventoryStatus()?.lowStockCount ?? alerts().length
+        }}</strong>
+        <span class="kpi-meta"
+          >{{ inventoryStatus()?.outOfStockCount ?? 0 }} sin stock</span
+        >
+      </article>
+      <article class="kpi-card kpi-card--ok">
+        <span class="kpi-label">Cajas abiertas</span>
+        <strong class="kpi-value">{{ openRegisters().length }}</strong>
+        <span class="kpi-meta">{{ registers().length }} registradas</span>
+      </article>
+    </section>
+
+    <div class="dash-body">
+      <div class="dash-body__main">
+        <div class="slot">
+          <pos-panel title="Cajas abiertas">
+            @if (openRegisters().length === 0) {
+              <p class="muted empty-state">No hay cajas abiertas</p>
+            } @else {
+              <p-table
+                #dt
+                [value]="openRegisters()"
+                [rowHover]="true"
+                styleClass="p-datatable-sm dense-table"
+              >
+                <ng-template pTemplate="header">
+                  <tr class="table-header-row">
+                    <th>#</th>
+                    <th>Sucursal</th>
+                    <th>Apertura</th>
+                    <th>Saldo</th>
+                    <th>Operador</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                  <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.branchName || row.branchId }}</td>
+                    <td>{{ row.openingTime | date: "dd/MM HH:mm" }}</td>
+                    <td class="money">{{ row.openingBalance | currency: "EUR":"symbol":"1.2-2" }}</td>
+                    <td>{{ row.openedByUsername || "—" }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <pos-table-footer
+                [visibleCount]="dt.filteredValue ? dt.filteredValue.length : openRegisters().length"
+                [totalCount]="openRegisters().length"
+              />
+            }
+          </pos-panel>
+        </div>
+      </div>
+
+      <aside class="dash-body__side">
+        <div class="slot">
+          <pos-panel title="Alertas de stock">
+            <div class="panel-stack">
+              <div class="panel-stack__body">
+                @if (alerts().length === 0) {
+                  <p class="muted empty-state">Sin alertas de stock bajo</p>
+                } @else {
+                  <ul class="alert-list">
+                    @for (
+                      a of alerts().slice(0, 8);
+                      track a.productId + "-" + a.branchId
+                    ) {
+                      <li>
+                        <div class="alert-list__text">
+                          <strong>{{ a.productName }}</strong>
+                          <span class="muted">{{ a.branchName }}</span>
+                        </div>
+                        <p-tag
+                          [severity]="a.currentStock === 0 ? 'danger' : 'warn'"
+                          [value]="a.currentStock + ' / mín ' + a.minStock"
+                        />
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+              <div class="panel-stack__footer">
+                <a routerLink="/admin/inventory" class="see-more"
+                  >Ver inventario →</a
+                >
+              </div>
+            </div>
+          </pos-panel>
+        </div>
+
+        <div class="slot">
+          <pos-panel title="Sucursales">
+            <div class="panel-stack">
+              <div class="panel-stack__body">
+                @if (branchList().length === 0) {
+                  <p class="muted empty-state">Sin sucursales</p>
+                } @else {
+                  <ul class="branch-list">
+                    @for (b of branchList(); track b.id) {
+                      <li>
+                        <i
+                          class="pi"
+                          [class]="b.isWarehouse ? 'pi-warehouse' : 'pi-shop'"
+                          aria-hidden="true"
+                        ></i>
+                        <div class="branch-list__text">
+                          <strong>{{ b.name }}</strong>
+                          <span class="muted">{{ b.address || "—" }}</span>
+                        </div>
+                        @if (b.isWarehouse) {
+                          <p-tag severity="info" value="Almacén" />
+                        }
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+              <div class="panel-stack__footer">
+                <a routerLink="/admin/branches" class="see-more"
+                  >Ver sucursales →</a
+                >
+              </div>
+            </div>
+          </pos-panel>
+        </div>
+      </aside>
+    </div>
+  </pos-page-shell>
+</div>

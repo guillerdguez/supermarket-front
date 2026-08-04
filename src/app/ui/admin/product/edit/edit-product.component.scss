@@ -1,0 +1,12 @@
+@use "../../../../theme/styles/mixins" as *;
+
+@include pos-form-page($max-width: none);
+@include pos-form-page-with-preview;
+
+.prod-form-fit {
+  height: 100%;
+  min-height: 0;
+}
+.preview-mode {
+  --pos-page-padding: var(--pos-space-2);
+}

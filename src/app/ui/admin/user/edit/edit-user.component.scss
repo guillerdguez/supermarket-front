@@ -1,0 +1,11 @@
+@use "../../../../theme/styles/mixins" as *;
+
+@include pos-form-page($max-width: 480px);
+
+.form-grid {
+  grid-template-columns: 1fr;
+}
+
+.preview-mode {
+  --pos-page-padding: var(--pos-space-2);
+}

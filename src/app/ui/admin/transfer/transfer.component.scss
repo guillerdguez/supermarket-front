@@ -1,0 +1,20 @@
+@use "../../../theme/styles/mixins" as *;
+
+@include pos-fit-panel;
+@include pos-dense-table;
+
+/* FIX: la barra de "Solicitar" usaba class="inv-toolbar" (nunca definida
+   en este componente) y quedaba sin padding/fondo. Ahora usa la utilidad
+   global ".pos-toolbar". */
+.muted {
+  color: var(--pos-text-muted);
+  font-size: var(--pos-font-size-sm);
+}
+
+.hint {
+  margin-top: var(--pos-space-1);
+  font-size: var(--pos-font-size-xs);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--pos-space-1) / 2);
+}

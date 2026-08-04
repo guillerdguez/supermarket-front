@@ -1,0 +1,51 @@
+<pos-page-shell>
+  <pos-panel title="Mi perfil">
+    <p class="muted"><a [routerLink]="backLink()">← Volver</a></p>
+
+    <!-- FIX: la pantalla no tenía ninguna identidad visual (solo texto
+         "Rol: X"). Se añade un pequeño encabezado con avatar de iniciales
+         y la misma pill de rol que ya existe en admin-nav, reutilizando
+         las utilidades globales .pos-avatar / .pos-role-pill. -->
+    <div class="profile-header">
+      <span class="pos-avatar">{{ form.firstName[0] }}{{ form.lastName[0] }}</span>
+      <div class="profile-header__text">
+        <strong>{{ form.firstName }} {{ form.lastName }}</strong>
+        <span class="pos-role-pill">{{ role }}</span>
+      </div>
+    </div>
+
+    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" [value]="email" disabled />
+      </div>
+      <div class="field">
+        <label for="branch">Sucursal</label>
+        <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
+      </div>
+      <div class="field">
+        <label for="u">Usuario <span class="req">*</span></label>
+        <input id="u" name="u" [(ngModel)]="form.username" required />
+      </div>
+      <div class="field">
+        <label for="f">Nombre <span class="req">*</span></label>
+        <input id="f" name="f" [(ngModel)]="form.firstName" required />
+      </div>
+      <div class="field">
+        <label for="l">Apellido <span class="req">*</span></label>
+        <input id="l" name="l" [(ngModel)]="form.lastName" required />
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          pButton
+          [label]="loading() ? 'Guardando…' : 'Guardar cambios'"
+          [loading]="loading()"
+          [disabled]="loading()"
+        ></button>
+        <a routerLink="/profile/password" pButton label="Cambiar contraseña" severity="secondary" [outlined]="true"></a>
+      </div>
+    </form>
+  </pos-panel>
+</pos-page-shell>

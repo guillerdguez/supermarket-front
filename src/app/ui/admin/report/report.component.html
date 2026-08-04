@@ -1,0 +1,165 @@
+<!--
+  FIX: reescrito por completo. La versión anterior era la única pantalla que
+  no seguía el patrón del resto de la app: sin page-header/h1, sin estado
+  vacío, con clases .kpi/.kpis y .btn-secondary propias que duplicaban (con
+  valores hardcodeados) lo que ya existe como .kpi-row/.kpi-card y .btn-*
+  globales. Ahora reutiliza exactamente el mismo esqueleto que
+  branch/product/dashboard.
+-->
+<div class="report-fit">
+  <pos-page-shell>
+    <header class="page-header">
+      <div class="page-header__text">
+        <h1>Reportes</h1>
+        <p class="muted">Ventas e inventario por rango de fechas</p>
+      </div>
+    </header>
+
+    <div class="slot">
+      <pos-panel title="Filtros">
+        <div class="pos-toolbar">
+          <label for="from">Desde</label>
+          <input id="from" type="date" [(ngModel)]="startDate" />
+          <label for="to">Hasta</label>
+          <input id="to" type="date" [(ngModel)]="endDate" />
+          <button
+            type="button"
+            pButton
+            label="Filtrar"
+            icon="pi pi-filter"
+            severity="secondary"
+            [outlined]="true"
+            style="margin-left: auto"
+            (click)="onFilter()"
+          ></button>
+        </div>
+
+        @if (loading()) {
+          <div class="skeleton-table" aria-hidden="true">
+            @for (row of [1, 2, 3]; track row) {
+              <div class="skeleton-row">
+                <span class="skeleton-cell skeleton-cell--md"></span>
+                <span class="skeleton-cell skeleton-cell--sm"></span>
+                <span class="skeleton-cell skeleton-cell--sm"></span>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="report-scroll">
+            @if (summary(); as s) {
+              <section class="report-section">
+                <h2 class="pos-section-title">Ventas</h2>
+                <div class="kpi-row kpi-row--3">
+                  <article class="kpi-card">
+                    <span class="kpi-label">Ingresos</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      s.totalRevenue | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                  </article>
+                  <article class="kpi-card">
+                    <span class="kpi-label">Transacciones</span>
+                    <strong class="kpi-value">{{ s.transactionCount }}</strong>
+                  </article>
+                  <article class="kpi-card">
+                    <span class="kpi-label">Ticket medio</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      s.averageTicket | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                  </article>
+                </div>
+              </section>
+            }
+
+            @if (inventory(); as inv) {
+              <section class="report-section">
+                <h2 class="pos-section-title">Inventario</h2>
+                <div class="kpi-row kpi-row--3">
+                  <article class="kpi-card">
+                    <span class="kpi-label">Productos</span>
+                    <strong class="kpi-value">{{ inv.totalProducts }}</strong>
+                  </article>
+                  <article class="kpi-card">
+                    <span class="kpi-label">Unidades</span>
+                    <strong class="kpi-value">{{
+                      inv.totalUnitsInStock
+                    }}</strong>
+                  </article>
+                  <article class="kpi-card kpi-card--warn">
+                    <span class="kpi-label">Stock bajo</span>
+                    <strong class="kpi-value">{{ inv.lowStockCount }}</strong>
+                  </article>
+                </div>
+              </section>
+            }
+
+            <section class="report-section">
+              <h2 class="pos-section-title">Por sucursal</h2>
+              @if (byBranch().length === 0) {
+                <p class="muted empty-state-inline">
+                  Sin datos para el rango seleccionado.
+                </p>
+              } @else {
+                <div class="table-wrap">
+                  <p-table #dtBranch [value]="byBranch()" dataKey="branchId" styleClass="p-datatable-sm dense-table">
+                    <ng-template pTemplate="header"
+                      ><tr class="table-header-row">
+                        <th>Sucursal</th>
+                        <th>Ingresos</th>
+                        <th>Tx</th>
+                      </tr></ng-template
+                    >
+                    <ng-template pTemplate="body" let-row
+                      ><tr>
+                        <td>{{ row.branchName }}</td>
+                        <td class="num">{{ row.totalRevenue | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        <td class="num">{{ row.transactionCount }}</td>
+                      </tr></ng-template
+                    >
+                  </p-table>
+                  <pos-table-footer
+                    [visibleCount]="dtBranch.filteredValue ? dtBranch.filteredValue.length : byBranch().length"
+                    [totalCount]="byBranch().length"
+                  />
+                </div>
+              }
+            </section>
+
+            <section class="report-section">
+              <h2 class="pos-section-title">Por cajero</h2>
+              @if (byCashier().length === 0) {
+                <p class="muted empty-state-inline">
+                  Sin datos para el rango seleccionado.
+                </p>
+              } @else {
+                <div class="table-wrap">
+                  <p-table #dtCashier [value]="byCashier()" dataKey="cashierId" styleClass="p-datatable-sm dense-table">
+                    <ng-template pTemplate="header"
+                      ><tr class="table-header-row">
+                        <th>Cajero</th>
+                        <th>Ingresos</th>
+                        <th>Tx</th>
+                        <th>Ticket</th>
+                      </tr></ng-template
+                    >
+                    <ng-template pTemplate="body" let-row
+                      ><tr>
+                        <td>{{ row.cashierUsername }}</td>
+                        <td class="num">{{ row.totalRevenue | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        <td class="num">{{ row.transactionCount }}</td>
+                        <td class="num">{{ row.averageTicket | currency: "EUR":"symbol":"1.2-2" }}</td>
+                      </tr></ng-template
+                    >
+                  </p-table>
+                  <pos-table-footer
+                    [visibleCount]="dtCashier.filteredValue ? dtCashier.filteredValue.length : byCashier().length"
+                    [totalCount]="byCashier().length"
+                  />
+                </div>
+              }
+            </section>
+          </div>
+        }
+      </pos-panel>
+    </div>
+  </pos-page-shell>
+</div>

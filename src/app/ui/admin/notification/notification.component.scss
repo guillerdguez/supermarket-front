@@ -1,0 +1,77 @@
+@use "../../../theme/styles/mixins" as *;
+
+@include pos-fit-panel;
+
+/* FIX: este archivo definía ".toolbar" pero el template usaba
+   "inv-toolbar" (clase que solo existía, scoped, en inventory.component) —
+   la barra de arriba (contador + "marcar todas leídas") se renderizaba
+   sin ningún estilo. Ahora el template usa la utilidad global
+   ".pos-toolbar" y aquí solo queda lo propio de esta pantalla. */
+
+.muted {
+  color: var(--pos-text-muted);
+  font-size: var(--pos-font-size-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--pos-space-1) / 2);
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--pos-space-1);
+  padding: calc(var(--pos-space-1) / 2);
+  border-bottom: 1px solid var(--pos-border);
+  align-items: center;
+
+  &.unread {
+    background: var(--pos-primary-light);
+  }
+}
+
+.list .content {
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  gap: var(--pos-space-1);
+  align-items: flex-start;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: var(--pos-space-1);
+  border-radius: var(--pos-radius-sm);
+  font: inherit;
+  color: inherit;
+
+  &:hover {
+    background: var(--pos-surface-alt);
+  }
+}
+
+.row-icon {
+  color: var(--pos-primary);
+  flex-shrink: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+}
+
+.list .message {
+  margin: 0;
+  font-size: var(--pos-font-size-sm);
+}
+
+.list .date {
+  margin: 0;
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+}

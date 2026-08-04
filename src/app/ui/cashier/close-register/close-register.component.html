@@ -1,0 +1,54 @@
+<pos-page-shell>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a routerLink="/cashier/dashboard" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver al dashboard
+      </a>
+      <h1>Cerrar caja</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de cierre">
+    @if (current(); as reg) {
+      <form class="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-scroll">
+          <div class="pos-detail-grid">
+            <span class="label">Caja</span>
+            <span class="value">#{{ reg.id }}</span>
+            <span class="label">Saldo apertura</span>
+            <span class="value">{{ reg.openingBalance | currency: "EUR":"symbol":"1.2-2" }}</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="field field--full">
+              <label for="closing">Saldo de cierre <span class="req">*</span></label>
+              <input
+                id="closing"
+                name="closing"
+                type="number"
+                min="0"
+                step="0.01"
+                [(ngModel)]="closingBalance"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/cashier/dashboard" pButton label="Cancelar" severity="secondary" [outlined]="true"></a>
+          <button
+            type="submit"
+            pButton
+            [label]="loading() ? 'Cerrando…' : 'Cerrar caja'"
+            [loading]="loading()"
+            [disabled]="loading()"
+          ></button>
+        </div>
+      </form>
+    } @else {
+      <p class="muted">No hay caja abierta.</p>
+    }
+  </pos-panel>
+</pos-page-shell>

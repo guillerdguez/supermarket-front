@@ -1,0 +1,124 @@
+<pos-page-shell>
+  <pos-panel title="Cajas registradoras">
+    <div class="pos-toolbar">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-refresh"
+        severity="secondary"
+        [outlined]="true"
+        size="small"
+        style="margin-left: auto"
+        (click)="refresh()"
+        aria-label="Refrescar"
+        title="Refrescar"
+      ></button>
+    </div>
+    @if (loading()) {
+      <div class="skeleton-table" aria-hidden="true">
+        @for (row of [1, 2, 3, 4]; track row) {
+          <div class="skeleton-row">
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+            <span class="skeleton-cell skeleton-cell--md"></span>
+            <span class="skeleton-cell skeleton-cell--md"></span>
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+          </div>
+        }
+      </div>
+    } @else if (items().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-inbox" aria-hidden="true"></i>
+        <p class="empty-state__title">Sin registros de caja</p>
+        <p class="empty-state__desc">
+          Los cierres y aperturas de caja de cada sucursal van a aparecer en
+          este historial.
+        </p>
+      </div>
+    } @else {
+      <p-table
+        #dt
+        [value]="items()"
+        dataKey="id"
+        [rowHover]="true"
+        sortMode="single"
+        [resizableColumns]="true"
+        styleClass="dense-table"
+      >
+        <ng-template pTemplate="header"
+          ><tr class="table-header-row">
+            <th pSortableColumn="id" pResizableColumn>
+              #
+              <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="branchName" pResizableColumn>
+              Sucursal
+              <p-sortIcon field="branchName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="openingTime" pResizableColumn>
+              Apertura
+              <p-sortIcon field="openingTime"></p-sortIcon>
+            </th>
+            <th pSortableColumn="closingTime" pResizableColumn>
+              Cierre
+              <p-sortIcon field="closingTime"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status" pResizableColumn style="width: 100px">
+              Estado
+              <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th pSortableColumn="openedByUsername" pResizableColumn>
+              Abrió
+              <p-sortIcon field="openedByUsername"></p-sortIcon>
+            </th>
+            <th pSortableColumn="closedByUsername" pResizableColumn>
+              Cerró
+              <p-sortIcon field="closedByUsername"></p-sortIcon>
+            </th>
+          </tr>
+          <tr class="table-filter-row">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>
+              <p-columnFilter type="text" field="status" display="row"></p-columnFilter>
+            </th>
+            <th></th>
+            <th></th>
+          </tr></ng-template
+        >
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.branchName || row.branchId }}</td>
+            <td>
+              {{ row.openingBalance | currency: "EUR":"symbol":"1.2-2" }} ·
+              {{ row.openingTime | date: "dd/MM HH:mm" }}
+            </td>
+            <td>
+              @if (row.closingBalance !== null && row.closingBalance !== undefined) {
+                {{ row.closingBalance | currency: "EUR":"symbol":"1.2-2" }} ·
+                {{ row.closingTime | date: "dd/MM HH:mm" }}
+              } @else {
+                —
+              }
+            </td>
+            <td>
+              @if (row.status === "OPEN") {
+                <p-tag severity="success" value="ABIERTA" />
+              } @else {
+                <p-tag severity="secondary" value="CERRADA" />
+              }
+            </td>
+            <td>{{ row.openedByUsername || "—" }}</td>
+            <td>{{ row.closedByUsername || "—" }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <pos-table-footer
+        [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+        [totalCount]="items().length"
+      />
+    }
+  </pos-panel>
+</pos-page-shell>

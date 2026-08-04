@@ -1,0 +1,65 @@
+@use "../../../theme/styles/mixins" as *;
+
+@include pos-fit-panel($max-width: var(--pos-form-width));
+
+.hello {
+  font-weight: var(--pos-font-weight-emphasis);
+  margin-bottom: var(--pos-space-2);
+}
+
+.status {
+  padding: var(--pos-space-2);
+  border-radius: var(--pos-radius-md);
+  margin-bottom: var(--pos-space-2);
+
+  &.open {
+    background: var(--pos-success-bg);
+    color: var(--pos-success-hover);
+  }
+  &.closed {
+    background: var(--pos-danger-bg);
+    color: var(--pos-danger-hover);
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: var(--pos-space-1);
+  height: var(--pos-space-1);
+  border-radius: 50%;
+  background: var(--pos-success);
+  margin-right: calc(var(--pos-space-1) / 2);
+}
+
+.meta {
+  display: block;
+  font-size: var(--pos-font-size-sm);
+  margin-top: calc(var(--pos-space-1) / 2);
+  opacity: 0.85;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pos-space-1);
+  margin-bottom: var(--pos-space-3);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--pos-space-2);
+  font-size: var(--pos-font-size-sm);
+
+  a,
+  .link {
+    color: var(--pos-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+}
+
+.muted {
+  color: var(--pos-text-muted);
+}

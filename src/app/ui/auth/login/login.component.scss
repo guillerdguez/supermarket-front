@@ -1,0 +1,88 @@
+/*
+  FIX: el fondo usaba índigo/violeta (#e0e7ff, #c7d2fe) hardcodeado, una
+  familia de color totalmente ajena a la paleta teal del resto de la app
+  (--pos-primary-*). Al ser la primera pantalla que ve cualquiera, ese
+  choque de marca era una de las cosas que más "desentonaban". Ahora usa
+  los propios tokens de la app.
+*/
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--pos-space-3);
+  background:
+    radial-gradient(ellipse at top left, var(--pos-primary-100) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, var(--pos-primary-muted) 0%, transparent 40%),
+    var(--pos-surface-alt);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pos-space-1);
+  padding: var(--pos-space-4);
+  background: var(--pos-surface);
+  border-radius: var(--pos-radius-lg);
+  box-shadow: var(--pos-shadow-lg);
+}
+
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    var(--pos-primary),
+    var(--pos-primary-hover)
+  );
+  color: #fff;
+  font-size: var(--pos-font-size-xl);
+  margin-bottom: 4px;
+}
+
+.login-card h1 {
+  margin: 0;
+  font-size: var(--pos-font-size-md);
+  font-weight: var(--pos-font-weight-emphasis);
+}
+
+.login-card .muted {
+  color: var(--pos-text-muted);
+  font-size: var(--pos-font-size-sm);
+  margin: 0 0 var(--pos-space-2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: var(--pos-font-size-sm);
+  font-weight: var(--pos-font-weight-emphasis);
+  margin-top: 8px;
+}
+
+.field-error {
+  color: var(--pos-danger);
+  font-size: var(--pos-font-size-xs);
+}
+
+.submit-btn {
+  margin-top: var(--pos-space-2);
+  width: 100%;
+}
+
+/* Inputs de PrimeNG a ancho completo (wrapper = .login-card) */
+:host ::ng-deep .login-card {
+  .p-password,
+  .p-password-input,
+  input.p-inputtext {
+    width: 100%;
+  }
+}

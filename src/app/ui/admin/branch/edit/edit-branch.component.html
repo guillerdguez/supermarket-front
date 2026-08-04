@@ -1,0 +1,84 @@
+<pos-page-shell [class.preview-mode]="isPreview">
+  <header class="page-header">
+    <div class="page-header__text">
+      @if (!isPreview) {
+        <a routerLink="/admin/branches" class="back-link">
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          Volver a sucursales
+        </a>
+      }
+      <h1>Editar sucursal</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de la sucursal">
+    @if (ready()) {
+      <form class="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-scroll">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Nombre <span class="req">*</span></label>
+              <input id="name" name="name" [(ngModel)]="form.name" required />
+            </div>
+            <div class="field">
+              <label for="address">Dirección <span class="req">*</span></label>
+              <input
+                id="address"
+                name="address"
+                [(ngModel)]="form.address"
+                required
+              />
+            </div>
+            <div class="field field--full">
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  name="wh"
+                  [(ngModel)]="form.isWarehouse"
+                />
+                Almacén central
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          @if (!isPreview) {
+            <a
+              routerLink="/admin/branches"
+              pButton
+              label="Cancelar"
+              severity="secondary"
+              [outlined]="true"
+            ></a>
+          } @else {
+            <button
+              type="button"
+              pButton
+              label="Salir"
+              severity="secondary"
+              [outlined]="true"
+              (click)="closePreview()"
+            ></button>
+          }
+          <button
+            type="submit"
+            pButton
+            [label]="loading() ? 'Guardando…' : 'Guardar cambios'"
+            [loading]="loading()"
+            [disabled]="loading() || !form.name.trim()"
+          ></button>
+        </div>
+      </form>
+    } @else {
+      <div class="skeleton-form" aria-hidden="true">
+        @for (row of [1, 2, 3]; track row) {
+          <div class="skeleton-field">
+            <span class="skeleton-label"></span>
+            <span class="skeleton-input"></span>
+          </div>
+        }
+      </div>
+    }
+  </pos-panel>
+</pos-page-shell>

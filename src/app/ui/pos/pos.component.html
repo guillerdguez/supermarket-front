@@ -1,0 +1,203 @@
+<div class="pos-layout">
+  <header class="pos-header">
+    <div class="left">
+      <a routerLink="/cashier/dashboard">← Dashboard</a>
+      <strong>Punto de venta</strong>
+    </div>
+    @if (isOpen() && currentRegister(); as reg) {
+      <span class="badge open"><i class="pi pi-lock-open"></i> Caja #{{ reg.id }} abierta</span>
+    } @else {
+      <span class="badge closed"><i class="pi pi-lock"></i> Caja cerrada</span>
+    }
+  </header>
+
+  <div class="pos-body">
+    <section class="catalog">
+      <pos-panel title="Catálogo">
+      <div class="search-row">
+        <input
+          type="search"
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+          (keyup.enter)="onSearch()"
+          placeholder="Buscar producto…"
+        />
+        <button type="button" class="btn-secondary" (click)="onSearch()">
+          <i class="pi pi-search"></i> Buscar
+        </button>
+      </div>
+
+      @if (productsLoading()) {
+        <div class="grid" aria-hidden="true">
+          @for (row of [1, 2, 3, 4, 5, 6]; track row) {
+            <div class="product-card product-card--skeleton">
+              <span class="skeleton-label" style="width: 70%"></span>
+              <span class="skeleton-label" style="width: 40%"></span>
+              <span class="skeleton-label" style="width: 50%; height: 16px"></span>
+            </div>
+          }
+        </div>
+      } @else if (products().length === 0) {
+        <p class="muted">Sin productos</p>
+      } @else {
+        <div class="grid">
+          @for (p of products(); track p.id) {
+            <button
+              type="button"
+              class="product-card"
+              (click)="add(p)"
+              [disabled]="!isOpen() || remainingOf(p.id) <= 0"
+            >
+              <span class="name">{{ p.name }}</span>
+              <span class="meta">{{ p.category || p.barcode || "—" }}</span>
+              @if (hasStockData()) {
+                <span class="stock" [class.out]="stockOf(p.id) <= 0">
+                  @if (stockOf(p.id) <= 0) {
+                    Sin stock
+                  } @else {
+                    Stock: {{ stockOf(p.id) }}
+                  }
+                </span>
+              }
+              <span class="price">{{ p.price | currency: "EUR":"symbol":"1.2-2" }}</span>
+            </button>
+          }
+        </div>
+      }
+      </pos-panel>
+    </section>
+
+    <aside class="cart">
+      <pos-panel title="Carrito">
+        @if (cartItems().length === 0) {
+          <p class="muted">El carrito está vacío</p>
+        } @else {
+          <ul class="cart-list">
+            @for (item of cartItems(); track item.product.id) {
+              <li>
+                <div class="info">
+                  <strong>{{ item.product.name }}</strong>
+                  <span class="unit">{{ item.product.price | currency: "EUR":"symbol":"1.2-2" }} c/u</span>
+                </div>
+                <div class="qty">
+                  <button type="button" (click)="decrease(item.product.id)" aria-label="Menos">−</button>
+                  <span>{{ item.quantity }}</span>
+                  <button
+                    type="button"
+                    (click)="increase(item.product.id)"
+                    [disabled]="remainingOf(item.product.id) <= 0"
+                    [title]="remainingOf(item.product.id) <= 0 ? 'No queda más stock' : 'Más'"
+                    aria-label="Más"
+                  >
+                    +
+                  </button>
+                </div>
+                <span class="line-total">{{ item.product.price * item.quantity | currency: "EUR":"symbol":"1.2-2" }}</span>
+              </li>
+            }
+          </ul>
+        }
+
+        <div class="total-row">
+          <span>Total</span>
+          <strong>{{ cartTotal() | currency: "EUR":"symbol":"1.2-2" }}</strong>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary btn-block"
+          [disabled]="cartCount() === 0 || !isOpen() || saleLoading()"
+          (click)="openPayment()"
+        >
+          <i class="pi pi-wallet"></i> Cobrar
+        </button>
+      </pos-panel>
+    </aside>
+  </div>
+</div>
+
+<p-dialog
+  header="Confirmar pago"
+  [visible]="showPayment()"
+  (visibleChange)="showPayment.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: 'min(420px, 94vw)' }"
+  styleClass="pos-pay-dialog"
+>
+  @if (saleError()) {
+    <p class="error">{{ saleError() }}</p>
+  }
+
+  <div class="pay-total">{{ cartTotal() | currency: "EUR":"symbol":"1.2-2" }}</div>
+  <p class="muted pay-label">Total a pagar</p>
+
+  <div class="field">
+    <label>Método de pago</label>
+    <div class="methods">
+      <button
+        type="button"
+        [class.active]="paymentMethod() === 'CASH'"
+        (click)="paymentMethod.set('CASH')"
+      >
+        <i class="pi pi-money-bill"></i> Efectivo
+      </button>
+      <button
+        type="button"
+        [class.active]="paymentMethod() === 'CARD'"
+        (click)="paymentMethod.set('CARD')"
+      >
+        <i class="pi pi-credit-card"></i> Tarjeta
+      </button>
+      <button
+        type="button"
+        [class.active]="paymentMethod() === 'TRANSFER'"
+        (click)="paymentMethod.set('TRANSFER')"
+      >
+        <i class="pi pi-send"></i> Transfer.
+      </button>
+    </div>
+  </div>
+
+  @if (paymentMethod() === "CASH") {
+    <div class="field">
+      <label for="received">Monto recibido</label>
+      <input
+        id="received"
+        type="number"
+        min="0"
+        step="0.01"
+        [ngModel]="amountReceived()"
+        (ngModelChange)="amountReceived.set(+$event)"
+      />
+      @if (change() > 0) {
+        <p class="change">Vuelto: {{ change() | currency: "EUR":"symbol":"1.2-2" }}</p>
+      }
+      @if (amountReceived() < cartTotal()) {
+        <p class="field-error">El monto recibido es inferior al total</p>
+      }
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn-secondary" (click)="closePayment()" [disabled]="saleLoading()">
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn-primary"
+      [disabled]="
+        saleLoading() ||
+        (paymentMethod() === 'CASH' && amountReceived() < cartTotal())
+      "
+      (click)="confirmPayment()"
+    >
+      @if (saleLoading()) {
+        Procesando…
+      } @else {
+        Confirmar
+      }
+    </button>
+  </ng-template>
+</p-dialog>

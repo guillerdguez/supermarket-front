@@ -1,0 +1,81 @@
+<pos-page-shell>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a routerLink="/admin/transfers" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver a transferencias
+      </a>
+      <h1>Nueva transferencia</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de la transferencia">
+    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-scroll">
+        <div class="form-grid">
+          <div class="field">
+            <label for="s">Origen <span class="req">*</span></label>
+            <!-- FIX: antes era un <select> nativo; ahora usa p-select, igual que
+                 el selector de sucursal de Inventario, para que todos los
+                 desplegables de la app luzcan iguales. -->
+            <p-select
+              id="s"
+              [options]="branchList()"
+              optionLabel="name"
+              optionValue="id"
+              [(ngModel)]="form.sourceBranchId"
+              name="s"
+              placeholder="Seleccionar…"
+              styleClass="w-full"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="t">Destino <span class="req">*</span></label>
+            <p-select
+              id="t"
+              [options]="branchList()"
+              optionLabel="name"
+              optionValue="id"
+              [(ngModel)]="form.targetBranchId"
+              name="t"
+              placeholder="Seleccionar…"
+              styleClass="w-full"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="p">Producto <span class="req">*</span></label>
+            <p-select
+              id="p"
+              [options]="productList()"
+              optionLabel="name"
+              optionValue="id"
+              [(ngModel)]="form.productId"
+              name="p"
+              placeholder="Seleccionar…"
+              styleClass="w-full"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="q">Cantidad <span class="req">*</span></label>
+            <input id="q" name="q" type="number" min="1" [(ngModel)]="form.quantity" required />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/admin/transfers" pButton label="Cancelar" severity="secondary" [outlined]="true"></a>
+        <button
+          type="submit"
+          pButton
+          [label]="loading() ? 'Enviando…' : 'Solicitar'"
+          [loading]="loading()"
+          [disabled]="loading()"
+        ></button>
+      </div>
+    </form>
+  </pos-panel>
+</pos-page-shell>

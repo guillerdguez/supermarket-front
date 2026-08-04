@@ -1,0 +1,166 @@
+<div class="branch-fit">
+  <pos-page-shell>
+    <header class="page-header">
+      <div class="page-header__text">
+        <h1>Sucursales</h1>
+        <p class="muted">Tiendas y almacenes del supermercado</p>
+      </div>
+      <div class="page-header__actions">
+        <a
+          routerLink="/admin/branches/create"
+          pButton
+          label="Nueva sucursal"
+          icon="pi pi-plus"
+        ></a>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-refresh"
+          severity="secondary"
+          [outlined]="true"
+          (click)="refresh()"
+          aria-label="Refrescar"
+          title="Refrescar"
+        ></button>
+      </div>
+    </header>
+
+    <div class="slot">
+      <pos-panel title="Listado de sucursales">
+        @if (loading()) {
+          <div class="skeleton-table" aria-hidden="true">
+            @for (row of [1, 2, 3, 4]; track row) {
+              <div class="skeleton-row">
+                <span class="skeleton-cell skeleton-cell--md"></span>
+                <span class="skeleton-cell skeleton-cell--lg"></span>
+                <span class="skeleton-cell skeleton-cell--sm"></span>
+              </div>
+            }
+          </div>
+        } @else if (error()) {
+          <p class="error">{{ error() }}</p>
+        } @else if (items().length === 0) {
+          <div class="empty-state">
+            <i class="pi pi-building" aria-hidden="true"></i>
+            <p class="empty-state__title">Todavía no hay sucursales</p>
+            <p class="empty-state__desc">
+              Registrá tu primera tienda o almacén para poder asignarle
+              inventario, cajas y usuarios.
+            </p>
+            <a
+              routerLink="/admin/branches/create"
+              pButton
+              label="Crear la primera"
+              icon="pi pi-plus"
+              size="small"
+              class="empty-state__action"
+            ></a>
+          </div>
+        } @else {
+          <p-contextMenu #cm [model]="menuItems" />
+          @if (selectedRows.length > 0) {
+            <div class="pos-toolbar">
+              <span class="toolbar-count muted">
+                {{ selectedRows.length }} seleccionada{{ selectedRows.length === 1 ? "" : "s" }}
+              </span>
+              <button
+                pButton
+                type="button"
+                label="Eliminar seleccionadas"
+                icon="pi pi-trash"
+                severity="danger"
+                [outlined]="true"
+                size="small"
+                (click)="onDeleteSelected()"
+              ></button>
+            </div>
+          }
+          <div class="table-wrap">
+            <p-table
+              #dt
+              [value]="items()"
+              dataKey="id"
+              [rowHover]="true"
+              styleClass="p-datatable-sm dense-table"
+              [(contextMenuSelection)]="selected"
+              [contextMenu]="cm"
+              sortMode="single"
+              [resizableColumns]="true"
+              selectionMode="multiple"
+              [(selection)]="selectedRows"
+            >
+              <ng-template pTemplate="header">
+                <tr class="table-header-row">
+                  <th style="width: 40px">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th pSortableColumn="name" pResizableColumn>
+                    Nombre
+                    <p-sortIcon field="name"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="address" pResizableColumn>
+                    Dirección
+                    <p-sortIcon field="address"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="isWarehouse" pResizableColumn style="width: 100px">
+                    Tipo
+                    <p-sortIcon field="isWarehouse"></p-sortIcon>
+                  </th>
+                  <th class="col-actions"></th>
+                </tr>
+                <tr class="table-filter-row">
+                  <th></th>
+                  <th>
+                    <p-columnFilter type="text" field="name" display="row"></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter type="text" field="address" display="row"></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter type="boolean" field="isWarehouse" display="row"></p-columnFilter>
+                  </th>
+                  <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-row>
+                <tr [pContextMenuRow]="row" (dblclick)="openPreview(row.id)">
+                  <td>
+                    <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                  </td>
+                  <td title="{{ row.name }}">{{ row.name }}</td>
+                  <td title="{{ row.address }}">{{ row.address || "—" }}</td>
+                  <td>
+                    <p-tag
+                      [severity]="row.isWarehouse ? 'info' : 'success'"
+                      [value]="row.isWarehouse ? 'Almacén' : 'Tienda'"
+                    />
+                  </td>
+                  <td class="col-actions">
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-ellipsis-v"
+                      class="p-button-text p-button-rounded"
+                      size="small"
+                      title="Más acciones"
+                      aria-label="Más acciones"
+                      (click)="selected = row; cm.show($event)"
+                    ></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <pos-table-footer
+              [selectedCount]="selectedRows.length"
+              [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+              [totalCount]="items().length"
+            />
+          </div>
+          <p class="hint muted">
+            Usá el menú <i class="pi pi-ellipsis-v" aria-hidden="true"></i> o clic derecho en una fila para editar o eliminar
+          </p>
+        }
+      </pos-panel>
+    </div>
+  </pos-page-shell>
+</div>

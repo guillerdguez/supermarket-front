@@ -1,0 +1,223 @@
+<div class="inv-fit">
+  <pos-page-shell>
+    <header class="page-header">
+      <div class="page-header__text">
+        <h1>Inventario</h1>
+        <p class="muted">Stock por sucursal y alertas</p>
+      </div>
+    </header>
+
+    <section class="kpi-row" aria-label="Indicadores">
+      <article class="kpi-card">
+        <span class="kpi-label">Productos</span>
+        <strong class="kpi-value">{{ status()?.totalProducts ?? "—" }}</strong>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-label">Unidades</span>
+        <strong class="kpi-value">{{
+          status()?.totalUnitsInStock ?? "—"
+        }}</strong>
+      </article>
+      <article class="kpi-card kpi-card--warn">
+        <span class="kpi-label">Stock bajo</span>
+        <strong class="kpi-value">{{ status()?.lowStockCount ?? "—" }}</strong>
+      </article>
+      <article class="kpi-card kpi-card--danger">
+        <span class="kpi-label">Sin stock</span>
+        <strong class="kpi-value">{{
+          status()?.outOfStockCount ?? "—"
+        }}</strong>
+      </article>
+    </section>
+
+    <div class="inv-body">
+      <div class="inv-body__main">
+        <div class="slot">
+          <pos-panel title="Inventario por sucursal">
+            <!-- FIX: esta barra usaba class="inv-toolbar", una clase que solo
+                 existía en ESTE componente (scoped). Al reutilizarse tal cual
+                 en notification/report/transfer/user quedaba sin estilo en
+                 esas 4 pantallas. Ahora usa la utilidad global "pos-toolbar". -->
+            <div class="pos-toolbar">
+              <i class="pi pi-shop" aria-hidden="true"></i>
+              <label for="branch">Sucursal</label>
+              <p-select
+                id="branch"
+                [options]="branchList()"
+                optionLabel="name"
+                optionValue="id"
+                [ngModel]="selectedBranchId()"
+                (ngModelChange)="onBranchChange($event)"
+                placeholder="Selecciona una sucursal"
+                styleClass="inv-branch-select"
+              />
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  [ngModel]="lowStockOnly()"
+                  (ngModelChange)="lowStockOnly.set($event)"
+                />
+                Solo stock bajo
+              </label>
+              <button
+                pButton
+                type="button"
+                icon="pi pi-refresh"
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                style="margin-left: auto"
+                (click)="refresh()"
+                aria-label="Refrescar"
+                title="Refrescar"
+              ></button>
+            </div>
+            @if (loading()) {
+              <div class="skeleton-table" aria-hidden="true">
+                @for (row of [1, 2, 3, 4, 5]; track row) {
+                  <div class="skeleton-row">
+                    <span class="skeleton-cell skeleton-cell--lg"></span>
+                    <span class="skeleton-cell skeleton-cell--md"></span>
+                    <span class="skeleton-cell skeleton-cell--sm"></span>
+                    <span class="skeleton-cell skeleton-cell--sm"></span>
+                  </div>
+                }
+              </div>
+            } @else if (error()) {
+              <p class="error">{{ error() }}</p>
+            } @else if (!selectedBranchId()) {
+              <p class="muted empty-state-inline">
+                Selecciona una sucursal para ver y editar el stock.
+              </p>
+            } @else {
+              <p-contextMenu #cm [model]="menuItems" />
+              <div class="table-wrap">
+                <p-table
+                  [value]="filteredItems()"
+                  dataKey="productId"
+                  [rowHover]="true"
+                  styleClass="p-datatable-sm dense-table"
+                  [(contextMenuSelection)]="selected"
+                  [contextMenu]="cm"
+                  sortMode="single"
+                  [resizableColumns]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <tr class="table-header-row">
+                      <th pSortableColumn="productName" pResizableColumn>
+                        Producto
+                        <p-sortIcon field="productName"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="productCategory" pResizableColumn>
+                        Categoría
+                        <p-sortIcon field="productCategory"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="stock" pResizableColumn>
+                        Stock
+                        <p-sortIcon field="stock"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="minStock" pResizableColumn>
+                        Mínimo
+                        <p-sortIcon field="minStock"></p-sortIcon>
+                      </th>
+                      <th>Acciones</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-row>
+                    <tr [class]="rowClass(row.stock, row.minStock)" [pContextMenuRow]="row">
+                      <td title="{{ row.productName }}">{{ row.productName }}</td>
+                      <td title="{{ row.productCategory }}">{{ row.productCategory }}</td>
+                      @if (editingId() === row.productId) {
+                        <td>
+                          <input
+                            class="edit-input"
+                            type="number"
+                            min="0"
+                            [(ngModel)]="editStock"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            class="edit-input"
+                            type="number"
+                            min="0"
+                            [(ngModel)]="editMin"
+                          />
+                        </td>
+                        <td class="actions">
+                          <button
+                            type="button"
+                            pButton
+                            label="Guardar"
+                            class="p-button-sm"
+                            (click)="saveEdit(row)"
+                          ></button>
+                          <button
+                            type="button"
+                            pButton
+                            label="Cancelar"
+                            severity="secondary"
+                            [outlined]="true"
+                            class="p-button-sm"
+                            (click)="cancelEdit()"
+                          ></button>
+                        </td>
+                      } @else {
+                        <td class="num">{{ row.stock }}</td>
+                        <td class="num">{{ row.minStock }}</td>
+                        <td class="actions">
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-ellipsis-v"
+                            class="p-button-text p-button-rounded p-button-sm"
+                            (click)="selected = row; cm.show($event)"
+                            title="Más acciones"
+                            aria-label="Más acciones"
+                          ></button>
+                        </td>
+                      }
+                    </tr>
+                  </ng-template>
+                </p-table>
+                <pos-table-footer
+                  [visibleCount]="filteredItems().length"
+                  [totalCount]="items().length"
+                />
+              </div>
+            }
+          </pos-panel>
+        </div>
+      </div>
+
+      <aside class="inv-body__side">
+        <div class="slot">
+          <pos-panel title="Alertas stock bajo">
+            <div class="panel-stack">
+              <div class="panel-stack__body">
+                @if (alerts().length === 0) {
+                  <p class="muted empty-state-inline">Sin alertas</p>
+                } @else {
+                  <ul class="alert-list">
+                    @for (a of alerts(); track a.productId + "-" + a.branchId) {
+                      <li>
+                        <div class="alert-list__text">
+                          <strong>{{ a.productName }}</strong>
+                          <span class="muted">{{ a.branchName }}</span>
+                        </div>
+                        <p-tag
+                          [severity]="a.currentStock === 0 ? 'danger' : 'warn'"
+                          [value]="a.currentStock + ' / ' + a.minStock"
+                        />
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+          </pos-panel>
+        </div>
+      </aside>
+    </div>
+  </pos-page-shell>
+</div>

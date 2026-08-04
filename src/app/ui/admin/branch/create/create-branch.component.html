@@ -1,0 +1,45 @@
+<pos-page-shell>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a routerLink="/admin/branches" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver a sucursales
+      </a>
+      <h1>Nueva sucursal</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de la sucursal">
+    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-scroll">
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">Nombre <span class="req">*</span></label>
+            <input id="name" name="name" [(ngModel)]="form.name" required placeholder="Ej. Sucursal Centro" />
+          </div>
+          <div class="field">
+            <label for="address">Dirección <span class="req">*</span></label>
+            <input id="address" name="address" [(ngModel)]="form.address" required placeholder="Calle y número" />
+          </div>
+          <div class="field field--full">
+            <label class="checkbox">
+              <input type="checkbox" name="wh" [(ngModel)]="form.isWarehouse" />
+              Es almacén
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/admin/branches" pButton label="Cancelar" severity="secondary" [outlined]="true"></a>
+        <button
+          type="submit"
+          pButton
+          [label]="loading() ? 'Creando…' : 'Crear sucursal'"
+          [loading]="loading()"
+          [disabled]="loading() || !form.name.trim()"
+        ></button>
+      </div>
+    </form>
+  </pos-panel>
+</pos-page-shell>
