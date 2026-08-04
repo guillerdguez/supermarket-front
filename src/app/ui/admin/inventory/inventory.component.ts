@@ -5,6 +5,8 @@ import { SelectModule } from "primeng/select";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { ContextMenuModule } from "primeng/contextmenu";
+import { DialogModule } from "primeng/dialog";
+import { InputNumberModule } from "primeng/inputnumber";
 import { MenuItem } from "primeng/api";
 import { InventoryService } from "../../../services/inventory/inventory.service";
 import { BranchService } from "../../../services/branch/branch.service";
@@ -25,6 +27,8 @@ const SELECTED_BRANCH_KEY = "inventorySelectedBranchId";
     TagModule,
     ButtonModule,
     ContextMenuModule,
+    DialogModule,
+    InputNumberModule,
     PosPanelComponent,
     PosPageShellComponent,
     PosTableFooterComponent,
@@ -44,11 +48,13 @@ export class InventoryComponent implements OnInit {
   branchList = this.branches.model.list;
 
   selectedBranchId = signal<number | null>(null);
-  editingId = signal<number | null>(null);
-  editStock = 0;
-  editMin = 0;
   lowStockOnly = signal(false);
   selected: BranchInventoryResponse | null = null;
+
+  editingRow = signal<BranchInventoryResponse | null>(null);
+  editDialogVisible = false;
+  editStock = 0;
+  editMin = 0;
 
   menuItems: MenuItem[] = [
     {
@@ -93,7 +99,6 @@ export class InventoryComponent implements OnInit {
 
   onBranchChange(id: number) {
     this.selectedBranchId.set(id);
-    this.editingId.set(null);
     localStorage.setItem(SELECTED_BRANCH_KEY, String(id));
     this.inventory.retrieveByBranch(id);
   }
@@ -112,26 +117,32 @@ export class InventoryComponent implements OnInit {
   }
 
   startEdit(row: BranchInventoryResponse) {
-    this.editingId.set(row.productId);
+    this.editingRow.set(row);
     this.editStock = row.stock;
     this.editMin = row.minStock;
+    this.editDialogVisible = true;
   }
 
   cancelEdit() {
-    this.editingId.set(null);
+    this.editDialogVisible = false;
+    this.editingRow.set(null);
   }
 
-  saveEdit(row: BranchInventoryResponse) {
+  saveEdit() {
+    const row = this.editingRow();
     const branchId = this.selectedBranchId();
-    if (branchId == null) return;
+    if (!row || branchId == null) return;
+    if (this.editStock == null || this.editMin == null) return;
     if (this.editStock < 0 || this.editMin < 0) return;
+
     this.inventory.updateStock(
       branchId,
       row.productId,
       this.editStock,
       this.editMin,
     );
-    this.editingId.set(null);
+    this.editDialogVisible = false;
+    this.editingRow.set(null);
   }
 
   adjust(row: BranchInventoryResponse, delta: number) {

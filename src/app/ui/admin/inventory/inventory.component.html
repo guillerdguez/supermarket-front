@@ -34,10 +34,6 @@
       <div class="inv-body__main">
         <div class="slot">
           <pos-panel title="Inventario por sucursal">
-            <!-- FIX: esta barra usaba class="inv-toolbar", una clase que solo
-                 existía en ESTE componente (scoped). Al reutilizarse tal cual
-                 en notification/report/transfer/user quedaba sin estilo en
-                 esas 4 pantallas. Ahora usa la utilidad global "pos-toolbar". -->
             <div class="pos-toolbar">
               <i class="pi pi-shop" aria-hidden="true"></i>
               <label for="branch">Sucursal</label>
@@ -124,59 +120,29 @@
                     </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-row>
-                    <tr [class]="rowClass(row.stock, row.minStock)" [pContextMenuRow]="row">
-                      <td title="{{ row.productName }}">{{ row.productName }}</td>
-                      <td title="{{ row.productCategory }}">{{ row.productCategory }}</td>
-                      @if (editingId() === row.productId) {
-                        <td>
-                          <input
-                            class="edit-input"
-                            type="number"
-                            min="0"
-                            [(ngModel)]="editStock"
-                          />
-                        </td>
-                        <td>
-                          <input
-                            class="edit-input"
-                            type="number"
-                            min="0"
-                            [(ngModel)]="editMin"
-                          />
-                        </td>
-                        <td class="actions">
-                          <button
-                            type="button"
-                            pButton
-                            label="Guardar"
-                            class="p-button-sm"
-                            (click)="saveEdit(row)"
-                          ></button>
-                          <button
-                            type="button"
-                            pButton
-                            label="Cancelar"
-                            severity="secondary"
-                            [outlined]="true"
-                            class="p-button-sm"
-                            (click)="cancelEdit()"
-                          ></button>
-                        </td>
-                      } @else {
-                        <td class="num">{{ row.stock }}</td>
-                        <td class="num">{{ row.minStock }}</td>
-                        <td class="actions">
-                          <button
-                            pButton
-                            type="button"
-                            icon="pi pi-ellipsis-v"
-                            class="p-button-text p-button-rounded p-button-sm"
-                            (click)="selected = row; cm.show($event)"
-                            title="Más acciones"
-                            aria-label="Más acciones"
-                          ></button>
-                        </td>
-                      }
+                    <tr
+                      [class]="rowClass(row.stock, row.minStock)"
+                      [pContextMenuRow]="row"
+                    >
+                      <td title="{{ row.productName }}">
+                        {{ row.productName }}
+                      </td>
+                      <td title="{{ row.productCategory }}">
+                        {{ row.productCategory }}
+                      </td>
+                      <td class="num">{{ row.stock }}</td>
+                      <td class="num">{{ row.minStock }}</td>
+                      <td class="actions">
+                        <button
+                          pButton
+                          type="button"
+                          icon="pi pi-pencil"
+                          class="p-button-text p-button-rounded p-button-sm"
+                          (click)="startEdit(row)"
+                          title="Editar stock"
+                          aria-label="Editar stock"
+                        ></button>
+                      </td>
                     </tr>
                   </ng-template>
                 </p-table>
@@ -220,4 +186,57 @@
       </aside>
     </div>
   </pos-page-shell>
+
+  <p-dialog
+    header="Editar stock"
+    [(visible)]="editDialogVisible"
+    [modal]="true"
+    [style]="{ width: '360px' }"
+    (onHide)="cancelEdit()"
+  >
+    @if (editingRow(); as row) {
+      <p class="subtitle">{{ row.productName }}</p>
+      <div class="form">
+        <div class="field">
+          <label for="editStock">Stock</label>
+          <p-inputNumber
+            inputId="editStock"
+            [(ngModel)]="editStock"
+            [min]="0"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+          />
+        </div>
+        <div class="field">
+          <label for="editMin">Mínimo</label>
+          <p-inputNumber
+            inputId="editMin"
+            [(ngModel)]="editMin"
+            [min]="0"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+          />
+        </div>
+      </div>
+    }
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        severity="secondary"
+        [outlined]="true"
+        (click)="cancelEdit()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Guardar"
+        icon="pi pi-check"
+        (click)="saveEdit()"
+      ></button>
+    </ng-template>
+  </p-dialog>
 </div>

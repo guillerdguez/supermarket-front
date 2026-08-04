@@ -32,8 +32,6 @@
   color: var(--pos-text-muted);
 }
 
-/* FIX: .kpi-row / .kpi-card ahora son globales (styles.scss). */
-
 .inv-body {
   flex: 1;
   min-height: 0;
@@ -79,7 +77,6 @@
   }
 }
 
-// Ver product.component.scss: el scroll va dentro de la tabla, no aquí.
 .table-wrap {
   flex: 1;
   min-height: 0;
@@ -100,42 +97,8 @@
   align-items: center;
 }
 
-.edit-input {
-  width: 72px;
-  padding: 5px 8px;
-  border: 1px solid var(--pos-border);
-  border-radius: var(--pos-radius-sm);
-  font-size: var(--pos-font-size-xs);
-}
-
-.edit-input:focus {
-  outline: none;
-  border-color: var(--pos-primary);
-  box-shadow: 0 0 0 3px var(--pos-primary-light);
-}
-
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid var(--pos-border);
-  border-radius: var(--pos-radius-sm);
-  background: var(--pos-surface);
-  color: var(--pos-text);
-  font-size: var(--pos-font-size-sm);
-  font-weight: var(--pos-font-weight-emphasis);
-  cursor: pointer;
-  line-height: 1;
-  transition:
-    background 0.15s,
-    border-color 0.15s;
-}
-
-.btn-icon:hover {
-  background: var(--pos-surface-alt);
+::ng-deep .dense-table .p-datatable-thead {
+  z-index: 2;
 }
 
 .panel-stack {
@@ -207,6 +170,44 @@
   margin: 0;
   padding: 12px;
   text-align: center;
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-danger);
+}
+
+.subtitle {
+  margin: 0 0 var(--pos-space-2);
+  font-size: var(--pos-font-size-sm);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+}
+
+.edit-dialog__subtitle {
+  margin: 0 0 16px;
+  font-size: var(--pos-font-size-sm);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+}
+
+.edit-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.edit-dialog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.edit-dialog__field label {
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text-muted);
+}
+
+.edit-dialog__error {
+  margin: 12px 0 0;
   font-size: var(--pos-font-size-xs);
   color: var(--pos-danger);
 }
