@@ -1,0 +1,102 @@
+import { Injectable, inject } from "@angular/core";
+import { SaleDao } from "../../DAO/sale/sale.dao";
+import { SaleRequest, SaleResponse, PaymentRequest } from "../../DTO/sale.dto";
+import { SaleModel } from "../../model/Domain/sale.model";
+import { CrudComponent } from "../../model/Domain/crud-component";
+import { MessageProcessingService } from "../../../util/messageProcessingCenter/message-processing.service";
+
+@Injectable({ providedIn: "root" })
+export class SaleService {
+  private readonly dao = inject(SaleDao);
+  private readonly messages = inject(MessageProcessingService);
+  readonly model = inject(SaleModel);
+
+  retrieveList(): void {
+    this.model.loading.set(true);
+
+    this.dao.getAll().subscribe({
+      next: (list) => this.afterRetrieveList(list ?? []),
+      error: (err) => {
+        this.model.list.set([]);
+        this.model.loading.set(false);
+        this.messages.publishErrorMsg("errorGettingSales", err);
+      },
+    });
+  }
+
+  private afterRetrieveList(list: SaleResponse[]): void {
+    this.model.list.set(list);
+    this.model.loading.set(false);
+  }
+
+  retrieveMySales(): void {
+    this.model.loading.set(true);
+
+    this.dao.getMySales().subscribe({
+      next: (page) => {
+        this.model.mySales.set(page?.content ?? []);
+        this.model.loading.set(false);
+      },
+      error: (err) => {
+        this.model.mySales.set([]);
+        this.model.loading.set(false);
+        this.messages.publishErrorMsg("errorGettingMySales", err);
+      },
+    });
+  }
+
+  /**
+   * Crea la venta y encadena el registro del pago. Si el pago falla se avisa,
+   * pero la venta ya existe: el componente continúa igualmente (`afterSave`).
+   */
+  save(
+    request: SaleRequest,
+    paymentType: PaymentRequest["paymentType"],
+    amount: number,
+    component?: CrudComponent,
+  ): void {
+    this.model.loading.set(true);
+    this.model.error.set(null);
+
+    this.dao.create(request).subscribe({
+      next: (sale) => this.registerPayment(sale, paymentType, amount, component),
+      error: (err) => {
+        this.model.loading.set(false);
+        this.model.error.set(this.messages.resolveErrorDetail("errorCreatingSale", err));
+        this.messages.publishErrorMsg("errorCreatingSale", err);
+      },
+    });
+  }
+
+  private registerPayment(
+    sale: SaleResponse,
+    paymentType: PaymentRequest["paymentType"],
+    amount: number,
+    component?: CrudComponent,
+  ): void {
+    this.dao.registerPayment({ saleId: sale.id, amount, paymentType }).subscribe({
+      next: () => {
+        this.model.loading.set(false);
+        this.model.list.update((list) => [sale, ...list]);
+        this.messages.publishSuccessMsg("saleCreated");
+        component?.afterSave?.();
+      },
+      error: (err) => {
+        this.model.loading.set(false);
+        this.messages.publishErrorMsg("errorCreatingSale", err);
+        component?.afterSave?.();
+      },
+    });
+  }
+
+  cancel(id: number, reason: string, component?: CrudComponent): void {
+    this.dao.cancel(id, { reason }).subscribe({
+      next: (cancelled) => {
+        this.model.list.update((list) => list.map((s) => (s.id === id ? cancelled : s)));
+        this.messages.publishSuccessMsg("saleCancelled");
+        component?.afterSave?.();
+      },
+      error: (err) => this.messages.publishErrorMsg("errorCancellingSale", err),
+    });
+  }
+}
