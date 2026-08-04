@@ -92,27 +92,8 @@
                   Sin datos para el rango seleccionado.
                 </p>
               } @else {
-                <div class="table-wrap">
-                  <p-table #dtBranch [value]="byBranch()" dataKey="branchId" styleClass="p-datatable-sm dense-table">
-                    <ng-template pTemplate="header"
-                      ><tr class="table-header-row">
-                        <th>Sucursal</th>
-                        <th>Ingresos</th>
-                        <th>Tx</th>
-                      </tr></ng-template
-                    >
-                    <ng-template pTemplate="body" let-row
-                      ><tr>
-                        <td>{{ row.branchName }}</td>
-                        <td class="num">{{ row.totalRevenue | currency: "EUR":"symbol":"1.2-2" }}</td>
-                        <td class="num">{{ row.transactionCount }}</td>
-                      </tr></ng-template
-                    >
-                  </p-table>
-                  <pos-table-footer
-                    [visibleCount]="dtBranch.filteredValue ? dtBranch.filteredValue.length : byBranch().length"
-                    [totalCount]="byBranch().length"
-                  />
+                <div class="chart-wrap">
+                  <p-chart type="bar" [data]="branchChartData()" [options]="barChartOptions" />
                 </div>
               }
             </section>
@@ -124,29 +105,8 @@
                   Sin datos para el rango seleccionado.
                 </p>
               } @else {
-                <div class="table-wrap">
-                  <p-table #dtCashier [value]="byCashier()" dataKey="cashierId" styleClass="p-datatable-sm dense-table">
-                    <ng-template pTemplate="header"
-                      ><tr class="table-header-row">
-                        <th>Cajero</th>
-                        <th>Ingresos</th>
-                        <th>Tx</th>
-                        <th>Ticket</th>
-                      </tr></ng-template
-                    >
-                    <ng-template pTemplate="body" let-row
-                      ><tr>
-                        <td>{{ row.cashierUsername }}</td>
-                        <td class="num">{{ row.totalRevenue | currency: "EUR":"symbol":"1.2-2" }}</td>
-                        <td class="num">{{ row.transactionCount }}</td>
-                        <td class="num">{{ row.averageTicket | currency: "EUR":"symbol":"1.2-2" }}</td>
-                      </tr></ng-template
-                    >
-                  </p-table>
-                  <pos-table-footer
-                    [visibleCount]="dtCashier.filteredValue ? dtCashier.filteredValue.length : byCashier().length"
-                    [totalCount]="byCashier().length"
-                  />
+                <div class="chart-wrap">
+                  <p-chart type="bar" [data]="cashierChartData()" [options]="barChartOptions" />
                 </div>
               }
             </section>

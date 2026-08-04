@@ -1,7 +1,6 @@
 @use "../../../theme/styles/mixins" as *;
 
 @include pos-fit-viewport;
-@include pos-dense-table;
 
 .report-fit {
   height: 100%;
@@ -61,13 +60,21 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.table-wrap {
-  overflow: auto;
-}
+.chart-wrap {
+  position: relative;
+  height: 280px;
+  padding: var(--pos-space-2);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-md);
 
-.num {
-  font-variant-numeric: tabular-nums;
-  text-align: right;
+  ::ng-deep .p-chart {
+    height: 100%;
+  }
+
+  ::ng-deep canvas {
+    max-height: 100%;
+  }
 }
 
 @media (max-width: 960px) {
