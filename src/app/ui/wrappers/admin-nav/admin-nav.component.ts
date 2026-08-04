@@ -1,0 +1,83 @@
+import { Component, inject, computed } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { MenuItem, ConfirmationService } from "primeng/api";
+import { MenubarModule } from "primeng/menubar";
+import { ButtonModule } from "primeng/button";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { AuthService } from "../../../services/auth/auth.service";
+import { NotificationsBellComponent } from "../../shared/notifications-bell/notifications-bell.component";
+
+@Component({
+  selector: "app-admin-nav",
+  standalone: true,
+  imports: [
+    RouterLink,
+    MenubarModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    NotificationsBellComponent,
+  ],
+  templateUrl: "./admin-nav.component.html",
+  styleUrl: "./admin-nav.component.scss",
+})
+export class AdminNavComponent {
+  private readonly auth = inject(AuthService);
+  private readonly confirm = inject(ConfirmationService);
+  user = this.auth.model.currentUser;
+
+  isAdmin = computed(() => {
+    const r = this.user()?.role;
+    return r === "ADMIN" || r === "MANAGER";
+  });
+
+  isCashier = computed(() => this.user()?.role === "CASHIER");
+
+  adminItems: MenuItem[] = [
+    { label: "Dashboard", icon: "pi pi-home", routerLink: "/admin/dashboard" },
+    { label: "Inventario", icon: "pi pi-box", routerLink: "/admin/inventory" },
+    { label: "Productos", icon: "pi pi-tags", routerLink: "/admin/products" },
+    { label: "Sucursales", icon: "pi pi-building", routerLink: "/admin/branches" },
+    {
+      label: "Más",
+      icon: "pi pi-ellipsis-h",
+      items: [
+        { label: "Usuarios", icon: "pi pi-users", routerLink: "/admin/users" },
+        { label: "Ventas", icon: "pi pi-shopping-cart", routerLink: "/admin/sales" },
+        { label: "Transferencias", icon: "pi pi-arrows-h", routerLink: "/admin/transfers" },
+        { label: "Reportes", icon: "pi pi-chart-bar", routerLink: "/admin/reports" },
+        { label: "Cajas", icon: "pi pi-wallet", routerLink: "/admin/cash-registers" },
+        { label: "Auditoría", icon: "pi pi-history", routerLink: "/admin/audit" },
+        { label: "Notificaciones", icon: "pi pi-bell", routerLink: "/admin/notifications" },
+        { separator: true },
+        { label: "Punto de venta", icon: "pi pi-desktop", routerLink: "/pos" },
+      ],
+    },
+  ];
+
+  cashierItems: MenuItem[] = [
+    { label: "Dashboard", icon: "pi pi-home", routerLink: "/cashier/dashboard" },
+    { label: "Cobrar", icon: "pi pi-desktop", routerLink: "/pos" },
+    { label: "Mis ventas", icon: "pi pi-list", routerLink: "/cashier/my-sales" },
+    {
+      label: "Caja",
+      icon: "pi pi-wallet",
+      items: [
+        { label: "Abrir caja", icon: "pi pi-lock-open", routerLink: "/cashier/open-register" },
+        { label: "Cerrar caja", icon: "pi pi-lock", routerLink: "/cashier/close-register" },
+      ],
+    },
+  ];
+
+  logout() {
+    this.confirm.confirm({
+      message: "¿Seguro que quieres cerrar sesión?",
+      header: "Salir",
+      icon: "pi pi-sign-out",
+      acceptLabel: "Sí, salir",
+      rejectLabel: "No",
+      acceptButtonStyleClass: "p-button-danger",
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => this.auth.logout(),
+    });
+  }
+}

@@ -1,0 +1,10 @@
+<footer class="pos-table-footer">
+  @if (selectedCount() !== null) {
+    <span class="pos-table-footer__selection">
+      {{ selectedCount() }} seleccionado{{ selectedCount() === 1 ? "" : "s" }}
+    </span>
+  }
+  <span class="pos-table-footer__count">
+    Mostrando {{ visibleCount() }} de {{ totalCount() }}
+  </span>
+</footer>

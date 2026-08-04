@@ -1,0 +1,42 @@
+<p-dialog
+  [header]="header()"
+  [visible]="visible()"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: 'min(420px, 94vw)' }"
+>
+  <div class="form">
+    <div class="field">
+      <label for="reason-dialog-input">{{ label() }}</label>
+      <textarea
+        id="reason-dialog-input"
+        rows="3"
+        [ngModel]="reason()"
+        (ngModelChange)="reason.set($event)"
+      ></textarea>
+      @if (reason().length > 0 && !isValid()) {
+        <p class="field-error">Mínimo {{ minLength() }} caracteres</p>
+      }
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      severity="secondary"
+      [outlined]="true"
+      (click)="cancel()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Confirmar"
+      [disabled]="!isValid()"
+      (click)="confirm()"
+    ></button>
+  </ng-template>
+</p-dialog>

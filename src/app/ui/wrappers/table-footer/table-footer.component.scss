@@ -1,0 +1,23 @@
+.pos-table-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pos-space-2);
+  padding: var(--pos-space-1) var(--pos-space-2);
+  border-top: 1px solid var(--pos-border);
+  background: var(--pos-surface-alt);
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+}
+
+.pos-table-footer__selection {
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+  white-space: nowrap;
+}
+
+.pos-table-footer__count {
+  margin-left: auto;
+  white-space: nowrap;
+}

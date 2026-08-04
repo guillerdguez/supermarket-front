@@ -1,0 +1,154 @@
+.admin-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  // Más aire entre los tres grupos (marca / menú / perfil) que dentro de
+  // cada uno: ver los gaps de .brand, .nav-right y .profile-link.
+  gap: var(--pos-space-2);
+  padding: var(--pos-space-1) var(--pos-space-2);
+  background: var(--pos-surface);
+  border-bottom: 1px solid var(--pos-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-shadow: var(--pos-shadow-md);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pos-space-1);
+  // El sistema de tipos solo define 3 pesos (normal/medium/emphasis); no hay
+  // un peso "bold" tokenizado, así que la marca usa el mismo emphasis que el
+  // resto de títulos en vez de un 700 suelto.
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: var(--pos-font-size-sm);
+  margin-right: calc(var(--pos-space-1) / 2);
+
+  i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pos-space-4);
+    height: var(--pos-space-4);
+    border-radius: var(--pos-radius-md);
+    background: var(--pos-primary-light);
+    font-size: var(--pos-font-size-sm);
+  }
+
+  &:hover {
+    color: var(--pos-primary-hover);
+  }
+}
+
+.nav-menus {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--pos-space-1);
+  margin-left: auto;
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--pos-space-1) / 2);
+  text-decoration: none;
+  color: var(--pos-text);
+  padding: calc(var(--pos-space-1) / 2) var(--pos-space-1);
+  border-radius: 999px;
+  font-size: var(--pos-font-size-sm);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--pos-surface-alt);
+  }
+
+  .name {
+    font-weight: var(--pos-font-weight-emphasis);
+  }
+
+  .role {
+    color: var(--pos-text-muted);
+    font-size: var(--pos-font-size-xs);
+    // 2px verticales: excepción deliberada, igual que el badge de la
+    // campana. Es una píldora de una sola línea; centrarla en el paso de
+    // 8px la haría más alta que el texto que contiene.
+    padding: 2px var(--pos-space-1);
+    background: var(--pos-surface-alt);
+    border-radius: 999px;
+  }
+}
+
+.logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pos-nav-icon-btn);
+  height: var(--pos-nav-icon-btn);
+  background: none;
+  border: 1px solid var(--pos-border);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--pos-danger);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--pos-danger-bg);
+  }
+}
+
+/* Menubar: siempre con clase propia .pos-menubar */
+:host ::ng-deep .pos-menubar.p-menubar {
+  background: transparent;
+  border: none;
+  padding: 0;
+
+  .p-menubar-root-list {
+    // Casi cero: los ítems ya llevan su propio padding horizontal, este gap
+    // solo evita que se toquen dos fondos activos contiguos.
+    gap: calc(var(--pos-space-1) / 4);
+  }
+
+  .p-menubar-item-link {
+    padding: var(--pos-space-1);
+    border-radius: var(--pos-radius-sm);
+    font-size: var(--pos-font-size-sm);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-text-muted);
+    border-bottom: 2px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+    &:hover {
+      background: var(--pos-primary-light);
+      color: var(--pos-primary);
+    }
+  }
+
+  // FIX: ".p-menubar-item-active" es "este ítem tiene el submenú abierto",
+  // no "esta es la ruta actual" — con ese selector la pastilla de activo
+  // solo se veía mientras el desplegable "Más" estaba abierto. La clase que
+  // sigue la ruta de verdad es la que aplica el propio routerLinkActive de
+  // PrimeNG: "p-menubar-item-link-active".
+  //
+  // Acento inferior en vez de relleno para que se distinga del hover: el
+  // hover es un feedback momentáneo, el acento es "aquí estás" persistente.
+  .p-menubar-item-link-active {
+    color: var(--pos-primary);
+    border-bottom-color: var(--pos-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-link .name,
+  .profile-link .role {
+    display: none;
+  }
+}

@@ -1,0 +1,62 @@
+<div class="bell-wrap" (click)="$event.stopPropagation()">
+  <button
+    type="button"
+    class="bell-btn"
+    (click)="toggle($event)"
+    title="Notificaciones"
+    aria-label="Notificaciones"
+  >
+    <i class="pi pi-bell"></i>
+    @if (unreadCount() > 0) {
+      <span class="badge">{{ unreadCount() > 9 ? "9+" : unreadCount() }}</span>
+    }
+  </button>
+
+  @if (open()) {
+    <div class="dropdown" role="menu">
+      <div class="dropdown-header">
+        <span class="title">
+          <i class="pi pi-bell"></i>
+          Notificaciones
+        </span>
+        @if (unreadCount() > 0) {
+          <button type="button" class="link-btn" (click)="markAll()">Marcar todas</button>
+        }
+      </div>
+
+      @if (!available()) {
+        <p class="empty">Notificaciones no disponibles</p>
+      } @else if (items().length === 0) {
+        <p class="empty">No tienes notificaciones</p>
+      } @else {
+        <ul class="list">
+          @for (n of recentItems(); track n.id) {
+            <!-- FIX: antes era un <li (click)>, no operable por teclado.
+                 El <li> ahora solo estructura la lista y el <button> real
+                 dentro es lo enfocable/clicable (Tab + Enter/Espacio ya
+                 funcionan de forma nativa). -->
+            <li [class.unread]="!n.read" role="none">
+              <button type="button" class="item" role="menuitem" (click)="markRead(n.id)">
+                <i class="pi pi-info-circle icon-sm" aria-hidden="true"></i>
+                <span class="text">
+                  <span class="msg">{{ n.message }}</span>
+                  @if (n.createdAt) {
+                    <span class="date">{{ n.createdAt | date: "dd/MM HH:mm" }}</span>
+                  }
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (canManageNotifications()) {
+        <div class="dropdown-footer">
+          <a routerLink="/admin/notifications" (click)="close()">
+            <i class="pi pi-list"></i> Ver todas
+          </a>
+        </div>
+      }
+    </div>
+  }
+</div>

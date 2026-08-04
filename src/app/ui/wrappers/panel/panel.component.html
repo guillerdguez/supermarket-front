@@ -1,0 +1,19 @@
+<section class="pos-panel">
+  <header class="pos-panel-header">
+    <h3 class="pos-panel-title">{{ title() }}</h3>
+    @if (showSettings()) {
+      <button
+        type="button"
+        class="pos-icon-btn"
+        title="Ajustes"
+        aria-label="Ajustes del panel"
+        (click)="settingsClick.emit()"
+      >
+        <i class="pi pi-cog" aria-hidden="true"></i>
+      </button>
+    }
+  </header>
+  <div class="pos-panel-body">
+    <ng-content />
+  </div>
+</section>

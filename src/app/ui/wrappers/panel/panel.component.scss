@@ -1,0 +1,50 @@
+@use "../../../theme/styles/mixins" as *;
+
+.pos-panel {
+  @include pos-card;
+  width: 100%;
+  // Por variable: las pantallas a pantalla completa lo ponen a 0 desde su
+  // :host, porque un ::ng-deep externo pierde contra el scope de este
+  // componente.
+  margin-bottom: var(--pos-panel-margin-bottom, var(--pos-space-2));
+  overflow: hidden;
+}
+
+.pos-panel-header {
+  @include pos-card-header;
+  padding: var(--pos-panel-header-padding, var(--pos-space-2) var(--pos-space-3));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--pos-panel-header-min-height, 48px);
+  background: transparent; /* sin fondo gris: más minimal */
+}
+
+.pos-panel-title {
+  margin: 0;
+  font-size: var(--pos-font-size-base);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text);
+}
+
+.pos-panel-body {
+  padding: var(--pos-panel-body-padding, var(--pos-space-3));
+}
+
+.pos-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--pos-radius-sm);
+  color: var(--pos-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--pos-surface-alt);
+    color: var(--pos-primary);
+  }
+}
