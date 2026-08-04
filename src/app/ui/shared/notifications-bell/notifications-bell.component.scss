@@ -7,8 +7,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  // Mismo token que .logout en admin-nav.component.scss: los dos
-  // botones-icono de la barra miden siempre lo mismo por definición.
   width: var(--pos-nav-icon-btn);
   height: var(--pos-nav-icon-btn);
   border: none;
@@ -16,7 +14,9 @@
   background: transparent;
   color: var(--pos-text-muted);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
     background: var(--pos-primary-light);
@@ -38,8 +38,6 @@
   border-radius: 999px;
   background: var(--pos-danger);
   color: #fff;
-  // Excepción deliberada: badge numérico de 16px de alto, no texto de
-  // lectura. xs (12px) desbordaría el círculo.
   font-size: 10px;
   font-weight: var(--pos-font-weight-emphasis);
   line-height: 16px;
@@ -63,6 +61,10 @@
 }
 
 .dropdown-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--pos-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;

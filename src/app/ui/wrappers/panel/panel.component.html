@@ -1,6 +1,7 @@
 <section class="pos-panel">
   <header class="pos-panel-header">
     <h3 class="pos-panel-title">{{ title() }}</h3>
+    <ng-content select="[panel-header-actions]" />
     @if (showSettings()) {
       <button
         type="button"

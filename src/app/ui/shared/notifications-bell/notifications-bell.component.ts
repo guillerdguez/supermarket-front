@@ -20,7 +20,7 @@ export class NotificationsBellComponent implements OnInit {
   available = this.svc.model.available;
   open = signal(false);
 
-  /** Solo ADMIN/MANAGER tienen pantalla de listado completa */
+  
   canManageNotifications = computed(() => {
     const r = this.auth.model.currentUser()?.role;
     return r === "ADMIN" || r === "MANAGER";

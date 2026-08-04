@@ -1,12 +1,13 @@
-@use "../../../theme/styles/mixins" as *;
+ @use "../../../theme/styles/mixins" as *;
 
 @include pos-fit-panel;
 
-/* FIX: este archivo definía ".toolbar" pero el template usaba
-   "inv-toolbar" (clase que solo existía, scoped, en inventory.component) —
-   la barra de arriba (contador + "marcar todas leídas") se renderizaba
-   sin ningún estilo. Ahora el template usa la utilidad global
-   ".pos-toolbar" y aquí solo queda lo propio de esta pantalla. */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--pos-space-2);
+  margin-left: auto;
+}
 
 .muted {
   color: var(--pos-text-muted);

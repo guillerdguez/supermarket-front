@@ -31,10 +31,7 @@
       } @else {
         <ul class="list">
           @for (n of recentItems(); track n.id) {
-            <!-- FIX: antes era un <li (click)>, no operable por teclado.
-                 El <li> ahora solo estructura la lista y el <button> real
-                 dentro es lo enfocable/clicable (Tab + Enter/Espacio ya
-                 funcionan de forma nativa). -->
+
             <li [class.unread]="!n.read" role="none">
               <button type="button" class="item" role="menuitem" (click)="markRead(n.id)">
                 <i class="pi pi-info-circle icon-sm" aria-hidden="true"></i>

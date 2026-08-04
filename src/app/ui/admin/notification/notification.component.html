@@ -1,6 +1,6 @@
 <pos-page-shell>
   <pos-panel title="Mis notificaciones">
-    <div class="pos-toolbar">
+    <div panel-header-actions class="header-actions">
       <p class="muted">
         <i class="pi pi-bell"></i>
         {{ unreadCount() }} sin leer
@@ -11,7 +11,6 @@
         label="Marcar todas leídas"
         icon="pi pi-check"
         class="p-button-outlined p-button-sm"
-        style="margin-left: auto"
         (click)="onMarkAll()"
         [disabled]="unreadCount() === 0"
       ></button>
@@ -39,9 +38,6 @@
       <ul class="list">
         @for (n of items(); track n.id) {
           <li [class.unread]="!n.read">
-            <!-- FIX: antes era un <div> con (click) — no operable por
-                 teclado. Ahora es un <button> real, enfocable y con
-                 Enter/Espacio funcionando de forma nativa. -->
             <button type="button" class="content" (click)="onMarkRead(n.id)">
               <i class="pi pi-bell row-icon" aria-hidden="true"></i>
               <span class="text">
@@ -67,5 +63,4 @@
       </ul>
     }
   </pos-panel>
-  <!-- Ver dashboard del cajero: el p-confirmDialog global está en app.html. -->
 </pos-page-shell>
