@@ -11,7 +11,7 @@ export class ReportService {
   private readonly messages = inject(MessageProcessingService);
   readonly model = inject(ReportModel);
 
-  /** Las tres consultas de ventas van juntas: el loading se apaga cuando acaban todas. */
+  
   retrieveSales(filter?: ReportFilterRequest): void {
     this.model.loading.set(true);
 

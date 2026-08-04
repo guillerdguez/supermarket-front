@@ -19,11 +19,7 @@ export class AuthService {
     this.hydrateFromStorage();
   }
 
-  /**
-   * Refresca el usuario en memoria y en storage con datos recién traídos del
-   * back. Necesario porque quien ya tenía sesión abierta guardó un
-   * current_user sin branchId.
-   */
+
   setCurrentUser(user: UserResponse): void {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     this.model.currentUser.set(user);

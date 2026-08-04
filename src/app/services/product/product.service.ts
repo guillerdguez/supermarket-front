@@ -86,7 +86,7 @@ export class ProductService {
     this.messages.publishErrorMsg(key, err);
   }
 
-  /** Borrado optimista: quita de la lista al momento y restaura si el API falla. */
+  
   delete(ids: number | number[], component?: CrudComponent): void {
     const idList = Array.isArray(ids) ? ids : [ids];
     const snapshot = this.model.list();

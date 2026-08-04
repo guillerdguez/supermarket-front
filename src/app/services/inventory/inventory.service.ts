@@ -65,7 +65,7 @@ export class InventoryService {
     });
   }
 
-  /** Refresca la fila y avisa; si queda bajo mínimos el aviso sube a warning. */
+  
   private afterStockChange(updated: BranchInventoryResponse): void {
     this.model.list.update((list) => list.map((i) => (i.id === updated.id ? updated : i)));
 

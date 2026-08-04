@@ -45,10 +45,7 @@ export class SaleService {
     });
   }
 
-  /**
-   * Crea la venta y encadena el registro del pago. Si el pago falla se avisa,
-   * pero la venta ya existe: el componente continúa igualmente (`afterSave`).
-   */
+
   save(
     request: SaleRequest,
     paymentType: PaymentRequest["paymentType"],

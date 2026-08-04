@@ -1,9 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 
-/**
- * Saca el texto de error más útil que traiga la respuesta del backend, y si no
- * hay ninguno devuelve el `fallback` recibido.
- */
+
 export function extractApiError(
   err: unknown,
   fallback = "Error de conexión con el servidor",

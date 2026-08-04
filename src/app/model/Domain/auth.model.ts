@@ -7,7 +7,7 @@ export class AuthModel {
   readonly loading = signal(false);
   readonly isAuthenticated = computed(() => !!this.currentUser());
 
-  /** Sucursal asignada al usuario. null para quien no tenga (típicamente ADMIN). */
+  
   readonly branchId = computed(() => this.currentUser()?.branchId ?? null);
   readonly branchName = computed(() => this.currentUser()?.branchName ?? null);
 }

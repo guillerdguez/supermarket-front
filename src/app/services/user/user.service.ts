@@ -73,7 +73,7 @@ export class UserService {
     this.messages.publishErrorMsg(key, err);
   }
 
-  /** Baja lógica: el backend desactiva al usuario, no lo borra. */
+  
   delete(ids: number | number[], component?: CrudComponent): void {
     const idList = Array.isArray(ids) ? ids : [ids];
     const snapshot = this.model.list();

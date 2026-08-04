@@ -13,10 +13,7 @@ import { Component, input } from "@angular/core";
   `,
   styles: [
     `
-      /* Los valores van por variable para que una pantalla los pueda cambiar
-         desde su :host (ver el mixin pos-fit-viewport). Sobreescribirlos por
-         selector no funciona: esta regla lleva el atributo de scope del
-         componente y gana a cualquier ::ng-deep de fuera. */
+
       .pos-page {
         display: var(--pos-page-display, grid);
         grid-template-columns: 1fr;

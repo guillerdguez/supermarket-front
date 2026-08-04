@@ -55,14 +55,11 @@ export class PosComponent implements OnInit, CrudComponent {
   paymentMethod = signal<"CASH" | "CARD" | "TRANSFER">("CASH");
   amountReceived = signal(0);
 
-  /** Stock del producto en la sucursal de la caja abierta. */
+  
   private readonly stockById = computed(
     () => new Map(this.inventory.model.list().map((i) => [i.productId, i.stock])),
   );
-  /**
-   * Si el inventario no llegó (error de red, sucursal sin filas), no bloqueamos
-   * la venta: el back sigue validando y no queremos dejar el POS inservible.
-   */
+
   hasStockData = computed(() => this.stockById().size > 0);
 
   change = computed(() => {
@@ -87,12 +84,12 @@ export class PosComponent implements OnInit, CrudComponent {
     this.productsSvc.retrieveList(this.search() || undefined);
   }
 
-  /** Stock disponible en la sucursal, 0 si el producto no está en el inventario. */
+  
   stockOf(productId: number): number {
     return this.stockById().get(productId) ?? 0;
   }
 
-  /** Lo que todavía se puede añadir al carrito de ese producto. */
+  
   remainingOf(productId: number): number {
     if (!this.hasStockData()) return Number.POSITIVE_INFINITY;
     const inCart = this.cartItems().find((i) => i.product.id === productId)?.quantity ?? 0;

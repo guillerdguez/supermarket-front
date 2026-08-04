@@ -181,13 +181,7 @@
   }
 }
 
-/*
-  FIX: antes el ancho de columna se fijaba DOS veces — inline en cada <th>
-  (style="width: 35%"...) y otra vez aquí vía ::ng-deep nth-child. Es
-  redundante y frágil (si reordenas columnas en el HTML, este bloque deja
-  de coincidir y rompe el layout en silencio). Se deja solo el ancho
-  inline del template; aquí solo el comportamiento de tabla fija.
-*/
+
 ::ng-deep .fixed-table table,
 ::ng-deep .fixed-table .p-datatable-table {
   width: 100%;

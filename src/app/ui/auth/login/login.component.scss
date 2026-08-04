@@ -1,10 +1,4 @@
-/*
-  FIX: el fondo usaba índigo/violeta (#e0e7ff, #c7d2fe) hardcodeado, una
-  familia de color totalmente ajena a la paleta teal del resto de la app
-  (--pos-primary-*). Al ser la primera pantalla que ve cualquiera, ese
-  choque de marca era una de las cosas que más "desentonaban". Ahora usa
-  los propios tokens de la app.
-*/
+
 .login-page {
   min-height: 100vh;
   display: grid;
@@ -78,7 +72,7 @@ label {
   width: 100%;
 }
 
-/* Inputs de PrimeNG a ancho completo (wrapper = .login-card) */
+
 :host ::ng-deep .login-card {
   .p-password,
   .p-password-input,

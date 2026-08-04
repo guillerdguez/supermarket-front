@@ -1,12 +1,6 @@
 import { Injectable } from "@angular/core";
 
-/**
- * Única fuente de verdad de las URLs del backend. Los DAO nunca construyen
- * rutas a mano: piden aquí la que necesitan.
- *
- * Las rutas son relativas; `proxy.conf.json` las redirige al backend en
- * desarrollo.
- */
+
 @Injectable({ providedIn: "root" })
 export class RestPathService {
   // --- auth ---

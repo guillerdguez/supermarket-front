@@ -4,7 +4,7 @@ export interface NotificationResponse {
   read: boolean;
   type?: string;
   createdAt?: string;
-  /** Si el backend lo envía, filtramos por el usuario logueado */
+  
   userId?: number;
   username?: string;
 }

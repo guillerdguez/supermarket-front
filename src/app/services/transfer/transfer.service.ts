@@ -65,7 +65,7 @@ export class TransferService {
     this.changeStatus(this.dao.cancel(id), "transferCancelled", component);
   }
 
-  /** Los cuatro cambios de estado comparten flujo: refrescan el elemento y avisan. */
+  
   private changeStatus(
     request$: Observable<TransferResponse>,
     successKey: MessageKey,

@@ -33,7 +33,7 @@ export class NotificationService {
     this.model.loading.set(false);
   }
 
-  /** Solo notificaciones del usuario actual (si el API manda userId). */
+  
   private mine(list: NotificationResponse[]): NotificationResponse[] {
     const uid = this.auth.model.currentUser()?.id;
     if (uid == null) return list;

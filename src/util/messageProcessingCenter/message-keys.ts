@@ -1,14 +1,8 @@
-/**
- * Catálogo central de textos de la aplicación. Ningún service ni componente
- * escribe literales de mensaje: todos publican una clave de aquí.
- *
- * El día que entre i18n, este fichero es lo único que hay que sustituir por el
- * loader de traducciones — las claves ya son las definitivas.
- */
+
 export interface MessageDefinition {
-  /** Título del toast. */
+  
   summary: string;
-  /** Texto por defecto; en los errores es el fallback si el backend no manda uno. */
+  
   detail: string;
 }
 

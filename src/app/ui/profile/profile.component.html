@@ -2,10 +2,7 @@
   <pos-panel title="Mi perfil">
     <p class="muted"><a [routerLink]="backLink()">← Volver</a></p>
 
-    <!-- FIX: la pantalla no tenía ninguna identidad visual (solo texto
-         "Rol: X"). Se añade un pequeño encabezado con avatar de iniciales
-         y la misma pill de rol que ya existe en admin-nav, reutilizando
-         las utilidades globales .pos-avatar / .pos-role-pill. -->
+
     <div class="profile-header">
       <span class="pos-avatar">{{ form.firstName[0] }}{{ form.lastName[0] }}</span>
       <div class="profile-header__text">
