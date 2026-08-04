@@ -1,0 +1,17 @@
+﻿node_modules/
+dist/
+.angular/
+coverage/
+*.log
+.env
+.vscode/
+
+# Claude
+.claude/
+CLAUDE.md
+.claudeignore
+
+# Skills y checklists
+ui-visual-design-checklist.md
+skill-*.md
+*.skills.md
