@@ -97,6 +97,11 @@ export class UserComponent implements OnInit, OnDestroy {
     this.svc.retrieveList(this.search() || undefined);
   }
 
+  clearSearch() {
+    this.search.set("");
+    this.onSearch();
+  }
+
   refresh() {
     this.svc.retrieveList(this.search() || undefined);
   }
