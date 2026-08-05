@@ -92,10 +92,6 @@
   font-weight: var(--pos-font-weight-emphasis);
   cursor: pointer;
   padding: 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .empty {
@@ -178,9 +174,5 @@
     font-size: var(--pos-font-size-sm);
     font-weight: var(--pos-font-weight-emphasis);
     text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 }

@@ -52,10 +52,6 @@ p {
 a {
   text-decoration: none;
   font-weight: var(--pos-font-weight-medium);
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 :focus-visible {
@@ -81,10 +77,6 @@ a {
   padding: 0;
   font-weight: var(--pos-font-weight-emphasis);
   font-size: var(--pos-font-size-sm);
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .muted {
