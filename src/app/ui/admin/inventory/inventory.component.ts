@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { Component, computed, effect, inject, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { TableModule } from "primeng/table";
 import { SelectModule } from "primeng/select";
@@ -85,6 +85,16 @@ export class InventoryComponent implements OnInit {
       ? this.items().filter((r) => r.stock <= r.minStock)
       : this.items(),
   );
+
+  constructor() {
+    // Si no hay sucursal guardada, selecciona la primera al cargar la lista.
+    effect(() => {
+      const branches = this.branchList();
+      if (this.selectedBranchId() == null && branches.length > 0) {
+        this.onBranchChange(branches[0].id);
+      }
+    });
+  }
 
   ngOnInit() {
     this.branches.retrieveList();
