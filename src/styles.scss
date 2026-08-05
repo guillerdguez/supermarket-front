@@ -63,7 +63,6 @@ a {
   outline-offset: 2px;
 }
 
-
 .btn-primary {
   @include pos-btn-primary;
 }
@@ -88,7 +87,6 @@ a {
   }
 }
 
-
 .muted {
   color: var(--pos-text-muted);
   font-size: var(--pos-font-size-sm);
@@ -110,7 +108,6 @@ a {
 .toolbar {
   margin-bottom: var(--pos-space-2);
 }
-
 
 .pos-toolbar {
   display: flex;
@@ -152,7 +149,6 @@ a {
   color: var(--pos-text-muted);
 }
 
-
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -163,7 +159,6 @@ select,
 textarea {
   @include pos-input;
 }
-
 
 select.pos-select-native {
   appearance: none;
@@ -200,7 +195,6 @@ label.checkbox {
   --p-content-border-radius: var(--pos-radius-md);
 }
 
-
 .p-datatable {
   --p-checkbox-width: 16px;
   --p-checkbox-height: 16px;
@@ -229,7 +223,7 @@ label.checkbox {
 
   .p-datatable-thead > tr > th:first-child,
   .p-datatable-tbody > tr > td:first-child {
-    width: var(--pos-space-5); 
+    width: var(--pos-space-5);
     text-align: center;
     padding-inline: var(--pos-space-1);
   }
@@ -241,10 +235,13 @@ label.checkbox {
   }
 
   .p-checkbox-icon {
-    font-size: 12px; 
+    font-size: 12px;
     width: 12px;
     height: 12px;
   }
+}
+.dense-table .p-datatable-thead {
+  z-index: 2 !important;
 }
 .form {
   display: flex;
@@ -326,7 +323,6 @@ label.checkbox {
   letter-spacing: 0.04em;
 }
 
-
 .pos-section-title {
   margin: 0 0 var(--pos-space-2);
   font-size: var(--pos-font-size-xs);
@@ -337,7 +333,6 @@ label.checkbox {
   padding-bottom: var(--pos-space-1);
   border-bottom: 1px solid var(--pos-border);
 }
-
 
 .kpi-row {
   display: grid;
@@ -415,7 +410,6 @@ label.checkbox {
   @include pos-money;
 }
 
-
 .empty-state {
   flex: 1;
   min-height: 0;
@@ -462,7 +456,6 @@ label.checkbox {
   font-size: var(--pos-font-size-sm);
   color: var(--pos-text-muted);
 }
-
 
 @keyframes pos-skeleton-shimmer {
   0% {
@@ -521,7 +514,6 @@ label.checkbox {
   }
 }
 
-
 .skeleton-form {
   display: flex;
   flex-direction: column;
@@ -566,7 +558,6 @@ label.checkbox {
     animation: none;
   }
 }
-
 
 .pos-avatar {
   display: inline-flex;
