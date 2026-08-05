@@ -4,6 +4,7 @@ import { AuthDao } from "../../DAO/auth/auth.dao";
 import { LoginRequest, UserResponse } from "../../DTO/auth.dto";
 import { AuthModel } from "../../model/Domain/auth.model";
 import { MessageProcessingService } from "../../../util/messageProcessingCenter/message-processing.service";
+import { jwtDecode } from "jwt-decode";
 
 export const TOKEN_KEY = "access_token";
 export const USER_KEY = "current_user";
@@ -18,7 +19,6 @@ export class AuthService {
   constructor() {
     this.hydrateFromStorage();
   }
-
 
   setCurrentUser(user: UserResponse): void {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -48,7 +48,9 @@ export class AuthService {
         this.model.loading.set(false);
 
         this.router.navigateByUrl(
-          res.user.role === "CASHIER" ? "/cashier/dashboard" : "/admin/dashboard",
+          res.user.role === "CASHIER"
+            ? "/cashier/dashboard"
+            : "/admin/dashboard",
         );
       },
       error: (err) => {
@@ -64,5 +66,17 @@ export class AuthService {
     localStorage.removeItem(USER_KEY);
     this.model.currentUser.set(null);
     this.router.navigateByUrl("/auth/login");
+  }
+  isTokenValid(): boolean {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) return false;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const now = Math.floor(Date.now() / 1000);
+      return decoded.exp > now;
+    } catch {
+      return false;
+    }
   }
 }
