@@ -81,7 +81,7 @@
               [value]="items()"
               dataKey="id"
               [rowHover]="true"
-              styleClass="p-datatable-sm dense-table"
+              styleClass="p-datatable-sm fixed-table dense-table"
               [(contextMenuSelection)]="selected"
               [contextMenu]="cm"
               sortMode="single"
@@ -94,11 +94,11 @@
                   <th style="width: 40px">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
-                  <th pSortableColumn="name" pResizableColumn>
+                  <th pSortableColumn="name" pResizableColumn style="width: 30%">
                     Nombre
                     <p-sortIcon field="name"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="address" pResizableColumn>
+                  <th pSortableColumn="address" pResizableColumn style="width: 40%">
                     Dirección
                     <p-sortIcon field="address"></p-sortIcon>
                   </th>
