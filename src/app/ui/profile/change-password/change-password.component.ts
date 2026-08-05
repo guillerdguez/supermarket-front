@@ -86,6 +86,6 @@ export class ChangePasswordComponent implements CrudComponent {
   }
 
   afterSave() {
-    this.router.navigateByUrl("/profile");
+    this.router.navigateByUrl("/account");
   }
 }

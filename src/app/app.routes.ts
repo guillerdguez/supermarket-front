@@ -154,13 +154,13 @@ export const routes: Routes = [
       import("./ui/pos/pos.component").then((m) => m.PosComponent),
   },
   {
-    path: "profile",
+    path: "account",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./ui/profile/profile.component").then((m) => m.ProfileComponent),
   },
   {
-    path: "profile/password",
+    path: "account/password",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./ui/profile/change-password/change-password.component").then((m) => m.ChangePasswordComponent),

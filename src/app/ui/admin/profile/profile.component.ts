@@ -3,5 +3,5 @@ import { Router } from "@angular/router";
 @Component({ selector: "app-admin-profile-redirect", standalone: true, template: "" })
 export class AdminProfileRedirectComponent implements OnInit {
   private readonly router = inject(Router);
-  ngOnInit() { this.router.navigateByUrl("/profile"); }
+  ngOnInit() { this.router.navigateByUrl("/account"); }
 }
