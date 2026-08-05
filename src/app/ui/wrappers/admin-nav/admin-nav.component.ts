@@ -46,7 +46,6 @@ export class AdminNavComponent {
       label: "Ventas",
       icon: "pi pi-shopping-cart",
       items: [
-        { label: "Punto de venta", icon: "pi pi-desktop", routerLink: "/pos" },
         { label: "Ventas", icon: "pi pi-shopping-cart", routerLink: "/admin/sales" },
         { label: "Cajas", icon: "pi pi-wallet", routerLink: "/admin/cash-registers" },
       ],

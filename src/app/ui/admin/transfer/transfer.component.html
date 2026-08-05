@@ -76,20 +76,36 @@
                     #
                     <p-sortIcon field="id"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="productName" pResizableColumn style="width: 22%">
+                  <th
+                    pSortableColumn="productName"
+                    pResizableColumn
+                    style="width: 22%"
+                  >
                     Producto
                     <p-sortIcon field="productName"></p-sortIcon>
                   </th>
                   <th pResizableColumn style="width: 24%">Origen → Destino</th>
-                  <th pSortableColumn="quantity" pResizableColumn style="width: 10%">
+                  <th
+                    pSortableColumn="quantity"
+                    pResizableColumn
+                    style="width: 10%"
+                  >
                     Cant
                     <p-sortIcon field="quantity"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="status" pResizableColumn style="width: 100px">
+                  <th
+                    pSortableColumn="status"
+                    pResizableColumn
+                    style="width: 100px"
+                  >
                     Estado
                     <p-sortIcon field="status"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="requestedAt" pResizableColumn style="width: 14%">
+                  <th
+                    pSortableColumn="requestedAt"
+                    pResizableColumn
+                    style="width: 14%"
+                  >
                     Fecha
                     <p-sortIcon field="requestedAt"></p-sortIcon>
                   </th>
@@ -98,12 +114,20 @@
                 <tr class="table-filter-row">
                   <th></th>
                   <th>
-                    <p-columnFilter type="text" field="productName" display="row"></p-columnFilter>
+                    <p-columnFilter
+                      type="text"
+                      field="productName"
+                      display="row"
+                    ></p-columnFilter>
                   </th>
                   <th></th>
                   <th></th>
                   <th>
-                    <p-columnFilter type="text" field="status" display="row"></p-columnFilter>
+                    <p-columnFilter
+                      type="text"
+                      field="status"
+                      display="row"
+                    ></p-columnFilter>
                   </th>
                   <th></th>
                   <th></th>
@@ -112,22 +136,31 @@
               <ng-template pTemplate="body" let-row>
                 <tr
                   [pContextMenuRow]="row"
-                  [pContextMenuRowDisabled]="row.status !== 'PENDING' && row.status !== 'APPROVED'"
+                  [pContextMenuRowDisabled]="
+                    row.status !== 'PENDING' && row.status !== 'APPROVED'
+                  "
                   (contextmenu)="buildMenu(row)"
                 >
                   <td>{{ row.id }}</td>
-                  <td title="{{ row.productName }}">{{ row.productName || row.productId }}</td>
+                  <td title="{{ row.productName }}">
+                    {{ row.productName || row.productId }}
+                  </td>
                   <td>
                     {{ row.sourceBranchName || row.sourceBranchId }} →
                     {{ row.targetBranchName || row.targetBranchId }}
                   </td>
                   <td class="num">{{ row.quantity }}</td>
                   <td>
-                    <p-tag [severity]="severity(row.status)" [value]="row.status" />
+                    <p-tag
+                      [severity]="severity(row.status)"
+                      [value]="row.status"
+                    />
                   </td>
                   <td>{{ row.requestedAt | date: "dd/MM HH:mm" }}</td>
                   <td class="col-actions">
-                    @if (row.status === "PENDING" || row.status === "APPROVED") {
+                    @if (
+                      row.status === "PENDING" || row.status === "APPROVED"
+                    ) {
                       <button
                         pButton
                         type="button"
@@ -143,13 +176,12 @@
               </ng-template>
             </p-table>
             <pos-table-footer
-              [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+              [visibleCount]="
+                dt.filteredValue ? dt.filteredValue.length : items().length
+              "
               [totalCount]="items().length"
             />
           </div>
-          <p class="hint muted">
-            Usá el menú <i class="pi pi-ellipsis-v" aria-hidden="true"></i> o clic derecho para aprobar, rechazar o completar
-          </p>
         }
       </pos-panel>
     </div>
