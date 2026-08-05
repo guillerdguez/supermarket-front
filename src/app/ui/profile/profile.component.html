@@ -1,36 +1,47 @@
 <pos-page-shell>
-  <pos-panel title="Mi perfil">
-    <p class="muted"><a [routerLink]="backLink()">← Volver</a></p>
-
-
-    <div class="profile-header">
-      <span class="pos-avatar">{{ form.firstName[0] }}{{ form.lastName[0] }}</span>
-      <div class="profile-header__text">
-        <strong>{{ form.firstName }} {{ form.lastName }}</strong>
-        <span class="pos-role-pill">{{ role }}</span>
-      </div>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a [routerLink]="backLink()" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver
+      </a>
+      <h1>Mi perfil</h1>
     </div>
+  </header>
 
+  <pos-panel title="Datos personales">
     <form class="form" (ngSubmit)="onSubmit()" novalidate>
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" [value]="email" disabled />
-      </div>
-      <div class="field">
-        <label for="branch">Sucursal</label>
-        <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
-      </div>
-      <div class="field">
-        <label for="u">Usuario <span class="req">*</span></label>
-        <input id="u" name="u" [(ngModel)]="form.username" required />
-      </div>
-      <div class="field">
-        <label for="f">Nombre <span class="req">*</span></label>
-        <input id="f" name="f" [(ngModel)]="form.firstName" required />
-      </div>
-      <div class="field">
-        <label for="l">Apellido <span class="req">*</span></label>
-        <input id="l" name="l" [(ngModel)]="form.lastName" required />
+      <div class="form-scroll">
+        <div class="profile-header">
+          <span class="pos-avatar">{{ form.firstName[0] }}{{ form.lastName[0] }}</span>
+          <div class="profile-header__text">
+            <strong>{{ form.firstName }} {{ form.lastName }}</strong>
+            <span class="pos-role-pill">{{ role }}</span>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" [value]="email" disabled />
+          </div>
+          <div class="field">
+            <label for="branch">Sucursal</label>
+            <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
+          </div>
+          <div class="field">
+            <label for="u">Usuario <span class="req">*</span></label>
+            <input id="u" name="u" [(ngModel)]="form.username" required />
+          </div>
+          <div class="field">
+            <label for="f">Nombre <span class="req">*</span></label>
+            <input id="f" name="f" [(ngModel)]="form.firstName" required />
+          </div>
+          <div class="field">
+            <label for="l">Apellido <span class="req">*</span></label>
+            <input id="l" name="l" [(ngModel)]="form.lastName" required />
+          </div>
+        </div>
       </div>
 
       <div class="form-actions">
