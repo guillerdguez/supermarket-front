@@ -44,12 +44,12 @@
         "secure": false,
         "changeOrigin": true
     },
-    "/cashier": {
+    "/cashier/my-sales": {
         "target": "http://localhost:8080",
         "secure": false,
         "changeOrigin": true
     },
-    "/notifications": {
+    "/notifications/": {
         "target": "http://localhost:8080",
         "secure": false,
         "changeOrigin": true
