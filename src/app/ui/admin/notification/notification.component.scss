@@ -1,4 +1,4 @@
- @use "../../../theme/styles/mixins" as *;
+@use "../../../theme/styles/mixins" as *;
 
 @include pos-fit-panel;
 
@@ -34,6 +34,10 @@
 
   &.unread {
     background: var(--pos-primary-light);
+
+    &:hover {
+      background: var(--pos-primary-light-hover);
+    }
   }
 }
 
@@ -50,10 +54,6 @@
   border-radius: var(--pos-radius-sm);
   font: inherit;
   color: inherit;
-
-  &:hover {
-    background: var(--pos-surface-alt);
-  }
 }
 
 .row-icon {
