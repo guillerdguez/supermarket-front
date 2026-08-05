@@ -1,0 +1,16 @@
+{
+  "admin": { "email": "admin@supermarket.com", "password": "password" },
+  "manager": { "email": "manager@supermarket.com", "password": "password" },
+  "cashierCentro": {
+    "email": "lfernandez@supermarket.com",
+    "password": "password",
+    "branchId": 1,
+    "branchName": "Sucursal Centro"
+  },
+  "cashierRuzafa": {
+    "email": "msanchez@supermarket.com",
+    "password": "password",
+    "branchId": 2,
+    "branchName": "Sucursal Ruzafa"
+  }
+}

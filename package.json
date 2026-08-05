@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "lint": "eslint src",
     "test": "jest --watch",
-    "test:ci": "jest --coverage --ci"
+    "test:ci": "jest --coverage --ci",
+    "e2e": "cypress open",
+    "e2e:ci": "cypress run"
   },
   "prettier": {
     "printWidth": 100,
@@ -49,6 +51,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.0",
     "angular-eslint": "^20.0.0",
+    "cypress": "^15.20.0",
     "eslint": "^9.18.0",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
