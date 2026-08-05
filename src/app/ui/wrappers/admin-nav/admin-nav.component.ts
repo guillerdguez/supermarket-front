@@ -34,22 +34,39 @@ export class AdminNavComponent {
 
   adminItems: MenuItem[] = [
     { label: "Dashboard", icon: "pi pi-home", routerLink: "/admin/dashboard" },
-    { label: "Inventario", icon: "pi pi-box", routerLink: "/admin/inventory" },
-    { label: "Productos", icon: "pi pi-tags", routerLink: "/admin/products" },
-    { label: "Sucursales", icon: "pi pi-building", routerLink: "/admin/branches" },
     {
-      label: "Más",
-      icon: "pi pi-ellipsis-h",
+      label: "Catálogo",
+      icon: "pi pi-tags",
       items: [
-        { label: "Usuarios", icon: "pi pi-users", routerLink: "/admin/users" },
+        { label: "Productos", icon: "pi pi-tags", routerLink: "/admin/products" },
+        { label: "Inventario", icon: "pi pi-box", routerLink: "/admin/inventory" },
+      ],
+    },
+    {
+      label: "Ventas",
+      icon: "pi pi-shopping-cart",
+      items: [
+        { label: "Punto de venta", icon: "pi pi-desktop", routerLink: "/pos" },
         { label: "Ventas", icon: "pi pi-shopping-cart", routerLink: "/admin/sales" },
-        { label: "Transferencias", icon: "pi pi-arrows-h", routerLink: "/admin/transfers" },
-        { label: "Reportes", icon: "pi pi-chart-bar", routerLink: "/admin/reports" },
         { label: "Cajas", icon: "pi pi-wallet", routerLink: "/admin/cash-registers" },
+      ],
+    },
+    {
+      label: "Organización",
+      icon: "pi pi-building",
+      items: [
+        { label: "Sucursales", icon: "pi pi-building", routerLink: "/admin/branches" },
+        { label: "Usuarios", icon: "pi pi-users", routerLink: "/admin/users" },
+        { label: "Transferencias", icon: "pi pi-arrows-h", routerLink: "/admin/transfers" },
+      ],
+    },
+    {
+      label: "Análisis",
+      icon: "pi pi-chart-bar",
+      items: [
+        { label: "Reportes", icon: "pi pi-chart-bar", routerLink: "/admin/reports" },
         { label: "Auditoría", icon: "pi pi-history", routerLink: "/admin/audit" },
         { label: "Notificaciones", icon: "pi pi-bell", routerLink: "/admin/notifications" },
-        { separator: true },
-        { label: "Punto de venta", icon: "pi pi-desktop", routerLink: "/pos" },
       ],
     },
   ];
