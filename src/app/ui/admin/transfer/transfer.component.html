@@ -100,7 +100,11 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
-          <tr [pContextMenuRow]="row" (contextmenu)="buildMenu(row)">
+          <tr
+            [pContextMenuRow]="row"
+            [pContextMenuRowDisabled]="row.status !== 'PENDING' && row.status !== 'APPROVED'"
+            (contextmenu)="buildMenu(row)"
+          >
             <td>{{ row.id }}</td>
             <td title="{{ row.productName }}">{{ row.productName || row.productId }}</td>
             <td>
