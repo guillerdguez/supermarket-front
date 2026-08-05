@@ -77,15 +77,6 @@
   }
 }
 
-.table-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: var(--pos-space-1) var(--pos-space-1) 0;
-}
-
 .num {
   font-variant-numeric: tabular-nums;
 }
@@ -217,11 +208,6 @@
     font-size: var(--pos-font-size-base);
   }
 
-  .table-wrap,
-  .panel-stack__body {
-    padding: 6px 10px 2px;
-  }
-
   .alert-list li {
     padding: 5px 0;
   }
@@ -256,4 +242,17 @@
   .kpi-row {
     grid-template-columns: 1fr;
   }
+}
+
+::ng-deep .fixed-table table,
+::ng-deep .fixed-table .p-datatable-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+::ng-deep .fixed-table th,
+::ng-deep .fixed-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

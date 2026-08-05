@@ -92,7 +92,7 @@
                   [value]="filteredItems()"
                   dataKey="productId"
                   [rowHover]="true"
-                  styleClass="p-datatable-sm dense-table"
+                  styleClass="p-datatable-sm fixed-table dense-table"
                   [(contextMenuSelection)]="selected"
                   [contextMenu]="cm"
                   sortMode="single"
@@ -100,23 +100,23 @@
                 >
                   <ng-template pTemplate="header">
                     <tr class="table-header-row">
-                      <th pSortableColumn="productName" pResizableColumn>
+                      <th pSortableColumn="productName" pResizableColumn style="width: 34%">
                         Producto
                         <p-sortIcon field="productName"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="productCategory" pResizableColumn>
+                      <th pSortableColumn="productCategory" pResizableColumn style="width: 24%">
                         Categoría
                         <p-sortIcon field="productCategory"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="stock" pResizableColumn>
+                      <th pSortableColumn="stock" pResizableColumn style="width: 15%">
                         Stock
                         <p-sortIcon field="stock"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="minStock" pResizableColumn>
+                      <th pSortableColumn="minStock" pResizableColumn style="width: 15%">
                         Mínimo
                         <p-sortIcon field="minStock"></p-sortIcon>
                       </th>
-                      <th>Acciones</th>
+                      <th style="width: 12%">Acciones</th>
                     </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-row>
