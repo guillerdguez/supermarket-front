@@ -7,7 +7,13 @@ import {
   SalesByBranchDTO,
   SalesByCashierDTO,
   InventoryStatusResponse,
+  SalesByProductDTO,
+  SalesComparisonResponse,
+  ProductPerformanceDTO,
+  CashRegisterReportResponse,
+  CashRegisterFilterRequest,
 } from "../../DTO/report.dto";
+import { PageResponse } from "../../DTO/pagination.dto";
 import { RestPathService } from "../../../util/restPath/rest-path.service";
 
 @Injectable({ providedIn: "root" })
@@ -44,5 +50,32 @@ export class ReportDao {
 
   inventoryStatus(): Observable<InventoryStatusResponse> {
     return this.http.get<InventoryStatusResponse>(this.url.reportsInventoryStatus());
+  }
+
+  salesByProduct(filter?: ReportFilterRequest): Observable<PageResponse<SalesByProductDTO>> {
+    return this.http.get<PageResponse<SalesByProductDTO>>(this.url.reportsSalesByProduct(), {
+      params: this.toParams(filter),
+    });
+  }
+
+  salesComparison(filter?: ReportFilterRequest): Observable<SalesComparisonResponse> {
+    return this.http.get<SalesComparisonResponse>(this.url.reportsSalesComparison(), {
+      params: this.toParams(filter),
+    });
+  }
+
+  productPerformance(filter?: ReportFilterRequest): Observable<PageResponse<ProductPerformanceDTO>> {
+    return this.http.get<PageResponse<ProductPerformanceDTO>>(this.url.reportsInventoryPerformance(), {
+      params: this.toParams(filter),
+    });
+  }
+
+  cashRegisterReport(filter?: CashRegisterFilterRequest): Observable<CashRegisterReportResponse> {
+    let params = new HttpParams();
+    if (filter?.startDate) params = params.set("startDate", filter.startDate);
+    if (filter?.endDate) params = params.set("endDate", filter.endDate);
+    if (filter?.branchId != null) params = params.set("branchId", filter.branchId);
+    if (filter?.showOnlyDiscrepancies) params = params.set("showOnlyDiscrepancies", filter.showOnlyDiscrepancies);
+    return this.http.get<CashRegisterReportResponse>(this.url.reportsCashRegisters(), { params });
   }
 }

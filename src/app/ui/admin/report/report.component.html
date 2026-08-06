@@ -110,6 +110,191 @@
                 </div>
               }
             </section>
+
+            <section class="report-section">
+              <h2 class="pos-section-title">Ventas por producto</h2>
+              @if (byProduct().length === 0) {
+                <p class="muted empty-state-inline">
+                  Sin datos para el rango seleccionado.
+                </p>
+              } @else {
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Categoría</th>
+                      <th>Unidades</th>
+                      <th>Ingresos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of byProduct(); track row.productId) {
+                      <tr>
+                        <td>{{ row.productName }}</td>
+                        <td>{{ row.productCategory }}</td>
+                        <td>{{ row.totalQuantitySold }}</td>
+                        <td>{{ row.totalRevenue | currency: "EUR":"symbol":"1.2-2" }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+            </section>
+
+            <section class="report-section">
+              <h2 class="pos-section-title">Comparación de periodos</h2>
+              @if (comparison(); as c) {
+                <div class="kpi-row kpi-row--3">
+                  <article class="kpi-card">
+                    <span class="kpi-label">Periodo actual</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      c.currentPeriod.totalRevenue | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                    <span class="kpi-meta">{{ c.currentPeriod.transactionCount }} transacciones</span>
+                  </article>
+                  <article class="kpi-card">
+                    <span class="kpi-label">Periodo anterior</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      c.previousPeriod.totalRevenue | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                    <span class="kpi-meta">{{ c.previousPeriod.transactionCount }} transacciones</span>
+                  </article>
+                  <article class="kpi-card" [class.kpi-card--ok]="c.growthPercentage >= 0" [class.kpi-card--danger]="c.growthPercentage < 0">
+                    <span class="kpi-label">Crecimiento</span>
+                    <strong class="kpi-value">{{ c.growthPercentage | number: "1.1-1" }}%</strong>
+                  </article>
+                </div>
+              } @else {
+                <p class="muted empty-state-inline">
+                  Sin datos para el rango seleccionado.
+                </p>
+              }
+            </section>
+
+            <section class="report-section">
+              <h2 class="pos-section-title">Rendimiento de productos</h2>
+              @if (performance().length === 0) {
+                <p class="muted empty-state-inline">
+                  Sin datos para el rango seleccionado.
+                </p>
+              } @else {
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Categoría</th>
+                      <th>Stock actual</th>
+                      <th>Vendidas</th>
+                      <th>Rotación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of performance(); track row.productId) {
+                      <tr>
+                        <td>{{ row.productName }}</td>
+                        <td>{{ row.productCategory }}</td>
+                        <td>{{ row.currentStock }}</td>
+                        <td>{{ row.totalSold }}</td>
+                        <td>{{ row.inventoryTurnoverRate | number: "1.1-2" }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+            </section>
+          </div>
+        }
+      </pos-panel>
+    </div>
+
+    <div class="slot">
+      <pos-panel title="Cierres de caja">
+        <div class="pos-toolbar">
+          <label for="cr-branch">Sucursal</label>
+          <p-select
+            inputId="cr-branch"
+            [options]="branchList()"
+            optionLabel="name"
+            optionValue="id"
+            [(ngModel)]="cashRegisterBranchId"
+            placeholder="Todas"
+            [showClear]="true"
+          />
+          <label class="checkbox-label">
+            <p-checkbox [(ngModel)]="cashRegisterOnlyDiscrepancies" [binary]="true" />
+            Solo con diferencias
+          </label>
+          <button
+            type="button"
+            pButton
+            label="Filtrar"
+            icon="pi pi-filter"
+            severity="secondary"
+            [outlined]="true"
+            style="margin-left: auto"
+            (click)="onCashRegisterFilter()"
+          ></button>
+        </div>
+
+        @if (cashRegisterReport(); as cr) {
+          <div class="report-scroll">
+            <section class="report-section">
+              <div class="kpi-row kpi-row--3">
+                <article class="kpi-card">
+                  <span class="kpi-label">Cierres</span>
+                  <strong class="kpi-value">{{ cr.totalClosures }}</strong>
+                </article>
+                <article class="kpi-card kpi-card--ok">
+                  <span class="kpi-label">Superávit total</span>
+                  <strong class="kpi-value kpi-value--money">{{
+                    cr.totalSurplus | currency: "EUR":"symbol":"1.2-2"
+                  }}</strong>
+                </article>
+                <article class="kpi-card kpi-card--danger">
+                  <span class="kpi-label">Déficit total</span>
+                  <strong class="kpi-value kpi-value--money">{{
+                    cr.totalShortage | currency: "EUR":"symbol":"1.2-2"
+                  }}</strong>
+                </article>
+              </div>
+            </section>
+
+            <section class="report-section">
+              @if (cr.discrepancies.length === 0) {
+                <p class="muted empty-state-inline">
+                  Sin cierres para el filtro seleccionado.
+                </p>
+              } @else {
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Sucursal</th>
+                      <th>Apertura</th>
+                      <th>Cierre</th>
+                      <th>Abierto por</th>
+                      <th>Cerrado por</th>
+                      <th>Esperado</th>
+                      <th>Real</th>
+                      <th>Diferencia</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of cr.discrepancies; track row.registerId) {
+                      <tr>
+                        <td>{{ row.branchName }}</td>
+                        <td>{{ row.openingTime | date: "dd/MM/yyyy HH:mm" }}</td>
+                        <td>{{ row.closingTime | date: "dd/MM/yyyy HH:mm" }}</td>
+                        <td>{{ row.openedBy }}</td>
+                        <td>{{ row.closedBy }}</td>
+                        <td>{{ row.expectedAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        <td>{{ row.actualClosingAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        <td>{{ row.varianceAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+            </section>
           </div>
         }
       </pos-panel>

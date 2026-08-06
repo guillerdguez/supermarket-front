@@ -5,6 +5,7 @@ import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { MessageService, ConfirmationService } from "primeng/api";
 import { ReportComponent } from "./report.component";
 import { ReportService } from "../../../services/report/report.service";
+import { BranchService } from "../../../services/branch/branch.service";
 import { SalesByBranchDTO, SalesByCashierDTO } from "../../../DTO/report.dto";
 
 describe("ReportComponent", () => {
@@ -23,8 +24,11 @@ describe("ReportComponent", () => {
 
   function create() {
     const svc = TestBed.inject(ReportService);
+    const branches = TestBed.inject(BranchService);
     jest.spyOn(svc, "retrieveSales").mockImplementation(() => undefined);
     jest.spyOn(svc, "retrieveInventoryStatus").mockImplementation(() => undefined);
+    jest.spyOn(svc, "retrieveCashRegisterReport").mockImplementation(() => undefined);
+    jest.spyOn(branches, "retrieveList").mockImplementation(() => undefined);
     const fixture = TestBed.createComponent(ReportComponent);
     fixture.detectChanges();
     return { fixture, svc };
@@ -39,11 +43,12 @@ describe("ReportComponent", () => {
     { cashierId: 5, cashierUsername: "lfernandez", totalRevenue: 640.2, transactionCount: 30, averageTicket: 21.3 },
   ];
 
-  it("should create and load sales + inventory data on init", () => {
+  it("should create and load sales + inventory + cash register data on init", () => {
     const { fixture, svc } = create();
     expect(fixture.componentInstance).toBeTruthy();
     expect(svc.retrieveSales).toHaveBeenCalledWith();
     expect(svc.retrieveInventoryStatus).toHaveBeenCalled();
+    expect(svc.retrieveCashRegisterReport).toHaveBeenCalledWith();
   });
 
   it("builds the branch chart data from the byBranch signal", () => {
@@ -96,6 +101,23 @@ describe("ReportComponent", () => {
     expect(svc.retrieveSales).toHaveBeenLastCalledWith({
       startDate: undefined,
       endDate: undefined,
+    });
+  });
+
+  it("filters the cash register report by date, branch and discrepancies", () => {
+    const { fixture, svc } = create();
+    fixture.componentInstance.startDate = "2026-07-01";
+    fixture.componentInstance.endDate = "2026-07-31";
+    fixture.componentInstance.cashRegisterBranchId = 2;
+    fixture.componentInstance.cashRegisterOnlyDiscrepancies = true;
+
+    fixture.componentInstance.onCashRegisterFilter();
+
+    expect(svc.retrieveCashRegisterReport).toHaveBeenLastCalledWith({
+      startDate: "2026-07-01",
+      endDate: "2026-07-31",
+      branchId: 2,
+      showOnlyDiscrepancies: true,
     });
   });
 });

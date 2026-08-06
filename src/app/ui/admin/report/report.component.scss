@@ -60,6 +60,42 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pos-space-1);
+  font-size: var(--pos-font-size-sm);
+  color: var(--pos-text-muted);
+  white-space: nowrap;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--pos-font-size-sm);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-md);
+  overflow: hidden;
+
+  th,
+  td {
+    text-align: left;
+    padding: var(--pos-space-1) var(--pos-space-2);
+    border-bottom: 1px solid var(--pos-border);
+  }
+
+  th {
+    color: var(--pos-text-muted);
+    font-weight: var(--pos-font-weight-emphasis);
+    font-size: var(--pos-font-size-xs);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
 .chart-wrap {
   position: relative;
   height: 280px;
