@@ -160,6 +160,7 @@
     [visible]="detailDialogVisible()"
     (visibleChange)="detailDialogVisible.set($event)"
     [modal]="true"
+    [dismissableMask]="true"
     [style]="{ width: 'min(480px, 94vw)' }"
   >
     @if (detail(); as sale) {

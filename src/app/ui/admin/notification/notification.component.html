@@ -77,6 +77,7 @@
   [visible]="saleDialogVisible()"
   (visibleChange)="saleDialogVisible.set($event)"
   [modal]="true"
+  [dismissableMask]="true"
   [style]="{ width: 'min(480px, 94vw)' }"
 >
   @if (saleDetail(); as sale) {
@@ -124,6 +125,7 @@
   [visible]="transferDialogVisible()"
   (visibleChange)="transferDialogVisible.set($event)"
   [modal]="true"
+  [dismissableMask]="true"
   [style]="{ width: 'min(420px, 94vw)' }"
 >
   @if (transferDetail(); as t) {

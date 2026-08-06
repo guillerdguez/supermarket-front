@@ -249,6 +249,7 @@
     [visible]="roleDialogVisible()"
     (visibleChange)="roleDialogVisible.set($event)"
     [modal]="true"
+    [dismissableMask]="true"
     [style]="{ width: '360px' }"
   >
     <p-select

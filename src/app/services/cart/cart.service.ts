@@ -6,7 +6,9 @@ export class CartService {
   readonly #items = signal<CartItem[]>([]);
   readonly items = this.#items.asReadonly();
   readonly itemCount = computed(() => this.#items().reduce((a, i) => a + i.quantity, 0));
-  readonly total = computed(() => this.#items().reduce((a, i) => a + i.product.price * i.quantity, 0));
+  readonly total = computed(() =>
+    Math.round(this.#items().reduce((a, i) => a + i.product.price * i.quantity, 0) * 100) / 100,
+  );
   add(product: ProductResponse) {
     this.#items.update((items) => {
       const ex = items.find((i) => i.product.id === product.id);
