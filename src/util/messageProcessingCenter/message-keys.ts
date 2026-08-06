@@ -66,6 +66,7 @@ export const MESSAGES = {
 
   // --- transfers ---
   errorGettingTransfers: { summary: "Transferencias", detail: "Error al cargar transferencias" },
+  errorGettingMyTransfers: { summary: "Transferencias", detail: "Error al cargar tus transferencias" },
   transferRequested: { summary: "Transferencia", detail: "Transferencia solicitada" },
   errorRequestingTransfer: { summary: "Transferencia", detail: "Error al solicitar la transferencia" },
   transferApproved: { summary: "Transferencia", detail: "Transferencia aprobada" },
