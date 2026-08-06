@@ -47,5 +47,29 @@
         class="submit-btn"
       ></button>
     </form>
+
+    <div class="demo-box">
+      <p class="demo-box__title">Credenciales de prueba</p>
+      <div class="demo-box__row">
+        <span><strong>Admin:</strong> admin&#64;supermarket.com / password</span>
+        <button
+          pButton
+          type="button"
+          label="Usar"
+          class="p-button-text p-button-sm"
+          (click)="fillDemo('admin')"
+        ></button>
+      </div>
+      <div class="demo-box__row">
+        <span><strong>Cajero:</strong> cashier&#64;supermarket.com / password</span>
+        <button
+          pButton
+          type="button"
+          label="Usar"
+          class="p-button-text p-button-sm"
+          (click)="fillDemo('cashier')"
+        ></button>
+      </div>
+    </div>
   </div>
 </div>

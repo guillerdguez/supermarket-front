@@ -29,4 +29,9 @@ export class LoginComponent {
       password: this.password,
     });
   }
+
+  fillDemo(role: "admin" | "cashier") {
+    this.email = role === "admin" ? "admin@supermarket.com" : "cashier@supermarket.com";
+    this.password = "password";
+  }
 }

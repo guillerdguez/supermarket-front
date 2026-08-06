@@ -72,6 +72,36 @@ label {
   width: 100%;
 }
 
+.demo-box {
+  margin-top: var(--pos-space-3);
+  padding: var(--pos-space-2);
+  border: 1px dashed var(--pos-border);
+  border-radius: var(--pos-radius-md);
+  background: var(--pos-surface-alt);
+}
+
+.demo-box__title {
+  margin: 0 0 var(--pos-space-1);
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  color: var(--pos-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.demo-box__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pos-space-2);
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+
+  & + .demo-box__row {
+    margin-top: 4px;
+  }
+}
+
 
 :host ::ng-deep .login-card {
   .p-password,
