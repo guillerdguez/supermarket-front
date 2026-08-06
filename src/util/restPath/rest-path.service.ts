@@ -75,6 +75,10 @@ export class RestPathService {
     return id != null ? `/transfers/${id}` : "/transfers";
   }
 
+  transfersMine(): string {
+    return "/transfers/mine";
+  }
+
   transferApprove(id: number): string {
     return `/transfers/${id}/approve`;
   }
