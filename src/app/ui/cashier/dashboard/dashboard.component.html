@@ -26,12 +26,14 @@
         <a routerLink="/pos" pButton label="Ir a cobrar" icon="pi pi-wallet"></a>
         <a routerLink="/cashier/close-register" pButton label="Cerrar caja" severity="secondary" [outlined]="true"></a>
         <a routerLink="/cashier/my-sales" pButton label="Mis ventas" severity="secondary" [outlined]="true"></a>
+        <a routerLink="/cashier/transfers" pButton label="Mis transferencias" severity="secondary" [outlined]="true"></a>
       </div>
     } @else {
       <div class="status closed">Caja cerrada</div>
       <div class="actions">
         <a routerLink="/cashier/open-register" pButton label="Abrir caja" icon="pi pi-lock-open"></a>
         <a routerLink="/cashier/my-sales" pButton label="Mis ventas" severity="secondary" [outlined]="true"></a>
+        <a routerLink="/cashier/transfers" pButton label="Mis transferencias" severity="secondary" [outlined]="true"></a>
       </div>
     }
     <div class="footer-links">
