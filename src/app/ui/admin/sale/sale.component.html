@@ -84,6 +84,7 @@
                     <p-sortIcon field="total"></p-sortIcon>
                   </th>
                   <th class="col-actions" style="width: 60px"></th>
+                  <th style="width: 28px" aria-hidden="true"></th>
                 </tr>
                 <tr class="table-filter-row">
                   <th></th>
@@ -99,10 +100,11 @@
                   </th>
                   <th></th>
                   <th></th>
+                  <th></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-row>
-                <tr [pContextMenuRow]="row">
+                <tr class="clickable-row" [pContextMenuRow]="row" (click)="openDetail(row.id)">
                   <td>{{ row.id }}</td>
                   <td>{{ row.createdAt | date: "dd/MM/yyyy HH:mm" }}</td>
                   <td title="{{ row.branchName }}">{{ row.branchName || row.branchId }}</td>
@@ -125,10 +127,11 @@
                         class="p-button-text p-button-rounded p-button-sm"
                         title="Más acciones"
                         aria-label="Más acciones"
-                        (click)="selected = row; cm.show($event)"
+                        (click)="$event.stopPropagation(); selected = row; cm.show($event)"
                       ></button>
                     }
                   </td>
+                  <td class="col-chevron"><i class="pi pi-chevron-right" aria-hidden="true"></i></td>
                 </tr>
               </ng-template>
             </p-table>
@@ -151,4 +154,51 @@
     (visibleChange)="cancelDialogVisible = $event"
     (confirmed)="confirmCancel($event)"
   />
+
+  <p-dialog
+    header="Venta #{{ detail()?.id }}"
+    [visible]="detailDialogVisible()"
+    (visibleChange)="detailDialogVisible.set($event)"
+    [modal]="true"
+    [style]="{ width: 'min(480px, 94vw)' }"
+  >
+    @if (detail(); as sale) {
+      <div class="sale-detail">
+        <table class="sale-detail__table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cant.</th>
+              <th>Precio unit.</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (line of sale.details; track line.id) {
+              <tr>
+                <td>{{ line.productName }}</td>
+                <td>{{ line.quantity }}</td>
+                <td>{{ line.unitPrice | currency: "EUR":"symbol":"1.2-2" }}</td>
+                <td>{{ line.subtotal | currency: "EUR":"symbol":"1.2-2" }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div>
+          <strong>Forma de pago:</strong>
+          @for (payment of sale.payments; track payment.id) {
+            <div>{{ paymentLabel(payment.paymentType) }} — {{ payment.amount | currency: "EUR":"symbol":"1.2-2" }}</div>
+          }
+        </div>
+
+        <div class="sale-detail__totals">
+          <span>Total</span>
+          <span>{{ sale.total | currency: "EUR":"symbol":"1.2-2" }}</span>
+        </div>
+      </div>
+    } @else {
+      <p class="muted">Cargando detalle…</p>
+    }
+  </p-dialog>
 </div>

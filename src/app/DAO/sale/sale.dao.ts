@@ -19,6 +19,10 @@ export class SaleDao {
     return this.http.get<SaleResponse[]>(this.url.salesCrud());
   }
 
+  getDetail(id: number): Observable<SaleResponse> {
+    return this.http.get<SaleResponse>(this.url.salesCrud(id));
+  }
+
   create(body: SaleRequest): Observable<SaleResponse> {
     return this.http.post<SaleResponse>(this.url.salesCrud(), body);
   }
@@ -34,5 +38,9 @@ export class SaleDao {
   getMySales(page = 0, size = 50): Observable<PageResponse<SaleResponse>> {
     const params = new HttpParams().set("page", page).set("size", size);
     return this.http.get<PageResponse<SaleResponse>>(this.url.cashierMySales(), { params });
+  }
+
+  getMySaleDetail(id: number): Observable<SaleResponse> {
+    return this.http.get<SaleResponse>(this.url.cashierMySaleDetail(id));
   }
 }

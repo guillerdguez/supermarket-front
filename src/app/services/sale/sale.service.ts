@@ -46,6 +46,24 @@ export class SaleService {
   }
 
 
+  retrieveSaleDetail(id: number): void {
+    this.model.detail.set(null);
+
+    this.dao.getDetail(id).subscribe({
+      next: (sale) => this.model.detail.set(sale),
+      error: (err) => this.messages.publishErrorMsg("errorGettingSaleDetail", err),
+    });
+  }
+
+  retrieveDetail(id: number): void {
+    this.model.detail.set(null);
+
+    this.dao.getMySaleDetail(id).subscribe({
+      next: (sale) => this.model.detail.set(sale),
+      error: (err) => this.messages.publishErrorMsg("errorGettingMySaleDetail", err),
+    });
+  }
+
   save(
     request: SaleRequest,
     paymentType: PaymentRequest["paymentType"],

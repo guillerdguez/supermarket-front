@@ -7,9 +7,14 @@ export interface PaymentRequest {
 export interface SaleDetailResponse {
   id: number; productName: string; quantity: number; unitPrice: number; subtotal: number;
 }
+export interface PaymentResponse {
+  id: number; saleId: number; amount: number;
+  paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER"; paymentDate?: string; reference?: string;
+}
 export interface SaleResponse {
   id: number; total: number; status: "REGISTERED" | "CANCELLED" | string;
   branchId: number; branchName?: string; createdAt?: string;
   details?: SaleDetailResponse[]; cashRegisterId?: number; createdByUsername?: string;
+  payments?: PaymentResponse[];
 }
 export interface CancelSaleRequest { reason: string; }
