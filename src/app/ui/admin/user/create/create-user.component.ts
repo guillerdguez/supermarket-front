@@ -23,6 +23,7 @@ export class CreateUserComponent implements OnInit, CrudComponent {
   private readonly router = inject(Router);
 
   loading = this.svc.model.loading;
+  error = this.svc.model.error;
   branchList = this.branches.model.list;
   readonly roleOptions = [
     { label: "Cajero", value: "CASHIER" },

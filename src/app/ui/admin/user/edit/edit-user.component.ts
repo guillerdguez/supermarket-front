@@ -7,6 +7,7 @@ import { UserService } from "../../../../services/user/user.service";
 import { BranchService } from "../../../../services/branch/branch.service";
 import { UserRequest } from "../../../../DTO/user.dto";
 import { CrudComponent } from "../../../../model/Domain/crud-component";
+import { USER_ROLE_OPTIONS } from "../../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
 
@@ -39,11 +40,7 @@ export class EditUserComponent implements OnInit, CrudComponent {
   // guardar (afterSave) y para cancelar se usa el cerrar nativo del navegador.
   isPreview = false;
   branchList = this.branches.model.list;
-  readonly roleOptions = [
-    { label: "Cajero", value: "CASHIER" },
-    { label: "Manager", value: "MANAGER" },
-    { label: "Admin", value: "ADMIN" },
-  ];
+  readonly roleOptions = USER_ROLE_OPTIONS;
   form: UserRequest = {
     username: "",
     email: "",

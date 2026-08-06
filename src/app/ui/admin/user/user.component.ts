@@ -14,9 +14,12 @@ import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { ContextMenuModule } from "primeng/contextmenu";
+import { DialogModule } from "primeng/dialog";
+import { SelectModule } from "primeng/select";
 import { ConfirmationService, MenuItem } from "primeng/api";
 import { UserService } from "../../../services/user/user.service";
 import { UserResponse } from "../../../DTO/user.dto";
+import { USER_ROLE_OPTIONS } from "../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
@@ -33,6 +36,8 @@ import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.s
     ButtonModule,
     InputTextModule,
     ContextMenuModule,
+    DialogModule,
+    SelectModule,
     PosPanelComponent,
     PosPageShellComponent,
     PosTableFooterComponent,
@@ -53,31 +58,47 @@ export class UserComponent implements OnInit, OnDestroy {
   selected: UserResponse | null = null;
   selectedRows: UserResponse[] = [];
 
-  menuItems: MenuItem[] = [
-    {
-      label: "Vista rápida",
-      icon: "pi pi-external-link",
-      command: () => {
-        if (this.selected) this.openPreview(this.selected.id);
+  menuItems: MenuItem[] = [];
+
+  roleOptions = USER_ROLE_OPTIONS;
+  roleDialogVisible = signal(false);
+  roleDialogTarget: UserResponse | null = null;
+  selectedRole = signal("CASHIER");
+
+  buildMenu(row: UserResponse) {
+    this.selected = row;
+    const items: MenuItem[] = [
+      {
+        label: "Vista rápida",
+        icon: "pi pi-external-link",
+        command: () => this.openPreview(row.id),
       },
-    },
-    {
-      label: "Editar",
-      icon: "pi pi-pencil",
-      command: () => {
-        if (this.selected)
-          this.router.navigate(["/admin/users/edit", this.selected.id]);
+      {
+        label: "Editar",
+        icon: "pi pi-pencil",
+        command: () => this.router.navigate(["/admin/users/edit", row.id]),
       },
-    },
-    {
-      label: "Desactivar",
-      icon: "pi pi-user-minus",
-      command: () => {
-        if (this.selected)
-          this.onDelete(this.selected.id, this.selected.username);
+      {
+        label: "Cambiar rol",
+        icon: "pi pi-shield",
+        command: () => this.openRoleDialog(row),
       },
-    },
-  ];
+    ];
+    if (row.active === false) {
+      items.push({
+        label: "Reactivar",
+        icon: "pi pi-user-plus",
+        command: () => this.onActivate(row.id, row.username),
+      });
+    } else {
+      items.push({
+        label: "Desactivar",
+        icon: "pi pi-user-minus",
+        command: () => this.onDelete(row.id, row.username),
+      });
+    }
+    this.menuItems = items;
+  }
 
   ngOnInit() {
     const saved = this.listUiState.get(this.stateKey);
@@ -129,6 +150,29 @@ export class UserComponent implements OnInit, OnDestroy {
       acceptButtonStyleClass: "p-button-danger",
       accept: () => this.svc.delete(id),
     });
+  }
+
+  onActivate(id: number, name: string) {
+    this.confirm.confirm({
+      header: "Reactivar usuario",
+      message: `¿Reactivar al usuario «${name}»?`,
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Reactivar",
+      rejectLabel: "Cancelar",
+      accept: () => this.svc.activate(id),
+    });
+  }
+
+  openRoleDialog(row: UserResponse) {
+    this.roleDialogTarget = row;
+    this.selectedRole.set(row.role);
+    this.roleDialogVisible.set(true);
+  }
+
+  confirmRoleChange() {
+    if (!this.roleDialogTarget) return;
+    this.svc.changeRole(this.roleDialogTarget.id, this.selectedRole());
+    this.roleDialogVisible.set(false);
   }
 
   onDeleteSelected() {

@@ -195,7 +195,11 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-row>
-                <tr [pContextMenuRow]="row" (dblclick)="openPreview(row.id)">
+                <tr
+                  [pContextMenuRow]="row"
+                  (contextmenu)="buildMenu(row)"
+                  (dblclick)="openPreview(row.id)"
+                >
                   <td>
                     <p-tableCheckbox [value]="row"></p-tableCheckbox>
                   </td>
@@ -219,7 +223,7 @@
                       type="button"
                       icon="pi pi-ellipsis-v"
                       class="p-button-text p-button-rounded p-button-sm"
-                      (click)="selected = row; cm.show($event)"
+                      (click)="buildMenu(row); cm.show($event)"
                       title="Más acciones"
                       aria-label="Más acciones"
                     ></button>
@@ -239,4 +243,36 @@
       </pos-panel>
     </div>
   </pos-page-shell>
+
+  <p-dialog
+    header="Cambiar rol"
+    [visible]="roleDialogVisible()"
+    (visibleChange)="roleDialogVisible.set($event)"
+    [modal]="true"
+    [style]="{ width: '360px' }"
+  >
+    <p-select
+      [options]="roleOptions"
+      optionLabel="label"
+      optionValue="value"
+      [ngModel]="selectedRole()"
+      (ngModelChange)="selectedRole.set($event)"
+      styleClass="w-full"
+    />
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-text"
+        (click)="roleDialogVisible.set(false)"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Guardar"
+        (click)="confirmRoleChange()"
+      ></button>
+    </ng-template>
+  </p-dialog>
 </div>

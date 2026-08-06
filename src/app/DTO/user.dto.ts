@@ -8,3 +8,6 @@ export interface UserRequest {
   firstName: string; lastName: string; role?: string;
   branchId?: number | null;
 }
+export interface RoleUpdateRequest {
+  role: string;
+}

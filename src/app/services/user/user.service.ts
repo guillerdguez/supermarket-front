@@ -5,6 +5,7 @@ import { UserResponse, UserRequest } from "../../DTO/user.dto";
 import { UserModel } from "../../model/Domain/user.model";
 import { CrudComponent } from "../../model/Domain/crud-component";
 import { MessageProcessingService } from "../../../util/messageProcessingCenter/message-processing.service";
+import { MessageKey } from "../../../util/messageProcessingCenter/message-keys";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -42,6 +43,7 @@ export class UserService {
 
   save(body: UserRequest, id?: number, component?: CrudComponent): void {
     this.model.loading.set(true);
+    this.model.error.set(null);
 
     if (id != null) {
       this.dao.update(id, body).subscribe({
@@ -90,5 +92,25 @@ export class UserService {
         this.messages.publishErrorMsg("errorDeletingUser", err);
       },
     });
+  }
+
+  activate(id: number, component?: CrudComponent): void {
+    this.dao.activate(id).subscribe({
+      next: (updated) => this.applyUpdate(updated, "userActivated", component),
+      error: (err) => this.messages.publishErrorMsg("errorActivatingUser", err),
+    });
+  }
+
+  changeRole(id: number, role: string, component?: CrudComponent): void {
+    this.dao.changeRole(id, { role }).subscribe({
+      next: (updated) => this.applyUpdate(updated, "userRoleChanged", component),
+      error: (err) => this.messages.publishErrorMsg("errorChangingUserRole", err),
+    });
+  }
+
+  private applyUpdate(updated: UserResponse, successKey: MessageKey, component?: CrudComponent): void {
+    this.model.list.update((list) => list.map((u) => (u.id === updated.id ? updated : u)));
+    this.messages.publishSuccessMsg(successKey);
+    component?.afterSave?.();
   }
 }

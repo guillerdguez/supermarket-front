@@ -15,16 +15,37 @@
         <div class="form-grid">
           <div class="field">
             <label for="u">Usuario <span class="req">*</span></label>
-            <input id="u" name="u" [(ngModel)]="form.username" required />
+            <input
+              id="u"
+              name="u"
+              [(ngModel)]="form.username"
+              required
+              autocomplete="off"
+            />
           </div>
           <div class="field">
             <label for="e">Email <span class="req">*</span></label>
-            <input id="e" name="e" type="email" [(ngModel)]="form.email" required />
+            <input
+              id="e"
+              name="e"
+              type="email"
+              [(ngModel)]="form.email"
+              required
+              autocomplete="off"
+            />
           </div>
 
           <div class="field field--full">
             <label for="p">Contraseña <span class="req">*</span></label>
-            <input id="p" name="p" type="password" [(ngModel)]="form.password" required minlength="8" />
+            <input
+              id="p"
+              name="p"
+              type="password"
+              [(ngModel)]="form.password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+            />
             <span class="field-hint">Mínimo 8 caracteres</span>
           </div>
 
@@ -62,13 +83,25 @@
               styleClass="w-full"
               [showClear]="true"
             />
-            <span class="field-hint">Obligatoria para cajeros: es la caja que podrán abrir.</span>
+            <span class="field-hint"
+              >Obligatoria para cajeros: es la caja que podrán abrir.</span
+            >
           </div>
         </div>
       </div>
 
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
       <div class="form-actions">
-        <a routerLink="/admin/users" pButton label="Cancelar" severity="secondary" [outlined]="true"></a>
+        <a
+          routerLink="/admin/users"
+          pButton
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+        ></a>
         <button
           type="submit"
           pButton

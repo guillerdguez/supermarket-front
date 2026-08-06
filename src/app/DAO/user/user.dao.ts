@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { UserResponse, UserRequest } from "../../DTO/user.dto";
+import { UserResponse, UserRequest, RoleUpdateRequest } from "../../DTO/user.dto";
 import { PageResponse } from "../../DTO/pagination.dto";
 import { RestPathService } from "../../../util/restPath/rest-path.service";
 
@@ -30,5 +30,13 @@ export class UserDao {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(this.url.usersCrud(id));
+  }
+
+  activate(id: number): Observable<UserResponse> {
+    return this.http.put<UserResponse>(this.url.userActivate(id), {});
+  }
+
+  changeRole(id: number, body: RoleUpdateRequest): Observable<UserResponse> {
+    return this.http.put<UserResponse>(this.url.userChangeRole(id), body);
   }
 }
