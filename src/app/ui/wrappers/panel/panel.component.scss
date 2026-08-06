@@ -12,12 +12,15 @@
 
 .pos-panel-header {
   @include pos-card-header;
-  padding: var(--pos-panel-header-padding, var(--pos-space-2) var(--pos-space-3));
+  padding: var(
+    --pos-panel-header-padding,
+    var(--pos-space-2) var(--pos-space-3)
+  );
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: var(--pos-panel-header-min-height, 48px);
-  background: transparent; 
+  background: transparent;
 }
 
 .pos-panel-title {
@@ -25,10 +28,6 @@
   font-size: var(--pos-font-size-base);
   font-weight: var(--pos-font-weight-emphasis);
   color: var(--pos-text);
-}
-
-.pos-panel-body {
-  padding: var(--pos-panel-body-padding, var(--pos-space-3));
 }
 
 .pos-icon-btn {
