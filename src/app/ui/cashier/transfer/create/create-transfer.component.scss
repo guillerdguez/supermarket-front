@@ -1,0 +1,8 @@
+@use "../../../../theme/styles/mixins" as *;
+
+@include pos-form-page;
+
+.field-hint {
+  font-size: var(--pos-font-size-xs);
+  color: var(--pos-text-muted);
+}

@@ -1,0 +1,62 @@
+<pos-page-shell>
+  <header class="page-header">
+    <div class="page-header__text">
+      <a routerLink="/cashier/transfers" class="back-link">
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        Volver a mis transferencias
+      </a>
+      <h1>Solicitar stock</h1>
+    </div>
+  </header>
+
+  <pos-panel title="Datos de la solicitud">
+    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-scroll">
+        <div class="form-grid">
+          <div class="field">
+            <label for="p">Producto <span class="req">*</span></label>
+            <p-select
+              id="p"
+              [options]="productList()"
+              optionLabel="name"
+              optionValue="id"
+              [(ngModel)]="form.productId"
+              name="p"
+              placeholder="Seleccionar…"
+              styleClass="w-full"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="q">Cantidad <span class="req">*</span></label>
+            <input
+              id="q"
+              name="q"
+              type="number"
+              min="1"
+              [(ngModel)]="form.quantity"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a
+          routerLink="/cashier/transfers"
+          pButton
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+        ></a>
+        <button
+          type="submit"
+          pButton
+          [label]="loading() ? 'Enviando…' : 'Solicitar'"
+          [loading]="loading()"
+          [disabled]="loading()"
+        ></button>
+      </div>
+    </form>
+  </pos-panel>
+</pos-page-shell>

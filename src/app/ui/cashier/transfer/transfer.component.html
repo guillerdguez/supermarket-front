@@ -1,0 +1,112 @@
+<pos-page-shell>
+  <pos-panel title="Mis transferencias">
+    <div class="pos-toolbar">
+      <p class="muted" style="margin: 0"><a routerLink="/cashier/dashboard">← Dashboard</a></p>
+      <a
+        routerLink="/cashier/transfers/create"
+        pButton
+        label="Solicitar stock"
+        icon="pi pi-plus"
+        size="small"
+        style="margin-left: auto"
+      ></a>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-refresh"
+        severity="secondary"
+        [outlined]="true"
+        size="small"
+        (click)="refresh()"
+        aria-label="Refrescar"
+        title="Refrescar"
+      ></button>
+    </div>
+    @if (loading()) {
+      <div class="skeleton-table" aria-hidden="true">
+        @for (row of [1, 2, 3, 4]; track row) {
+          <div class="skeleton-row">
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+            <span class="skeleton-cell skeleton-cell--md"></span>
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+            <span class="skeleton-cell skeleton-cell--sm"></span>
+          </div>
+        }
+      </div>
+    } @else if (items().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-arrow-right-arrow-left" aria-hidden="true"></i>
+        <p class="empty-state__title">Todavía no pediste stock</p>
+        <p class="empty-state__desc">
+          Tus solicitudes de transferencia van a aparecer acá apenas pidas la
+          primera.
+        </p>
+        <a
+          routerLink="/cashier/transfers/create"
+          pButton
+          label="Solicitar stock"
+          icon="pi pi-plus"
+          size="small"
+          class="empty-state__action"
+        ></a>
+      </div>
+    } @else {
+      <p-table
+        #dt
+        [value]="items()"
+        dataKey="id"
+        [rowHover]="true"
+        sortMode="single"
+        [resizableColumns]="true"
+        styleClass="dense-table"
+      >
+        <ng-template pTemplate="header"
+          ><tr class="table-header-row">
+            <th pSortableColumn="productName" pResizableColumn>
+              Producto
+              <p-sortIcon field="productName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="quantity" pResizableColumn style="width: 90px">
+              Cantidad
+              <p-sortIcon field="quantity"></p-sortIcon>
+            </th>
+            <th pSortableColumn="requestedAt" pResizableColumn>
+              Fecha
+              <p-sortIcon field="requestedAt"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status" pResizableColumn style="width: 110px">
+              Estado
+              <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th style="width: 100px"></th>
+          </tr></ng-template
+        >
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.productName }}</td>
+            <td>{{ row.quantity }}</td>
+            <td>{{ row.requestedAt | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td><p-tag [severity]="severity(row.status)" [value]="row.status"></p-tag></td>
+            <td>
+              @if (row.status === "PENDING") {
+                <button
+                  pButton
+                  type="button"
+                  label="Cancelar"
+                  severity="danger"
+                  [outlined]="true"
+                  size="small"
+                  (click)="cancel(row)"
+                ></button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <pos-table-footer
+        [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+        [totalCount]="items().length"
+      />
+    }
+  </pos-panel>
+</pos-page-shell>
