@@ -40,6 +40,10 @@ export const MESSAGES = {
   errorUpdatingUser: { summary: "Usuario", detail: "Error al actualizar el usuario" },
   userDeleted: { summary: "Usuario", detail: "Usuario desactivado correctamente" },
   errorDeletingUser: { summary: "Usuario", detail: "Error al desactivar el usuario" },
+  userActivated: { summary: "Usuario", detail: "Usuario activado correctamente" },
+  errorActivatingUser: { summary: "Usuario", detail: "Error al activar el usuario" },
+  userRoleChanged: { summary: "Usuario", detail: "Rol actualizado correctamente" },
+  errorChangingUserRole: { summary: "Usuario", detail: "Error al actualizar el rol" },
 
   // --- profile ---
   errorGettingProfile: { summary: "Perfil", detail: "Error al cargar el perfil" },
@@ -58,7 +62,9 @@ export const MESSAGES = {
 
   // --- sales ---
   errorGettingSales: { summary: "Ventas", detail: "Error al cargar las ventas" },
+  errorGettingSaleDetail: { summary: "Venta", detail: "Error al cargar el detalle de la venta" },
   errorGettingMySales: { summary: "Mis ventas", detail: "Error al cargar tus ventas" },
+  errorGettingMySaleDetail: { summary: "Venta", detail: "Error al cargar el detalle de la venta" },
   saleCreated: { summary: "Venta", detail: "Venta registrada correctamente" },
   errorCreatingSale: { summary: "Venta", detail: "Error al registrar la venta" },
   saleCancelled: { summary: "Venta", detail: "Venta cancelada correctamente" },
@@ -66,6 +72,7 @@ export const MESSAGES = {
 
   // --- transfers ---
   errorGettingTransfers: { summary: "Transferencias", detail: "Error al cargar transferencias" },
+  errorGettingTransferDetail: { summary: "Transferencia", detail: "Error al cargar el detalle de la transferencia" },
   errorGettingMyTransfers: { summary: "Transferencias", detail: "Error al cargar tus transferencias" },
   transferRequested: { summary: "Transferencia", detail: "Transferencia solicitada" },
   errorRequestingTransfer: { summary: "Transferencia", detail: "Error al solicitar la transferencia" },
@@ -90,6 +97,7 @@ export const MESSAGES = {
 
   // --- reports & audit ---
   errorGettingReports: { summary: "Informes", detail: "Error al cargar los informes" },
+  errorGettingCashRegisterReport: { summary: "Informes", detail: "Error al cargar el informe de cierres de caja" },
   errorGettingAuditLog: { summary: "Auditoría", detail: "Error al cargar el registro de auditoría" },
 } as const satisfies Record<string, MessageDefinition>;
 
