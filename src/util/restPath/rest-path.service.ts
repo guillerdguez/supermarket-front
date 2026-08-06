@@ -27,6 +27,14 @@ export class RestPathService {
     return id != null ? `/users/${id}` : "/users";
   }
 
+  userActivate(id: number): string {
+    return `/users/${id}/activate`;
+  }
+
+  userChangeRole(id: number): string {
+    return `/users/${id}/role`;
+  }
+
   // --- profile ---
   profileCrud(): string {
     return "/profile";
@@ -68,6 +76,10 @@ export class RestPathService {
 
   cashierMySales(): string {
     return "/cashier/my-sales";
+  }
+
+  cashierMySaleDetail(id: number): string {
+    return `/cashier/my-sales/${id}`;
   }
 
   // --- transfers ---
@@ -148,6 +160,22 @@ export class RestPathService {
 
   reportsInventoryStatus(): string {
     return "/reports/inventory/status";
+  }
+
+  reportsSalesByProduct(): string {
+    return "/reports/sales/by-product";
+  }
+
+  reportsSalesComparison(): string {
+    return "/reports/sales/comparison";
+  }
+
+  reportsInventoryPerformance(): string {
+    return "/reports/inventory/performance";
+  }
+
+  reportsCashRegisters(): string {
+    return "/reports/cash-registers";
   }
 
   // --- audit ---
