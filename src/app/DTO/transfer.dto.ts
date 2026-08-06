@@ -1,6 +1,6 @@
 export type TransferStatus = "PENDING" | "APPROVED" | "REJECTED" | "COMPLETED" | "CANCELLED";
 export interface TransferRequest {
-  sourceBranchId: number; targetBranchId: number; productId: number; quantity: number;
+  sourceBranchId?: number; targetBranchId?: number; productId: number; quantity: number;
 }
 export interface TransferResponse {
   id: number; sourceBranchId: number; sourceBranchName?: string;
