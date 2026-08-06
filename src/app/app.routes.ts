@@ -148,6 +148,20 @@ export const routes: Routes = [
       import("./ui/cashier/my-sales/my-sales.component").then((m) => m.MySalesComponent),
   },
   {
+    path: "cashier/transfers",
+    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER", "CASHIER"])],
+    loadComponent: () =>
+      import("./ui/cashier/transfer/transfer.component").then((m) => m.CashierTransferComponent),
+  },
+  {
+    path: "cashier/transfers/create",
+    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER", "CASHIER"])],
+    loadComponent: () =>
+      import("./ui/cashier/transfer/create/create-transfer.component").then(
+        (m) => m.CashierCreateTransferComponent,
+      ),
+  },
+  {
     path: "pos",
     canActivate: [authGuard],
     loadComponent: () =>
