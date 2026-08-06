@@ -1,127 +1,129 @@
 import { Injectable } from "@angular/core";
-
+import { environment } from "../../environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class RestPathService {
+  private readonly base = environment.apiUrl;
+
   // --- auth ---
   authLogin(): string {
-    return "/api/auth/login";
+    return `${this.base}/api/auth/login`;
   }
 
   authLogout(): string {
-    return "/api/auth/logout";
+    return `${this.base}/api/auth/logout`;
   }
 
   // --- products ---
   productsCrud(id?: number): string {
-    return id != null ? `/products/${id}` : "/products";
+    return id != null ? `${this.base}/products/${id}` : `${this.base}/products`;
   }
 
   // --- branches ---
   branchesCrud(id?: number): string {
-    return id != null ? `/branches/${id}` : "/branches";
+    return id != null ? `${this.base}/branches/${id}` : `${this.base}/branches`;
   }
 
   // --- users ---
   usersCrud(id?: number): string {
-    return id != null ? `/users/${id}` : "/users";
+    return id != null ? `${this.base}/users/${id}` : `${this.base}/users`;
   }
 
   userActivate(id: number): string {
-    return `/users/${id}/activate`;
+    return `${this.base}/users/${id}/activate`;
   }
 
   userChangeRole(id: number): string {
-    return `/users/${id}/role`;
+    return `${this.base}/users/${id}/role`;
   }
 
   // --- profile ---
   profileCrud(): string {
-    return "/profile";
+    return `${this.base}/profile`;
   }
 
   profileChangePassword(): string {
-    return "/profile/change-password";
+    return `${this.base}/profile/change-password`;
   }
 
   // --- cash registers ---
   cashRegistersCrud(): string {
-    return "/cash-registers";
+    return `${this.base}/cash-registers`;
   }
 
   cashRegisterOpen(): string {
-    return "/cash-registers/open";
+    return `${this.base}/cash-registers/open`;
   }
 
   cashRegisterClose(id: number): string {
-    return `/cash-registers/${id}/close`;
+    return `${this.base}/cash-registers/${id}/close`;
   }
 
   cashRegisterCurrent(branchId: number): string {
-    return `/cash-registers/branches/${branchId}/current`;
+    return `${this.base}/cash-registers/branches/${branchId}/current`;
   }
 
   // --- sales & payments ---
   salesCrud(id?: number): string {
-    return id != null ? `/sales/${id}` : "/sales";
+    return id != null ? `${this.base}/sales/${id}` : `${this.base}/sales`;
   }
 
   saleCancel(id: number): string {
-    return `/sales/${id}/cancel`;
+    return `${this.base}/sales/${id}/cancel`;
   }
 
   paymentsCrud(): string {
-    return "/payments";
+    return `${this.base}/payments`;
   }
 
   cashierMySales(): string {
-    return "/cashier/my-sales";
+    return `${this.base}/cashier/my-sales`;
   }
 
   cashierMySaleDetail(id: number): string {
-    return `/cashier/my-sales/${id}`;
+    return `${this.base}/cashier/my-sales/${id}`;
   }
 
   // --- transfers ---
   transfersCrud(id?: number): string {
-    return id != null ? `/transfers/${id}` : "/transfers";
+    return id != null ? `${this.base}/transfers/${id}` : `${this.base}/transfers`;
   }
 
   transfersMine(): string {
-    return "/transfers/mine";
+    return `${this.base}/transfers/mine`;
   }
 
   transferApprove(id: number): string {
-    return `/transfers/${id}/approve`;
+    return `${this.base}/transfers/${id}/approve`;
   }
 
   transferReject(id: number): string {
-    return `/transfers/${id}/reject`;
+    return `${this.base}/transfers/${id}/reject`;
   }
 
   transferComplete(id: number): string {
-    return `/transfers/${id}/complete`;
+    return `${this.base}/transfers/${id}/complete`;
   }
 
   transferCancel(id: number): string {
-    return `/transfers/${id}/cancel`;
+    return `${this.base}/transfers/${id}/cancel`;
   }
 
   // --- inventory ---
   inventoryByBranch(branchId: number): string {
-    return `/inventory/branches/${branchId}/inventory`;
+    return `${this.base}/inventory/branches/${branchId}/inventory`;
   }
 
   inventoryLowStock(): string {
-    return "/inventory/low-stock";
+    return `${this.base}/inventory/low-stock`;
   }
 
   inventoryLowStockByBranch(branchId: number): string {
-    return `/inventory/branches/${branchId}/low-stock`;
+    return `${this.base}/inventory/branches/${branchId}/low-stock`;
   }
 
   inventoryProduct(branchId: number, productId: number): string {
-    return `/inventory/branches/${branchId}/products/${productId}`;
+    return `${this.base}/inventory/branches/${branchId}/products/${productId}`;
   }
 
   inventoryProductAdjust(branchId: number, productId: number): string {
@@ -130,56 +132,56 @@ export class RestPathService {
 
   // --- notifications ---
   notificationsAll(): string {
-    return "/notifications/all";
+    return `${this.base}/notifications/all`;
   }
 
   notificationsCrud(id: number): string {
-    return `/notifications/${id}`;
+    return `${this.base}/notifications/${id}`;
   }
 
   notificationRead(id: number): string {
-    return `/notifications/${id}/read`;
+    return `${this.base}/notifications/${id}/read`;
   }
 
   notificationsMarkAllRead(): string {
-    return "/notifications/mark-all-read";
+    return `${this.base}/notifications/mark-all-read`;
   }
 
   // --- reports ---
   reportsSalesSummary(): string {
-    return "/reports/sales/summary";
+    return `${this.base}/reports/sales/summary`;
   }
 
   reportsSalesByBranch(): string {
-    return "/reports/sales/by-branch";
+    return `${this.base}/reports/sales/by-branch`;
   }
 
   reportsSalesByCashier(): string {
-    return "/reports/sales/by-cashier";
+    return `${this.base}/reports/sales/by-cashier`;
   }
 
   reportsInventoryStatus(): string {
-    return "/reports/inventory/status";
+    return `${this.base}/reports/inventory/status`;
   }
 
   reportsSalesByProduct(): string {
-    return "/reports/sales/by-product";
+    return `${this.base}/reports/sales/by-product`;
   }
 
   reportsSalesComparison(): string {
-    return "/reports/sales/comparison";
+    return `${this.base}/reports/sales/comparison`;
   }
 
   reportsInventoryPerformance(): string {
-    return "/reports/inventory/performance";
+    return `${this.base}/reports/inventory/performance`;
   }
 
   reportsCashRegisters(): string {
-    return "/reports/cash-registers";
+    return `${this.base}/reports/cash-registers`;
   }
 
   // --- audit ---
   auditCrud(): string {
-    return "/audit-logs";
+    return `${this.base}/audit-logs`;
   }
 }
