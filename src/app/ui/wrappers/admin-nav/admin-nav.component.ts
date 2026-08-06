@@ -75,6 +75,14 @@ export class AdminNavComponent {
     { label: "Cobrar", icon: "pi pi-desktop", routerLink: "/pos" },
     { label: "Mis ventas", icon: "pi pi-list", routerLink: "/cashier/my-sales" },
     {
+      label: "Transferencias",
+      icon: "pi pi-arrows-h",
+      items: [
+        { label: "Ver transferencias", icon: "pi pi-list", routerLink: "/cashier/transfers" },
+        { label: "Nueva transferencia", icon: "pi pi-plus", routerLink: "/cashier/transfers/create" },
+      ],
+    },
+    {
       label: "Caja",
       icon: "pi pi-wallet",
       items: [

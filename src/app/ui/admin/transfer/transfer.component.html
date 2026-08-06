@@ -68,6 +68,8 @@
               [(contextMenuSelection)]="selected"
               [contextMenu]="cm"
               sortMode="single"
+              sortField="requestedAt"
+              [sortOrder]="-1"
               [resizableColumns]="true"
             >
               <ng-template pTemplate="header">

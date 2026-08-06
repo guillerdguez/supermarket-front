@@ -8,6 +8,7 @@ import { ContextMenuModule } from "primeng/contextmenu";
 import { MenuItem } from "primeng/api";
 import { TransferService } from "../../../services/transfer/transfer.service";
 import { TransferResponse } from "../../../DTO/transfer.dto";
+import { transferStatusSeverity } from "../../../model/Domain/transfer.model";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
@@ -49,15 +50,8 @@ export class TransferComponent implements OnInit {
     this.svc.retrieveList();
   }
 
-  severity(s: string): "success" | "info" | "warn" | "danger" | "secondary" {
-    const map: Record<string, "success" | "info" | "warn" | "danger" | "secondary"> = {
-      COMPLETED: "success",
-      APPROVED: "info",
-      PENDING: "warn",
-      REJECTED: "danger",
-      CANCELLED: "danger",
-    };
-    return map[s] || "secondary";
+  severity(s: string) {
+    return transferStatusSeverity(s);
   }
 
   buildMenu(row: TransferResponse) {
