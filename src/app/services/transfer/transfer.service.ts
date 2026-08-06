@@ -31,6 +31,15 @@ export class TransferService {
     this.model.loading.set(false);
   }
 
+  retrieveDetail(id: number): void {
+    this.model.detail.set(null);
+
+    this.dao.getDetail(id).subscribe({
+      next: (transfer) => this.model.detail.set(transfer),
+      error: (err) => this.messages.publishErrorMsg("errorGettingTransferDetail", err),
+    });
+  }
+
   retrieveMine(): void {
     this.model.loading.set(true);
 

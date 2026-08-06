@@ -17,6 +17,10 @@ export class TransferDao {
     return this.http.get<TransferResponse[]>(this.url.transfersCrud());
   }
 
+  getDetail(id: number): Observable<TransferResponse> {
+    return this.http.get<TransferResponse>(this.url.transfersCrud(id));
+  }
+
   getMine(): Observable<TransferResponse[]> {
     return this.http.get<TransferResponse[]>(this.url.transfersMine());
   }
