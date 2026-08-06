@@ -31,6 +31,22 @@ export class TransferService {
     this.model.loading.set(false);
   }
 
+  retrieveMine(): void {
+    this.model.loading.set(true);
+
+    this.dao.getMine().subscribe({
+      next: (list) => {
+        this.model.mine.set(list ?? []);
+        this.model.loading.set(false);
+      },
+      error: (err) => {
+        this.model.mine.set([]);
+        this.model.loading.set(false);
+        this.messages.publishErrorMsg("errorGettingMyTransfers", err);
+      },
+    });
+  }
+
   save(body: TransferRequest, component?: CrudComponent): void {
     this.model.loading.set(true);
 
@@ -38,6 +54,7 @@ export class TransferService {
       next: (created) => {
         this.model.loading.set(false);
         this.model.list.update((list) => [created, ...list]);
+        this.model.mine.update((list) => [created, ...list]);
         this.messages.publishSuccessMsg("transferRequested");
         component?.afterSave?.();
       },
@@ -74,6 +91,9 @@ export class TransferService {
     request$.subscribe({
       next: (updated) => {
         this.model.list.update((list) =>
+          list.map((t) => (t.id === updated.id ? updated : t)),
+        );
+        this.model.mine.update((list) =>
           list.map((t) => (t.id === updated.id ? updated : t)),
         );
         this.messages.publishSuccessMsg(successKey);
