@@ -26,9 +26,8 @@ export class AuthService {
   }
 
   private hydrateFromStorage(): void {
-    const token = localStorage.getItem(TOKEN_KEY);
     const raw = localStorage.getItem(USER_KEY);
-    if (!token || !raw) return;
+    if (!raw || !this.isTokenValid()) return;
 
     try {
       this.model.currentUser.set(JSON.parse(raw) as UserResponse);
@@ -62,11 +61,16 @@ export class AuthService {
 
   logout(): void {
     this.dao.logout().subscribe({ error: () => undefined });
+    this.clearSession();
+    this.router.navigateByUrl("/auth/login");
+  }
+
+  clearSession(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this.model.currentUser.set(null);
-    this.router.navigateByUrl("/auth/login");
   }
+
   isTokenValid(): boolean {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) return false;
