@@ -36,7 +36,10 @@ describe("Notifications — full page (admin)", () => {
         return;
       }
       cy.get("ul.list li.unread").first().find("button.content").click();
-      cy.get("ul.list li.unread").should("have.length.lessThan", $body.find("ul.list li.unread").length);
+      cy.get("ul.list li.unread").should(
+        "have.length.lessThan",
+        $body.find("ul.list li.unread").length,
+      );
     });
   });
 
@@ -47,8 +50,13 @@ describe("Notifications — full page (admin)", () => {
         cy.log("No hay notificaciones para borrar");
         return;
       }
-      cy.get("ul.list li").first().find("button[aria-label='Eliminar notificación']").click();
-      cy.contains(".p-dialog", "¿Eliminar esta notificación?").should("be.visible");
+      cy.get("ul.list li")
+        .first()
+        .find("button[aria-label='Eliminar notificación']")
+        .click();
+      cy.contains(".p-dialog", "¿Eliminar esta notificación?").should(
+        "be.visible",
+      );
       cy.contains("button", "Sí").click();
       cy.get("ul.list li").should("have.length", count - 1);
     });
@@ -67,9 +75,10 @@ describe("Notifications — nav bell", () => {
     cy.get(".bell-wrap .dropdown").should("not.exist");
     cy.get(".bell-btn").click();
     cy.get(".bell-wrap .dropdown").should("be.visible");
-    cy.contains(".dropdown-header .title", "Notificaciones").should("be.visible");
+    cy.contains(".dropdown-header .title", "Notificaciones").should(
+      "be.visible",
+    );
 
-    // Clic fuera del dropdown lo cierra (HostListener document:click).
     cy.get("body").click(0, 0);
     cy.get(".bell-wrap .dropdown").should("not.exist");
   });
@@ -79,9 +88,13 @@ describe("Notifications — nav bell", () => {
       const hasBadge = $btn.find(".badge").length > 0;
       cy.get(".bell-btn").click();
       if (!hasBadge) {
-        cy.contains(".dropdown-header .link-btn", "Marcar todas").should("not.exist");
+        cy.contains(".dropdown-header .link-btn", "Marcar todas").should(
+          "not.exist",
+        );
       } else {
-        cy.contains(".dropdown-header .link-btn", "Marcar todas").should("be.visible");
+        cy.contains(".dropdown-header .link-btn", "Marcar todas").should(
+          "be.visible",
+        );
       }
     });
   });

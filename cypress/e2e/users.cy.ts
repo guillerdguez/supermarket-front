@@ -18,7 +18,6 @@ describe("Admin — Users CRUD", () => {
     cy.get("#p").type("password123");
     cy.get("#f").type("Nombre");
     cy.get("#l").type("Apellido");
-    // Rol por defecto puede ya ser CASHIER; se deja el valor por defecto del select.
     cy.contains("button", "Crear usuario").click();
 
     cy.url().should("include", "/admin/users");

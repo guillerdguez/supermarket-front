@@ -16,8 +16,7 @@ module.exports = tseslint.config(
       '@angular-eslint/directive-selector': [
         'error',
         { type: 'attribute', prefix: 'app', style: 'camelCase' },
-      ],
-      // Conviven dos prefijos: 'app' (pantallas) y 'pos' (wrappers de layout).
+      ], 
       '@angular-eslint/component-selector': [
         'error',
         { type: 'element', prefix: ['app', 'pos'], style: 'kebab-case' },

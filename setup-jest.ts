@@ -1,10 +1,8 @@
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+import { setupZoneTestEnv } from "jest-preset-angular/setup-env/zone";
 
 setupZoneTestEnv();
 
-// jsdom no implementa matchMedia; varios overlays de PrimeNG (ContextMenu,
-// OverlayPanel...) lo llaman en ngOnInit para detectar el modo táctil.
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
     matches: false,

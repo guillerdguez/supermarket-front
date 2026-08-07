@@ -2,7 +2,12 @@ describe("POS — full sale flow", () => {
   beforeEach(() => {
     cy.fixture("users").then((users) => {
       const cashier = users.cashierCentro;
-      cy.ensureRegisterOpen(cashier.branchId, cashier.email, cashier.password, 150).then(() => {
+      cy.ensureRegisterOpen(
+        cashier.branchId,
+        cashier.email,
+        cashier.password,
+        150,
+      ).then(() => {
         cy.login(cashier.email, cashier.password);
       });
     });
@@ -46,7 +51,6 @@ describe("POS — full sale flow", () => {
     cy.contains("button", "Cobrar").click();
 
     cy.contains("Confirmar pago").should("be.visible");
-    // El monto recibido se precarga con el total exacto (ver openPayment()).
     cy.contains("button", "Confirmar").should("not.be.disabled").click();
 
     cy.contains("Confirmar pago").should("not.exist");

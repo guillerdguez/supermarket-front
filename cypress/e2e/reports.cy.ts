@@ -19,7 +19,6 @@ describe("Admin — Reports", () => {
     cy.get("#to").type(today);
     cy.contains("button", "Filtrar").click();
 
-    // Tras filtrar, las tarjetas de KPI siguen presentes con datos recalculados.
     cy.contains(".kpi-label", "Ingresos").should("be.visible");
   });
 

@@ -8,16 +8,15 @@ export interface CashRegister {
 }
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      /** Logs in through the real login form and waits for the post-login redirect. */
       login(email: string, password: string): Chainable<void>;
-      /** Gets a JWT via the API only — used to arrange backend state, never to skip the UI login under test. */
       apiToken(email: string, password: string): Chainable<string>;
-      /** Makes sure the given branch has no open cash register before a test starts. */
-      ensureRegisterClosed(branchId: number, email: string, password: string): Chainable<void>;
-      /** Makes sure the given branch has an open cash register before a test starts. */
+      ensureRegisterClosed(
+        branchId: number,
+        email: string,
+        password: string,
+      ): Chainable<void>;
       ensureRegisterOpen(
         branchId: number,
         email: string,

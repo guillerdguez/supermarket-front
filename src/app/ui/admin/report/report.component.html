@@ -9,7 +9,7 @@
     </header>
 
     <div class="slot">
-      <pos-panel title="Filtros">
+      <pos-panel>
         <div class="pos-toolbar">
           <label for="from">Desde</label>
           <input id="from" type="date" [(ngModel)]="startDate" />
@@ -39,9 +39,8 @@
           </div>
         } @else {
           <div class="report-scroll">
-            @if (summary(); as s) {
-              <section class="report-section">
-                <h2 class="pos-section-title">Ventas</h2>
+            <section class="report-section report-section--kpi-group">
+              @if (summary(); as s) {
                 <div class="kpi-row kpi-row--3">
                   <article class="kpi-card">
                     <span class="kpi-label">Ingresos</span>
@@ -60,12 +59,9 @@
                     }}</strong>
                   </article>
                 </div>
-              </section>
-            }
+              }
 
-            @if (inventory(); as inv) {
-              <section class="report-section">
-                <h2 class="pos-section-title">Inventario</h2>
+              @if (inventory(); as inv) {
                 <div class="kpi-row kpi-row--3">
                   <article class="kpi-card">
                     <span class="kpi-label">Productos</span>
@@ -82,33 +78,35 @@
                     <strong class="kpi-value">{{ inv.lowStockCount }}</strong>
                   </article>
                 </div>
-              </section>
-            }
-
-            <section class="report-section">
-              <h2 class="pos-section-title">Por sucursal</h2>
-              @if (byBranch().length === 0) {
-                <p class="muted empty-state-inline">
-                  Sin datos para el rango seleccionado.
-                </p>
-              } @else {
-                <div class="chart-wrap">
-                  <p-chart type="bar" [data]="branchChartData()" [options]="barChartOptions" />
-                </div>
               }
             </section>
 
-            <section class="report-section">
-              <h2 class="pos-section-title">Por cajero</h2>
-              @if (byCashier().length === 0) {
-                <p class="muted empty-state-inline">
-                  Sin datos para el rango seleccionado.
-                </p>
-              } @else {
-                <div class="chart-wrap">
-                  <p-chart type="bar" [data]="cashierChartData()" [options]="barChartOptions" />
-                </div>
-              }
+            <section class="report-grid-2col">
+              <div class="report-section">
+                <h2 class="pos-section-title">Por sucursal</h2>
+                @if (byBranch().length === 0) {
+                  <p class="muted empty-state-inline">
+                    Sin datos para el rango seleccionado.
+                  </p>
+                } @else {
+                  <div class="chart-wrap">
+                    <p-chart type="bar" [data]="branchChartData()" [options]="barChartOptions" />
+                  </div>
+                }
+              </div>
+
+              <div class="report-section">
+                <h2 class="pos-section-title">Por cajero</h2>
+                @if (byCashier().length === 0) {
+                  <p class="muted empty-state-inline">
+                    Sin datos para el rango seleccionado.
+                  </p>
+                } @else {
+                  <div class="chart-wrap">
+                    <p-chart type="bar" [data]="cashierChartData()" [options]="barChartOptions" />
+                  </div>
+                }
+              </div>
             </section>
 
             <section class="report-section">
@@ -202,97 +200,90 @@
                 </table>
               }
             </section>
-          </div>
-        }
-      </pos-panel>
-    </div>
 
-    <div class="slot">
-      <pos-panel title="Cierres de caja">
-        <div class="pos-toolbar">
-          <label for="cr-branch">Sucursal</label>
-          <p-select
-            inputId="cr-branch"
-            [options]="branchList()"
-            optionLabel="name"
-            optionValue="id"
-            [(ngModel)]="cashRegisterBranchId"
-            placeholder="Todas"
-            [showClear]="true"
-          />
-          <label class="checkbox-label">
-            <p-checkbox [(ngModel)]="cashRegisterOnlyDiscrepancies" [binary]="true" />
-            Solo con diferencias
-          </label>
-          <button
-            type="button"
-            pButton
-            label="Filtrar"
-            icon="pi pi-filter"
-            severity="secondary"
-            [outlined]="true"
-            style="margin-left: auto"
-            (click)="onCashRegisterFilter()"
-          ></button>
-        </div>
-
-        @if (cashRegisterReport(); as cr) {
-          <div class="report-scroll">
             <section class="report-section">
-              <div class="kpi-row kpi-row--3">
-                <article class="kpi-card">
-                  <span class="kpi-label">Cierres</span>
-                  <strong class="kpi-value">{{ cr.totalClosures }}</strong>
-                </article>
-                <article class="kpi-card kpi-card--ok">
-                  <span class="kpi-label">Superávit total</span>
-                  <strong class="kpi-value kpi-value--money">{{
-                    cr.totalSurplus | currency: "EUR":"symbol":"1.2-2"
-                  }}</strong>
-                </article>
-                <article class="kpi-card kpi-card--danger">
-                  <span class="kpi-label">Déficit total</span>
-                  <strong class="kpi-value kpi-value--money">{{
-                    cr.totalShortage | currency: "EUR":"symbol":"1.2-2"
-                  }}</strong>
-                </article>
+              <h2 class="pos-section-title">Cierres de caja</h2>
+              <div class="pos-toolbar">
+                <label for="cr-branch">Sucursal</label>
+                <p-select
+                  inputId="cr-branch"
+                  [options]="branchList()"
+                  optionLabel="name"
+                  optionValue="id"
+                  [(ngModel)]="cashRegisterBranchId"
+                  placeholder="Todas"
+                  [showClear]="true"
+                />
+                <label class="checkbox-label">
+                  <p-checkbox [(ngModel)]="cashRegisterOnlyDiscrepancies" [binary]="true" />
+                  Solo con diferencias
+                </label>
+                <button
+                  type="button"
+                  pButton
+                  label="Filtrar"
+                  icon="pi pi-filter"
+                  severity="secondary"
+                  [outlined]="true"
+                  style="margin-left: auto"
+                  (click)="onCashRegisterFilter()"
+                ></button>
               </div>
-            </section>
 
-            <section class="report-section">
-              @if (cr.discrepancies.length === 0) {
-                <p class="muted empty-state-inline">
-                  Sin cierres para el filtro seleccionado.
-                </p>
-              } @else {
-                <table class="report-table">
-                  <thead>
-                    <tr>
-                      <th>Sucursal</th>
-                      <th>Apertura</th>
-                      <th>Cierre</th>
-                      <th>Abierto por</th>
-                      <th>Cerrado por</th>
-                      <th>Esperado</th>
-                      <th>Real</th>
-                      <th>Diferencia</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (row of cr.discrepancies; track row.registerId) {
+              @if (cashRegisterReport(); as cr) {
+                <div class="kpi-row kpi-row--3">
+                  <article class="kpi-card">
+                    <span class="kpi-label">Cierres</span>
+                    <strong class="kpi-value">{{ cr.totalClosures }}</strong>
+                  </article>
+                  <article class="kpi-card kpi-card--ok">
+                    <span class="kpi-label">Superávit total</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      cr.totalSurplus | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                  </article>
+                  <article class="kpi-card kpi-card--danger">
+                    <span class="kpi-label">Déficit total</span>
+                    <strong class="kpi-value kpi-value--money">{{
+                      cr.totalShortage | currency: "EUR":"symbol":"1.2-2"
+                    }}</strong>
+                  </article>
+                </div>
+
+                @if (cr.discrepancies.length === 0) {
+                  <p class="muted empty-state-inline">
+                    Sin cierres para el filtro seleccionado.
+                  </p>
+                } @else {
+                  <table class="report-table">
+                    <thead>
                       <tr>
-                        <td>{{ row.branchName }}</td>
-                        <td>{{ row.openingTime | date: "dd/MM/yyyy HH:mm" }}</td>
-                        <td>{{ row.closingTime | date: "dd/MM/yyyy HH:mm" }}</td>
-                        <td>{{ row.openedBy }}</td>
-                        <td>{{ row.closedBy }}</td>
-                        <td>{{ row.expectedAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
-                        <td>{{ row.actualClosingAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
-                        <td>{{ row.varianceAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        <th>Sucursal</th>
+                        <th>Apertura</th>
+                        <th>Cierre</th>
+                        <th>Abierto por</th>
+                        <th>Cerrado por</th>
+                        <th>Esperado</th>
+                        <th>Real</th>
+                        <th>Diferencia</th>
                       </tr>
-                    }
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @for (row of cr.discrepancies; track row.registerId) {
+                        <tr>
+                          <td>{{ row.branchName }}</td>
+                          <td>{{ row.openingTime | date: "dd/MM/yyyy HH:mm" }}</td>
+                          <td>{{ row.closingTime | date: "dd/MM/yyyy HH:mm" }}</td>
+                          <td>{{ row.openedBy }}</td>
+                          <td>{{ row.closedBy }}</td>
+                          <td>{{ row.expectedAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                          <td>{{ row.actualClosingAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                          <td>{{ row.varianceAmount | currency: "EUR":"symbol":"1.2-2" }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                }
               }
             </section>
           </div>

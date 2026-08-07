@@ -77,12 +77,9 @@ describe("Admin — Transfers lifecycle", () => {
     cy.contains(".p-contextmenu li, .p-contextmenu a", "Cancelar").click();
     cy.get("table tbody tr").first().contains(".p-tag", "CANCELLED");
 
-    // Sin PENDING/APPROVED no se pinta el botón de "más acciones" en esa fila.
-    cy.get("table tbody tr").first().find("button[aria-label='Más acciones']").should("not.exist");
+    cy.get("table tbody tr")
+      .first()
+      .find("button[aria-label='Más acciones']")
+      .should("not.exist");
   });
-
-  // TODO(regresión): falta el test específico del bug que arreglamos en el
-  // proxy/flujo de transferencias. Necesito que me digas en qué consistía
-  // (qué se rompía y en qué paso) para escribir la aserción correcta en vez
-  // de adivinar un comportamiento que no puedo verificar sin levantar la app.
 });

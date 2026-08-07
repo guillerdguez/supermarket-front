@@ -24,7 +24,6 @@ describe("Admin — Branches CRUD", () => {
     cy.url().should("include", "/admin/branches");
     cy.url().should("not.include", "/create");
     cy.contains("td", name).should("be.visible");
-    // Por defecto "Es almacén" no está marcado -> se lista como Tienda.
     cy.contains("td", name).parents("tr").contains(".p-tag", "Tienda");
   });
 

@@ -13,7 +13,6 @@ describe("Admin — Products CRUD", () => {
   it("shows validation state on the create form (submit stays disabled)", () => {
     cy.contains("a", "Nuevo producto").click();
     cy.url().should("include", "/admin/products/create");
-    // Sin nombre ni precio > 0 el submit permanece deshabilitado.
     cy.contains("button", "Crear producto").should("be.disabled");
   });
 
@@ -27,12 +26,16 @@ describe("Admin — Products CRUD", () => {
 
     cy.url().should("include", "/admin/products");
     cy.url().should("not.include", "/create");
-    cy.get("input[placeholder='Buscar por nombre o código…']").type(`${name}{enter}`);
+    cy.get("input[placeholder='Buscar por nombre o código…']").type(
+      `${name}{enter}`,
+    );
     cy.contains("td", name).should("be.visible");
   });
 
   it("edits an existing product through the row context menu", () => {
-    cy.get("input[placeholder='Buscar por nombre o código…']").type(`${name}{enter}`);
+    cy.get("input[placeholder='Buscar por nombre o código…']").type(
+      `${name}{enter}`,
+    );
     cy.contains("td", name)
       .parents("tr")
       .find("button[aria-label='Más acciones']")
@@ -44,12 +47,16 @@ describe("Admin — Products CRUD", () => {
     cy.contains("button", "Guardar cambios").click();
 
     cy.url().should("include", "/admin/products");
-    cy.get("input[placeholder='Buscar por nombre o código…']").clear().type(`${editedName}{enter}`);
+    cy.get("input[placeholder='Buscar por nombre o código…']")
+      .clear()
+      .type(`${editedName}{enter}`);
     cy.contains("td", editedName).should("be.visible");
   });
 
   it("deletes the product after confirming the dialog", () => {
-    cy.get("input[placeholder='Buscar por nombre o código…']").type(`${editedName}{enter}`);
+    cy.get("input[placeholder='Buscar por nombre o código…']").type(
+      `${editedName}{enter}`,
+    );
     cy.contains("td", editedName)
       .parents("tr")
       .find("button[aria-label='Más acciones']")
@@ -59,7 +66,9 @@ describe("Admin — Products CRUD", () => {
     cy.contains(".p-dialog", "Eliminar producto").should("be.visible");
     cy.contains("button", "Eliminar").click();
 
-    cy.get("input[placeholder='Buscar por nombre o código…']").clear().type(`${editedName}{enter}`);
+    cy.get("input[placeholder='Buscar por nombre o código…']")
+      .clear()
+      .type(`${editedName}{enter}`);
     cy.contains("p", "No hay productos").should("be.visible");
   });
 });
