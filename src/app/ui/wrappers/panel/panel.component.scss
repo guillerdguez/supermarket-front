@@ -3,9 +3,6 @@
 .pos-panel {
   @include pos-card;
   width: 100%;
-  // Por variable: las pantallas a pantalla completa lo ponen a 0 desde su
-  // :host, porque un ::ng-deep externo pierde contra el scope de este
-  // componente.
   margin-bottom: var(--pos-panel-margin-bottom, var(--pos-space-2));
   overflow: hidden;
 }

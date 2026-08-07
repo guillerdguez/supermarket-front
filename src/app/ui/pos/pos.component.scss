@@ -1,8 +1,5 @@
 @use "../../theme/styles/mixins" as *;
 
-// El POS ocupa el viewport bajo el nav y no scrollea la página: scrollean el
-// catálogo y la lista del carrito por dentro. Así el panel del carrito llega
-// siempre abajo, al mismo nivel que la columna de la izquierda.
 .pos-layout {
   display: flex;
   flex-direction: column;
@@ -36,11 +33,9 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  // Media pastilla de la escala: un badge con 8px arriba y abajo queda
-  // desproporcionado respecto al texto de 12px.
   gap: calc(var(--pos-space-1) / 2);
   padding: calc(var(--pos-space-1) / 2) var(--pos-space-1);
-  border-radius: 999px; // píldora: el radio se come la mitad del alto
+  border-radius: 999px;
   font-size: var(--pos-font-size-xs);
   font-weight: var(--pos-font-weight-emphasis);
 
@@ -56,8 +51,6 @@
 
 .pos-body {
   display: grid;
-  // Ancho fijo: el carrito mide siempre lo mismo, no se encoge ni crece con
-  // el contenido ni con el ancho de la ventana. El catálogo absorbe el resto.
   grid-template-columns: 1fr var(--pos-cart-width);
   gap: var(--pos-space-2);
   padding: var(--pos-space-2);
@@ -73,8 +66,6 @@
   flex-direction: column;
   min-height: 0;
 
-  // Misma cadena de estirado que el carrito: el host <pos-panel> es el hijo
-  // flex real, y sin él la section de dentro no tiene contra qué crecer.
   pos-panel {
     display: flex;
     flex-direction: column;
@@ -90,7 +81,6 @@
     margin-bottom: 0;
   }
 
-  // El buscador queda fijo arriba y solo scrollea la rejilla de productos.
   ::ng-deep .pos-panel-body {
     display: flex;
     flex-direction: column;
@@ -100,16 +90,11 @@
 }
 
 .cart {
-  // Reserva el hueco del troquelado para que quede a ras del fondo de la
-  // columna izquierda, sin recortarse.
   padding-bottom: var(--pos-receipt-tear-h);
   display: flex;
   flex-direction: column;
   min-height: 0;
 
-  // El hijo flex de .cart es el host <pos-panel>, no la <section> de dentro.
-  // Sin estirar el host, el flex:1 de la section no tiene contra qué crecer y
-  // el panel se queda a la altura de su contenido.
   pos-panel {
     display: flex;
     flex-direction: column;
@@ -124,8 +109,6 @@
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    // El panel trae un margin-bottom por defecto que aquí descuadraría el
-    // troquelado respecto al fondo de la columna izquierda.
     margin-bottom: 0;
   }
 
@@ -281,8 +264,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // auto: mantiene el total y el botón pegados al fondo del panel aunque el
-  // carrito esté vacío o tenga pocas líneas.
   margin: var(--pos-space-2) 0;
   margin-top: auto;
   font-size: var(--pos-font-size-md);
@@ -359,7 +340,6 @@
 }
 
 @media (max-width: 900px) {
-  // En una sola columna el POS vuelve a scrollear como una página normal.
   .pos-layout {
     height: auto;
     min-height: calc(100vh - var(--pos-nav-height));

@@ -19,8 +19,6 @@ function isPreviewUrl(): boolean {
 export class App {
   private readonly router = inject(Router);
 
-  // Un popup abierto con ?isPreview=true (ver EditProductComponent) no debe
-  // cargar el menú de administración: es una ventana flotante, no una pantalla más.
   isPreview = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),

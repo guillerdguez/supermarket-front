@@ -1,8 +1,5 @@
 @use "../../../../theme/styles/mixins" as *;
 
-// Excepción deliberada: a dos columnas quedaba mal (pedido explícito), así
-// que este formulario va a una sola columna, centrada y más estrecha —
-// aunque rompa la cohesión de 2 columnas del resto de altas/ediciones.
 @include pos-form-page($max-width: 520px);
 
 .form-grid {

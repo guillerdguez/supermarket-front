@@ -23,13 +23,10 @@ export class OpenRegisterComponent implements OnInit, CrudComponent {
   loading = this.cash.model.loading;
   error = this.cash.model.error;
   branchList = this.branches.model.list;
-  // El cajero tiene sucursal fija; admin/manager (sin sucursal) siguen eligiendo.
   assignedBranchId = this.auth.model.branchId;
   assignedBranchName = this.auth.model.branchName;
   form: OpenRegisterRequest = { openingBalance: 0 };
   ngOnInit() {
-    // Solo cargamos sucursales para quien puede listarlas: GET /branches es
-    // ADMIN/MANAGER, y son justo los que no tienen sucursal asignada.
     if (this.assignedBranchId() == null) this.branches.retrieveList();
   }
   onSubmit() {

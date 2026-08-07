@@ -127,7 +127,6 @@ export class UserComponent implements OnInit, OnDestroy {
     this.svc.retrieveList(this.search() || undefined);
   }
 
-  // Mismo mecanismo de ventana flotante que ProductComponent.openPreview.
   openPreview(id: number) {
     const width = Math.round(window.screen.width * 0.75);
     const height = Math.round(window.screen.height * 0.75);

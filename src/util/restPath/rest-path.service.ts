@@ -5,7 +5,6 @@ import { environment } from "../../environments/environment";
 export class RestPathService {
   private readonly base = environment.apiUrl;
 
-  // --- auth ---
   authLogin(): string {
     return `${this.base}/api/auth/login`;
   }
@@ -14,17 +13,14 @@ export class RestPathService {
     return `${this.base}/api/auth/logout`;
   }
 
-  // --- products ---
   productsCrud(id?: number): string {
     return id != null ? `${this.base}/products/${id}` : `${this.base}/products`;
   }
 
-  // --- branches ---
   branchesCrud(id?: number): string {
     return id != null ? `${this.base}/branches/${id}` : `${this.base}/branches`;
   }
 
-  // --- users ---
   usersCrud(id?: number): string {
     return id != null ? `${this.base}/users/${id}` : `${this.base}/users`;
   }
@@ -37,7 +33,6 @@ export class RestPathService {
     return `${this.base}/users/${id}/role`;
   }
 
-  // --- profile ---
   profileCrud(): string {
     return `${this.base}/profile`;
   }
@@ -46,7 +41,6 @@ export class RestPathService {
     return `${this.base}/profile/change-password`;
   }
 
-  // --- cash registers ---
   cashRegistersCrud(): string {
     return `${this.base}/cash-registers`;
   }
@@ -63,7 +57,6 @@ export class RestPathService {
     return `${this.base}/cash-registers/branches/${branchId}/current`;
   }
 
-  // --- sales & payments ---
   salesCrud(id?: number): string {
     return id != null ? `${this.base}/sales/${id}` : `${this.base}/sales`;
   }
@@ -84,7 +77,6 @@ export class RestPathService {
     return `${this.base}/cashier/my-sales/${id}`;
   }
 
-  // --- transfers ---
   transfersCrud(id?: number): string {
     return id != null ? `${this.base}/transfers/${id}` : `${this.base}/transfers`;
   }
@@ -109,7 +101,6 @@ export class RestPathService {
     return `${this.base}/transfers/${id}/cancel`;
   }
 
-  // --- inventory ---
   inventoryByBranch(branchId: number): string {
     return `${this.base}/inventory/branches/${branchId}/inventory`;
   }
@@ -130,7 +121,6 @@ export class RestPathService {
     return `${this.inventoryProduct(branchId, productId)}/adjust`;
   }
 
-  // --- notifications ---
   notificationsAll(): string {
     return `${this.base}/notifications/all`;
   }
@@ -147,7 +137,6 @@ export class RestPathService {
     return `${this.base}/notifications/mark-all-read`;
   }
 
-  // --- reports ---
   reportsSalesSummary(): string {
     return `${this.base}/reports/sales/summary`;
   }
@@ -180,7 +169,6 @@ export class RestPathService {
     return `${this.base}/reports/cash-registers`;
   }
 
-  // --- audit ---
   auditCrud(): string {
     return `${this.base}/audit-logs`;
   }

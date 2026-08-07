@@ -11,6 +11,5 @@ export interface CashRegisterResponse {
   openedByUsername?: string;
   closedByUsername?: string;
 }
-// branchId es opcional: si se omite, el back usa la sucursal del usuario.
 export interface OpenRegisterRequest { branchId?: number | null; openingBalance: number; }
 export interface CloseRegisterRequest { closingBalance: number; }

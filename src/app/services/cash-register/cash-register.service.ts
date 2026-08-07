@@ -27,7 +27,6 @@ export class CashRegisterService {
       error: (err) => {
         this.model.current.set(null);
         this.model.loading.set(false);
-        // 404 = no hay caja abierta todavía, no es un error que mostrar.
         if (err?.status !== 404) {
           this.model.error.set(this.messages.resolveErrorDetail("errorGettingRegister", err));
         }

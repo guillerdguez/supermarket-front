@@ -62,8 +62,6 @@ describe("SaleService", () => {
 
     service.save(request, "CARD", 2.3, component);
 
-    // La venta ya existe en el back aunque el pago falle: no dejamos el POS
-    // bloqueado, el cajero puede seguir.
     expect(component.afterSave).toHaveBeenCalled();
     expect(service.model.loading()).toBe(false);
   });

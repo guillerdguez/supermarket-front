@@ -15,15 +15,11 @@ $pos-grey-200: #e2e8f0;
 $pos-grey-300: #cbd5e1;
 $pos-grey-400: #94a3b8;
 $pos-grey-500: #64748b;
-// FIX: faltaba el escalón 600 (hueco entre 500 y 700 en la escala de grises).
 $pos-grey-600: #475569;
 $pos-grey-700: #334155;
 $pos-grey-800: #1e293b;
 $pos-grey-900: #0f172a;
 
-// FIX: success/warning/danger solo llegaban a 500. Sin 600/700 no había
-// tono "hover/activo" propio para botones o badges de estos colores,
-// y eso empujaba a usar hex sueltos fuera del sistema de tokens.
 $pos-success-100: #dcfce7;
 $pos-success-200: #86efac;
 $pos-success-300: #4ade80;
@@ -115,34 +111,15 @@ $pos-danger-700: #991b1b;
   --pos-shadow-md: 0 2px 8px rgba(15, 23, 42, 0.06);
   --pos-shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
 
-  // FIX: las pantallas de "listado + panel lateral" (dashboard, inventario,
-  // formularios de producto...) repetían proporciones de grid ligeramente
-  // distintas (1.65fr/0.95fr, 1.7fr/1fr, 1.6fr/0.9fr) sin motivo funcional.
-  // Con estos dos tokens todas comparten la misma relación por defecto;
-  // una pantalla puntual puede seguir sobreescribiéndolos si lo necesita.
   --pos-layout-main: 1.65fr;
   --pos-layout-side: 0.95fr;
 
-  // Alto de la barra de navegación fija. Lo consumen las pantallas que ocupan
-  // el viewport (mixin pos-fit-viewport y el POS), para que exista un único
-  // sitio donde cambiarlo.
   --pos-nav-height: 56px;
 
-  // Alto del troquelado de tique que se dibuja bajo el panel del carrito. Lo
-  // comparten el mixin pos-receipt-tear y el hueco que le reserva el POS.
   --pos-receipt-tear-h: 9px;
 
-  // Medidas propias del punto de venta: el carrito tiene ancho fijo para no
-  // cambiar de tamaño con el contenido ni con el de la ventana.
-  // Ancho máximo de las pantallas de formulario: a pantalla completa un
-  // formulario quedaría perdido en 1400px de ancho. 840px da sitio de sobra
-  // a un grid de dos columnas (ver mixin pos-form-page) sin que las líneas
-  // de texto de los inputs se hagan incómodamente largas.
   --pos-form-width: 840px;
 
-  // Botones-icono redondos de la barra de navegación (campana, salir). Un
-  // solo token para que ambos midan siempre lo mismo por definición, no por
-  // coincidencia entre dos archivos distintos.
   --pos-nav-icon-btn: 36px;
 
   --pos-cart-width: 360px;

@@ -87,7 +87,6 @@ export class InventoryComponent implements OnInit {
   );
 
   constructor() {
-    // Si no hay sucursal guardada, selecciona la primera al cargar la lista.
     effect(() => {
       const branches = this.branchList();
       if (this.selectedBranchId() == null && branches.length > 0) {

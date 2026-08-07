@@ -32,10 +32,6 @@ export class EditProductComponent implements OnInit, CrudComponent {
   loadingProduct = signal(true);
   productId = 0;
 
-  // Ventana flotante abierta desde ProductComponent.openPreview() — sin menú.
-  // Igual que en sisbatch: no hay botón interno de cerrar, la ventana se
-  // autocierra sola al guardar con éxito (afterSave) y para cancelar se usa
-  // el propio control de cerrar del navegador.
   isPreview = false;
 
   form: ProductRequest = {
@@ -46,7 +42,6 @@ export class EditProductComponent implements OnInit, CrudComponent {
   };
 
   constructor() {
-    // El detalle lo trae el service al Model; aquí solo se vuelca al formulario.
     effect(() => {
       const product = this.products.model.editing();
       if (!product) return;

@@ -127,8 +127,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-// Columna flex, no contenedor con scroll: si scrollea este div, el paginador
-// se va con las filas. El scroll lo hace .p-datatable-table-container.
 .table-wrap {
   flex: 1;
   min-height: 0;

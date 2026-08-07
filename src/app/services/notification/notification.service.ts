@@ -21,7 +21,6 @@ export class NotificationService {
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
-        // 404 = el endpoint no existe; la campana sigue visible igual.
         if (err?.status === 404) this.model.available.set(false);
       },
     });
@@ -38,7 +37,7 @@ export class NotificationService {
     const uid = this.auth.model.currentUser()?.id;
     if (uid == null) return list;
     const hasOwner = list.some((n) => n.userId != null);
-    if (!hasOwner) return list; // el backend ya filtró por token
+    if (!hasOwner) return list;
     return list.filter((n) => n.userId === uid);
   }
 

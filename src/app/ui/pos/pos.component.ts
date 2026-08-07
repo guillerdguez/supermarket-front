@@ -69,7 +69,6 @@ export class PosComponent implements OnInit, CrudComponent {
   });
 
   backLink = computed(() => {
-    // admin puede llegar al POS desde nav
     return "/cashier/dashboard";
   });
 

@@ -23,8 +23,6 @@ export class CashierCreateTransferComponent implements OnInit, CrudComponent {
   loading = this.transfers.model.loading;
   productList = this.products.model.list;
   branchName = this.auth.model.branchName;
-  // Origen y destino no se piden: el backend siempre pide desde el almacén
-  // central y entrega en la sucursal asignada al cajero.
   form: { productId: number; quantity: number } = { productId: 0, quantity: 1 };
 
   ngOnInit() { this.products.retrieveList(); }

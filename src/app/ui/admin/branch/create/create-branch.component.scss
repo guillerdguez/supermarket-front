@@ -1,19 +1,14 @@
 @use "../../../../theme/styles/mixins" as *;
 
-// Excepción deliberada: este formulario solo tiene 2 campos + un checkbox,
-// a dos columnas queda con demasiado aire. Una sola columna, centrada y
-// más estrecha que el resto de formularios (pedido explícito, aunque rompa
-// la cohesión de 2 columnas del resto de pantallas de alta/edición).
 @include pos-form-page($max-width: 480px);
 
 .form-grid {
   grid-template-columns: 1fr;
-} // 1. Quitar el width:100% al checkbox
+}
 .field input[type="checkbox"] {
   width: auto;
 }
 
-// 2. Centrar el grupo label dentro del field
 .field--full {
-  align-items: center; // field es columna → centra horizontalmente
+  align-items: center;
 }

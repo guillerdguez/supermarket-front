@@ -35,9 +35,6 @@ export class EditUserComponent implements OnInit, CrudComponent {
   ready = signal(false);
   userId = 0;
 
-  // Ventana flotante abierta desde UserComponent.openPreview() — sin menú.
-  // Igual que en sisbatch: sin botón interno de cerrar, se autocierra sola al
-  // guardar (afterSave) y para cancelar se usa el cerrar nativo del navegador.
   isPreview = false;
   branchList = this.branches.model.list;
   readonly roleOptions = USER_ROLE_OPTIONS;

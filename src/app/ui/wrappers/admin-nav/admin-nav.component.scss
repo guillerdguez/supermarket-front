@@ -2,8 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  // Más aire entre los tres grupos (marca / menú / perfil) que dentro de
-  // cada uno: ver los gaps de .brand, .nav-right y .profile-link.
   gap: var(--pos-space-2);
   padding: var(--pos-space-1) var(--pos-space-2);
   background: var(--pos-surface);
@@ -18,9 +16,6 @@
   display: inline-flex;
   align-items: center;
   gap: var(--pos-space-1);
-  // El sistema de tipos solo define 3 pesos (normal/medium/emphasis); no hay
-  // un peso "bold" tokenizado, así que la marca usa el mismo emphasis que el
-  // resto de títulos en vez de un 700 suelto.
   font-weight: var(--pos-font-weight-emphasis);
   color: var(--pos-primary);
   text-decoration: none;
@@ -78,9 +73,6 @@
   .role {
     color: var(--pos-text-muted);
     font-size: var(--pos-font-size-xs);
-    // 2px verticales: excepción deliberada, igual que el badge de la
-    // campana. Es una píldora de una sola línea; centrarla en el paso de
-    // 8px la haría más alta que el texto que contiene.
     padding: 2px var(--pos-space-1);
     background: var(--pos-surface-alt);
     border-radius: 999px;
@@ -112,8 +104,6 @@
   padding: 0;
 
   .p-menubar-root-list {
-    // Casi cero: los ítems ya llevan su propio padding horizontal, este gap
-    // solo evita que se toquen dos fondos activos contiguos.
     gap: calc(var(--pos-space-1) / 4);
   }
 
@@ -132,14 +122,6 @@
     }
   }
 
-  // FIX: ".p-menubar-item-active" es "este ítem tiene el submenú abierto",
-  // no "esta es la ruta actual" — con ese selector la pastilla de activo
-  // solo se veía mientras el desplegable "Más" estaba abierto. La clase que
-  // sigue la ruta de verdad es la que aplica el propio routerLinkActive de
-  // PrimeNG: "p-menubar-item-link-active".
-  //
-  // Acento inferior en vez de relleno para que se distinga del hover: el
-  // hover es un feedback momentáneo, el acento es "aquí estás" persistente.
   .p-menubar-item-link-active {
     color: var(--pos-primary);
     border-bottom-color: var(--pos-primary);

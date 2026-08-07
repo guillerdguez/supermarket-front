@@ -31,9 +31,6 @@ export class EditBranchComponent implements OnInit, CrudComponent {
   branchId = 0;
   form: BranchRequest = { name: "", address: "", isWarehouse: false };
 
-  // Ventana flotante abierta desde BranchComponent.openPreview() — sin menú.
-  // Igual que en sisbatch: sin botón interno de cerrar, se autocierra sola al
-  // guardar (afterSave) y para cancelar se usa el cerrar nativo del navegador.
   isPreview = false;
 
   constructor() {

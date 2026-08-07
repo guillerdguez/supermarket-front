@@ -94,8 +94,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Ventana flotante ~75% de pantalla, centrada, con la misma ruta de edición
-  // marcada con ?isPreview=true (ver EditProductComponent.isPreview).
   openPreview(id: number) {
     const width = Math.round(window.screen.width * 0.75);
     const height = Math.round(window.screen.height * 0.75);
@@ -147,7 +145,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Deselecciona todo al clicar fuera de la tabla (checkboxes de selección múltiple).
   @HostListener("document:click", ["$event"])
   onDocumentClick(event: MouseEvent) {
     const table = this.host.nativeElement.querySelector(".table-wrap");
