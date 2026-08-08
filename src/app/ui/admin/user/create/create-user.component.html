@@ -1,115 +1,159 @@
-<pos-page-shell>
-  <header class="page-header">
-    <div class="page-header__text">
-      <a routerLink="/admin/users" class="back-link">
-        <i class="pi pi-arrow-left" aria-hidden="true"></i>
-        Volver a usuarios
-      </a>
-      <h1>Nuevo usuario</h1>
-    </div>
-  </header>
+<div class="user-form-fit">
+  <pos-page-shell>
+    <header class="page-header">
+      <div class="page-header__text">
+        <a routerLink="/admin/users" class="back-link">
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          Volver a usuarios
+        </a>
+        <h1>Nuevo usuario</h1>
+      </div>
+    </header>
 
-  <pos-panel title="Datos del usuario">
-    <form class="form" (ngSubmit)="onSubmit()" novalidate>
-      <div class="form-scroll">
-        <div class="form-grid">
-          <div class="field">
-            <label for="u">Usuario <span class="req">*</span></label>
-            <input
-              id="u"
-              name="u"
-              [(ngModel)]="form.username"
-              required
-              autocomplete="off"
-            />
-          </div>
-          <div class="field">
-            <label for="e">Email <span class="req">*</span></label>
-            <input
-              id="e"
-              name="e"
-              type="email"
-              [(ngModel)]="form.email"
-              required
-              autocomplete="off"
-            />
-          </div>
+    <div class="form-body">
+      <div class="form-body__main">
+        <div class="slot">
+          <pos-panel title="Datos del usuario">
+            <form class="form" (ngSubmit)="onSubmit()" novalidate>
+              <div class="form-scroll">
+                <section class="form-section">
+                  <h2 class="pos-section-title">Datos personales</h2>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="u">Usuario <span class="req">*</span></label>
+                      <input
+                        id="u"
+                        name="u"
+                        [(ngModel)]="form.username"
+                        required
+                        autocomplete="off"
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="e">Email <span class="req">*</span></label>
+                      <input
+                        id="e"
+                        name="e"
+                        type="email"
+                        [(ngModel)]="form.email"
+                        required
+                        autocomplete="off"
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="f">Nombre <span class="req">*</span></label>
+                      <input id="f" name="f" [(ngModel)]="form.firstName" required />
+                    </div>
+                    <div class="field">
+                      <label for="l">Apellido <span class="req">*</span></label>
+                      <input id="l" name="l" [(ngModel)]="form.lastName" required />
+                    </div>
+                  </div>
+                </section>
 
-          <div class="field field--full">
-            <label for="p">Contraseña <span class="req">*</span></label>
-            <input
-              id="p"
-              name="p"
-              type="password"
-              [(ngModel)]="form.password"
-              required
-              minlength="8"
-              autocomplete="new-password"
-            />
-            <span class="field-hint">Mínimo 8 caracteres</span>
-          </div>
+                <section class="form-section">
+                  <h2 class="pos-section-title">Acceso y permisos</h2>
+                  <div class="form-grid">
+                    <div class="field field--full">
+                      <label for="p">Contraseña <span class="req">*</span></label>
+                      <span class="input-icon-wrap">
+                        <i class="pi pi-key input-icon" aria-hidden="true"></i>
+                        <input
+                          id="p"
+                          name="p"
+                          type="password"
+                          [(ngModel)]="form.password"
+                          required
+                          minlength="8"
+                          autocomplete="new-password"
+                        />
+                      </span>
+                      <span class="field-hint">Mínimo 8 caracteres</span>
+                    </div>
 
-          <div class="field">
-            <label for="f">Nombre <span class="req">*</span></label>
-            <input id="f" name="f" [(ngModel)]="form.firstName" required />
-          </div>
-          <div class="field">
-            <label for="l">Apellido <span class="req">*</span></label>
-            <input id="l" name="l" [(ngModel)]="form.lastName" required />
-          </div>
+                    <div class="field">
+                      <label for="r">Rol</label>
+                      <p-select
+                        id="r"
+                        [options]="roleOptions"
+                        optionLabel="label"
+                        optionValue="value"
+                        [(ngModel)]="form.role"
+                        name="r"
+                        styleClass="w-full"
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="b">Sucursal</label>
+                      <p-select
+                        id="b"
+                        [options]="branchList()"
+                        optionLabel="name"
+                        optionValue="id"
+                        [(ngModel)]="form.branchId"
+                        name="b"
+                        placeholder="— Sin sucursal —"
+                        styleClass="w-full"
+                        [showClear]="true"
+                      />
+                      <span class="field-hint"
+                        >Obligatoria para cajeros: es la caja que podrán abrir.</span
+                      >
+                    </div>
+                  </div>
+                </section>
+              </div>
 
-          <div class="field">
-            <label for="r">Rol</label>
-            <p-select
-              id="r"
-              [options]="roleOptions"
-              optionLabel="label"
-              optionValue="value"
-              [(ngModel)]="form.role"
-              name="r"
-              styleClass="w-full"
-            />
-          </div>
-          <div class="field">
-            <label for="b">Sucursal</label>
-            <p-select
-              id="b"
-              [options]="branchList()"
-              optionLabel="name"
-              optionValue="id"
-              [(ngModel)]="form.branchId"
-              name="b"
-              placeholder="— Sin sucursal —"
-              styleClass="w-full"
-              [showClear]="true"
-            />
-            <span class="field-hint"
-              >Obligatoria para cajeros: es la caja que podrán abrir.</span
-            >
-          </div>
+              @if (error()) {
+                <p class="error">{{ error() }}</p>
+              }
+
+              <div class="form-actions">
+                <a
+                  routerLink="/admin/users"
+                  pButton
+                  label="Cancelar"
+                  severity="secondary"
+                  [outlined]="true"
+                ></a>
+                <button
+                  type="submit"
+                  pButton
+                  [label]="loading() ? 'Creando…' : 'Crear usuario'"
+                  [loading]="loading()"
+                  [disabled]="loading()"
+                ></button>
+              </div>
+            </form>
+          </pos-panel>
         </div>
       </div>
 
-      @if (error()) {
-        <p class="error">{{ error() }}</p>
-      }
+      <aside class="form-body__side">
+        <div class="slot">
+          <pos-panel title="Vista previa">
+            <div class="preview">
+              <div class="preview-icon">{{ initials }}</div>
+              <strong class="preview-name">{{
+                form.firstName || form.lastName
+                  ? (form.firstName + " " + form.lastName).trim()
+                  : "Nombre del usuario"
+              }}</strong>
+              <span class="preview-tag">&#64;{{ form.username || "usuario" }}</span>
 
-      <div class="form-actions">
-        <a
-          routerLink="/admin/users"
-          pButton
-          label="Cancelar"
-          severity="secondary"
-          [outlined]="true"
-        ></a>
-        <button
-          type="submit"
-          pButton
-          [label]="loading() ? 'Creando…' : 'Crear usuario'"
-          [loading]="loading()"
-          [disabled]="loading()"
-        ></button>
-      </div>
-    </form>
-  </pos-panel>
-</pos-page-shell>
+              <p-tag
+                [severity]="roleSeverity(form.role)"
+                [value]="roleLabel(form.role)"
+              />
+
+              <div class="preview-barcode">
+                <i class="pi pi-building" aria-hidden="true"></i>
+                {{ selectedBranchName() || "Sin sucursal asignada" }}
+              </div>
+            </div>
+          </pos-panel>
+        </div>
+      </aside>
+    </div>
+  </pos-page-shell>
+</div>

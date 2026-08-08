@@ -1,11 +1,102 @@
 @use "../../../../theme/styles/mixins" as *;
 
-@include pos-form-page($max-width: 480px);
+@include pos-form-page($max-width: none);
+@include pos-form-page-with-preview;
 
-.form-grid {
-  grid-template-columns: 1fr;
+.user-form-fit {
+  height: 100%;
+  min-height: 0;
 }
 
 .preview-mode {
   --pos-page-padding: var(--pos-space-2);
+}
+
+.preview-icon {
+  font-weight: var(--pos-font-weight-emphasis);
+  letter-spacing: 0.02em;
+}
+
+.preview-badges {
+  display: flex;
+  gap: var(--pos-space-1);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pos-space-1);
+
+  label {
+    margin-bottom: 0;
+  }
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--pos-primary);
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.link-btn--muted {
+  color: var(--pos-text-muted);
+}
+
+.password-masked {
+  display: flex;
+  align-items: center;
+  gap: var(--pos-space-1);
+  padding: var(--pos-space-1) var(--pos-space-2);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-md);
+  background: var(--pos-surface-alt);
+  color: var(--pos-text-muted);
+  font-size: var(--pos-font-size-sm);
+  letter-spacing: 2px;
+
+  i {
+    color: var(--pos-text-muted);
+    letter-spacing: normal;
+  }
+}
+
+.field-hint-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pos-space-1);
+  margin-top: 2px;
+
+  .field-hint {
+    margin-top: 0;
+  }
+}
+
+.password-edit {
+  animation: password-reveal-in 0.15s ease-out;
+}
+
+@keyframes password-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

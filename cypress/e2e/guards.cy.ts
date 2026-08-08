@@ -18,7 +18,7 @@ describe("Route guards", () => {
     });
     cy.visit("/admin/users");
     cy.url().should("include", "/admin/users");
-    cy.contains(".pos-panel-title", "Usuarios").should("be.visible");
+    cy.get("h1").should("contain.text", "Usuarios");
   });
 
   it("clears the session and redirects to login on logout", () => {

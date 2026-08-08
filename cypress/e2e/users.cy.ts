@@ -15,11 +15,15 @@ describe("Admin — Users CRUD", () => {
     cy.contains("a", "Nuevo").click();
     cy.get("#u").type(username);
     cy.get("#e").type(email);
-    cy.get("#p").type("password123");
+    cy.get("#p").type("Segura2026*");
     cy.get("#f").type("Nombre");
     cy.get("#l").type("Apellido");
-    cy.contains("button", "Crear usuario").click();
+    cy.get("#r").click();
+    cy.get('[role="option"]').contains("Cajero").click();
+    cy.get("#b").click();
+    cy.get('[role="option"]').contains("Sucursal Centro").click();
 
+    cy.contains("button", "Crear usuario").click();
     cy.url().should("include", "/admin/users");
     cy.url().should("not.include", "/create");
     cy.get("input[placeholder='Buscar…']").type(`${username}{enter}`);
