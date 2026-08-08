@@ -8,7 +8,7 @@
             Volver a usuarios
           </a>
         }
-        <h1>Editar usuario</h1>
+        <h1>{{ isEdit ? "Editar usuario" : "Nuevo usuario" }}</h1>
       </div>
     </header>
 
@@ -24,7 +24,13 @@
                     <div class="form-grid">
                       <div class="field">
                         <label for="u">Usuario <span class="req">*</span></label>
-                        <input id="u" name="u" [(ngModel)]="form.username" required />
+                        <input
+                          id="u"
+                          name="u"
+                          [(ngModel)]="form.username"
+                          required
+                          autocomplete="off"
+                        />
                       </div>
                       <div class="field">
                         <label for="e">Email <span class="req">*</span></label>
@@ -34,6 +40,7 @@
                           type="email"
                           [(ngModel)]="form.email"
                           required
+                          autocomplete="off"
                         />
                       </div>
                       <div class="field">
@@ -51,51 +58,68 @@
                     <h2 class="pos-section-title">Acceso y permisos</h2>
                     <div class="form-grid">
                       <div class="field field--full">
-                        <div class="field-label-row">
-                          <label for="p">Contraseña</label>
-                          @if (!cambiarPassword) {
-                            <button
-                              type="button"
-                              class="link-btn"
-                              (click)="cambiarPassword = true"
-                            >
-                              <i class="pi pi-key" aria-hidden="true"></i>
-                              Cambiar contraseña
-                            </button>
-                          }
-                        </div>
-
-                        @if (!cambiarPassword) {
-                          <div class="password-masked">
-                            <i class="pi pi-lock" aria-hidden="true"></i>
-                            ••••••••
-                          </div>
-                        } @else {
-                          <div class="password-edit">
-                            <span class="input-icon-wrap">
-                              <i class="pi pi-key input-icon" aria-hidden="true"></i>
-                              <input
-                                id="p"
-                                name="p"
-                                type="password"
-                                [(ngModel)]="form.password"
-                                required
-                                minlength="8"
-                                autocomplete="new-password"
-                                placeholder="Nueva contraseña"
-                              />
-                            </span>
-                            <div class="field-hint-row">
-                              <span class="field-hint">Mínimo 8 caracteres.</span>
+                        @if (isEdit) {
+                          <div class="field-label-row">
+                            <label for="p">Contraseña</label>
+                            @if (!cambiarPassword) {
                               <button
                                 type="button"
-                                class="link-btn link-btn--muted"
-                                (click)="cancelPasswordChange()"
+                                class="link-btn"
+                                (click)="cambiarPassword = true"
                               >
-                                Cancelar
+                                <i class="pi pi-key" aria-hidden="true"></i>
+                                Cambiar contraseña
                               </button>
-                            </div>
+                            }
                           </div>
+
+                          @if (!cambiarPassword) {
+                            <div class="password-masked">
+                              <i class="pi pi-lock" aria-hidden="true"></i>
+                              ••••••••
+                            </div>
+                          } @else {
+                            <div class="password-edit">
+                              <span class="input-icon-wrap">
+                                <i class="pi pi-key input-icon" aria-hidden="true"></i>
+                                <input
+                                  id="p"
+                                  name="p"
+                                  type="password"
+                                  [(ngModel)]="form.password"
+                                  required
+                                  minlength="8"
+                                  autocomplete="new-password"
+                                  placeholder="Nueva contraseña"
+                                />
+                              </span>
+                              <div class="field-hint-row">
+                                <span class="field-hint">Mínimo 8 caracteres.</span>
+                                <button
+                                  type="button"
+                                  class="link-btn link-btn--muted"
+                                  (click)="cancelPasswordChange()"
+                                >
+                                  Cancelar
+                                </button>
+                              </div>
+                            </div>
+                          }
+                        } @else {
+                          <label for="p">Contraseña <span class="req">*</span></label>
+                          <span class="input-icon-wrap">
+                            <i class="pi pi-key input-icon" aria-hidden="true"></i>
+                            <input
+                              id="p"
+                              name="p"
+                              type="password"
+                              [(ngModel)]="form.password"
+                              required
+                              minlength="8"
+                              autocomplete="new-password"
+                            />
+                          </span>
+                          <span class="field-hint">Mínimo 8 caracteres</span>
                         }
                       </div>
 
@@ -132,6 +156,10 @@
                   </section>
                 </div>
 
+                @if (error()) {
+                  <p class="error">{{ error() }}</p>
+                }
+
                 <div class="form-actions">
                   @if (!isPreview) {
                     <a
@@ -154,7 +182,7 @@
                   <button
                     type="submit"
                     pButton
-                    [label]="loading() ? 'Guardando…' : 'Guardar cambios'"
+                    [label]="loading() ? (isEdit ? 'Guardando…' : 'Creando…') : (isEdit ? 'Guardar cambios' : 'Crear usuario')"
                     [loading]="loading()"
                     [disabled]="loading()"
                   ></button>
@@ -192,10 +220,12 @@
                     [severity]="roleSeverity(form.role)"
                     [value]="roleLabel(form.role)"
                   />
-                  @if (editingUser()?.active === false) {
-                    <p-tag severity="secondary" value="Inactivo" />
-                  } @else {
-                    <p-tag severity="success" value="Activo" />
+                  @if (isEdit) {
+                    @if (editingUser()?.active === false) {
+                      <p-tag severity="secondary" value="Inactivo" />
+                    } @else {
+                      <p-tag severity="success" value="Activo" />
+                    }
                   }
                 </div>
 

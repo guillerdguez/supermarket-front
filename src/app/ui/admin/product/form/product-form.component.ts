@@ -10,7 +10,7 @@ import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
 
 @Component({
-  selector: "app-edit-product",
+  selector: "app-product-form",
   standalone: true,
   imports: [
     FormsModule,
@@ -20,17 +20,17 @@ import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.c
     PosPanelComponent,
     PosPageShellComponent,
   ],
-  templateUrl: "./edit-product.component.html",
-  styleUrl: "./edit-product.component.scss",
+  templateUrl: "./product-form.component.html",
+  styleUrl: "./product-form.component.scss",
 })
-export class EditProductComponent implements OnInit, CrudComponent {
+export class ProductFormComponent implements OnInit, CrudComponent {
   private readonly products = inject(ProductService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   loading = this.products.model.loading;
-  loadingProduct = signal(true);
-  productId = 0;
+  ready = signal(false);
+  id: number | null = null;
 
   isPreview = false;
 
@@ -40,6 +40,10 @@ export class EditProductComponent implements OnInit, CrudComponent {
     price: 0,
     category: "",
   };
+
+  get isEdit(): boolean {
+    return this.id != null;
+  }
 
   constructor() {
     effect(() => {
@@ -51,20 +55,26 @@ export class EditProductComponent implements OnInit, CrudComponent {
         price: product.price,
         category: product.category || "",
       };
-      this.loadingProduct.set(false);
+      this.ready.set(true);
     });
   }
 
   ngOnInit() {
-    this.productId = Number(this.route.snapshot.paramMap.get("id"));
+    const idParam = this.route.snapshot.paramMap.get("id");
+    this.id = idParam ? Number(idParam) : null;
     this.isPreview =
       this.route.snapshot.queryParamMap.get("isPreview") === "true";
-    this.products.retrieveDetail(this.productId);
+
+    if (this.isEdit) {
+      this.products.retrieveDetail(this.id!);
+    } else {
+      this.ready.set(true);
+    }
   }
 
   onSubmit() {
     if (!this.form.name.trim() || this.form.price <= 0) return;
-    this.products.save(this.form, this.productId, this);
+    this.products.save(this.form, this.id ?? undefined, this);
   }
 
   afterSave() {

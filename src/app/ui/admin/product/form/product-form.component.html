@@ -8,7 +8,7 @@
             Volver a productos
           </a>
         }
-        <h1>Editar producto</h1>
+        <h1>{{ isEdit ? "Editar producto" : "Nuevo producto" }}</h1>
       </div>
     </header>
 
@@ -16,7 +16,7 @@
       <div class="form-body__main">
         <div class="slot">
           <pos-panel title="Datos del producto">
-            @if (loadingProduct()) {
+            @if (!ready()) {
               <div class="skeleton-form" aria-hidden="true">
                 <div class="skeleton-field">
                   <span class="skeleton-label"></span>
@@ -143,7 +143,7 @@
                   <button
                     type="submit"
                     pButton
-                    [label]="loading() ? 'Guardando…' : 'Guardar cambios'"
+                    [label]="loading() ? (isEdit ? 'Guardando…' : 'Creando…') : (isEdit ? 'Guardar cambios' : 'Crear producto')"
                     [loading]="loading()"
                     [disabled]="loading() || !form.name || form.price <= 0"
                   ></button>
@@ -154,32 +154,34 @@
         </div>
       </div>
 
-      <aside class="form-body__side">
-        <div class="slot">
-          <pos-panel title="Vista previa">
-            <div class="preview">
-              <div class="preview-icon">
-                <i class="pi pi-box" aria-hidden="true"></i>
-              </div>
-              <strong class="preview-name">{{
-                form.name || "Nombre del producto"
-              }}</strong>
-              @if (form.category) {
-                <span class="preview-tag">{{ form.category }}</span>
-              }
-              <div class="preview-price">
-                {{ form.price || 0 | currency: "EUR" : "symbol" : "1.2-2" }}
-              </div>
-              @if (form.barcode) {
-                <div class="preview-barcode">
-                  <i class="pi pi-hashtag" aria-hidden="true"></i>
-                  {{ form.barcode }}
+      @if (ready()) {
+        <aside class="form-body__side">
+          <div class="slot">
+            <pos-panel title="Vista previa">
+              <div class="preview">
+                <div class="preview-icon">
+                  <i class="pi pi-box" aria-hidden="true"></i>
                 </div>
-              }
-            </div>
-          </pos-panel>
-        </div>
-      </aside>
+                <strong class="preview-name">{{
+                  form.name || "Nombre del producto"
+                }}</strong>
+                @if (form.category) {
+                  <span class="preview-tag">{{ form.category }}</span>
+                }
+                <div class="preview-price">
+                  {{ form.price || 0 | currency: "EUR" : "symbol" : "1.2-2" }}
+                </div>
+                @if (form.barcode) {
+                  <div class="preview-barcode">
+                    <i class="pi pi-hashtag" aria-hidden="true"></i>
+                    {{ form.barcode }}
+                  </div>
+                }
+              </div>
+            </pos-panel>
+          </div>
+        </aside>
+      }
     </div>
   </pos-page-shell>
 </div>

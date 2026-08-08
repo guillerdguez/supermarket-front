@@ -31,13 +31,13 @@ export const routes: Routes = [
     path: "admin/products/create",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/product/create/create-product.component").then((m) => m.CreateProductComponent),
+      import("./ui/admin/product/form/product-form.component").then((m) => m.ProductFormComponent),
   },
   {
     path: "admin/products/edit/:id",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/product/edit/edit-product.component").then((m) => m.EditProductComponent),
+      import("./ui/admin/product/form/product-form.component").then((m) => m.ProductFormComponent),
   },
   {
     path: "admin/branches",
@@ -49,13 +49,13 @@ export const routes: Routes = [
     path: "admin/branches/create",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/branch/create/create-branch.component").then((m) => m.CreateBranchComponent),
+      import("./ui/admin/branch/form/branch-form.component").then((m) => m.BranchFormComponent),
   },
   {
     path: "admin/branches/edit/:id",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/branch/edit/edit-branch.component").then((m) => m.EditBranchComponent),
+      import("./ui/admin/branch/form/branch-form.component").then((m) => m.BranchFormComponent),
   },
   {
     path: "admin/users",
@@ -67,13 +67,13 @@ export const routes: Routes = [
     path: "admin/users/create",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/user/create/create-user.component").then((m) => m.CreateUserComponent),
+      import("./ui/admin/user/form/user-form.component").then((m) => m.UserFormComponent),
   },
   {
     path: "admin/users/edit/:id",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
-      import("./ui/admin/user/edit/edit-user.component").then((m) => m.EditUserComponent),
+      import("./ui/admin/user/form/user-form.component").then((m) => m.UserFormComponent),
   },
   {
     path: "admin/sales",

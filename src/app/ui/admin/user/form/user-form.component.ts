@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { SelectModule } from "primeng/select";
 import { TagModule } from "primeng/tag";
@@ -8,11 +8,12 @@ import { UserService } from "../../../../services/user/user.service";
 import { BranchService } from "../../../../services/branch/branch.service";
 import { UserRequest } from "../../../../DTO/user.dto";
 import { CrudComponent } from "../../../../model/Domain/crud-component";
+import { USER_ROLE_OPTIONS } from "../../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
 
 @Component({
-  selector: "app-create-user",
+  selector: "app-user-form",
   standalone: true,
   imports: [
     FormsModule,
@@ -23,22 +24,26 @@ import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.c
     PosPanelComponent,
     PosPageShellComponent,
   ],
-  templateUrl: "./create-user.component.html",
-  styleUrl: "./create-user.component.scss",
+  templateUrl: "./user-form.component.html",
+  styleUrl: "./user-form.component.scss",
 })
-export class CreateUserComponent implements OnInit, CrudComponent {
+export class UserFormComponent implements OnInit, CrudComponent {
   private readonly svc = inject(UserService);
   private readonly branches = inject(BranchService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
+  isPreview = false;
+  cambiarPassword = false;
 
   loading = this.svc.model.loading;
   error = this.svc.model.error;
+  editingUser = this.svc.model.editing;
+  ready = signal(false);
+  id: number | null = null;
+
   branchList = this.branches.model.list;
-  readonly roleOptions = [
-    { label: "Cajero", value: "CASHIER" },
-    { label: "Manager", value: "MANAGER" },
-    { label: "Admin", value: "ADMIN" },
-  ];
+  readonly roleOptions = USER_ROLE_OPTIONS;
   form: UserRequest = {
     username: "",
     email: "",
@@ -49,8 +54,39 @@ export class CreateUserComponent implements OnInit, CrudComponent {
     branchId: null,
   };
 
+  get isEdit(): boolean {
+    return this.id != null;
+  }
+
+  constructor() {
+    effect(() => {
+      const user = this.svc.model.editing();
+      if (!user) return;
+      this.form = {
+        username: user.username,
+        email: user.email,
+        password: "",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        branchId: user.branchId ?? null,
+      };
+      this.ready.set(true);
+    });
+  }
+
   ngOnInit() {
     this.branches.retrieveList();
+    const idParam = this.route.snapshot.paramMap.get("id");
+    this.id = idParam ? Number(idParam) : null;
+    this.isPreview =
+      this.route.snapshot.queryParamMap.get("isPreview") === "true";
+
+    if (this.isEdit) {
+      this.svc.retrieveDetail(this.id!);
+    } else {
+      this.ready.set(true);
+    }
   }
 
   get initials(): string {
@@ -76,12 +112,30 @@ export class CreateUserComponent implements OnInit, CrudComponent {
     );
   }
 
+  cancelPasswordChange() {
+    this.cambiarPassword = false;
+    this.form.password = "";
+  }
+
   onSubmit() {
-    if (!this.form.username.trim() || !this.form.email.trim() || !this.form.password) return;
-    this.svc.save(this.form, undefined, this);
+    if (!this.form.username.trim() || !this.form.email.trim()) return;
+    if (!this.isEdit && !this.form.password) return;
+
+    const payload = { ...this.form };
+    if (this.isEdit && !this.cambiarPassword) {
+      delete payload.password;
+    }
+    this.svc.save(payload, this.id ?? undefined, this);
   }
 
   afterSave() {
+    if (this.isPreview) {
+      window.close();
+      return;
+    }
     this.router.navigateByUrl("/admin/users");
+  }
+  closePreview() {
+    window.close();
   }
 }

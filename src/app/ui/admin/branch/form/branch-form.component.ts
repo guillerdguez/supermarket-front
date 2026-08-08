@@ -9,7 +9,7 @@ import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
 
 @Component({
-  selector: "app-edit-branch",
+  selector: "app-branch-form",
   standalone: true,
   imports: [
     FormsModule,
@@ -18,20 +18,24 @@ import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.c
     PosPanelComponent,
     PosPageShellComponent,
   ],
-  templateUrl: "./edit-branch.component.html",
-  styleUrl: "./edit-branch.component.scss",
+  templateUrl: "./branch-form.component.html",
+  styleUrl: "./branch-form.component.scss",
 })
-export class EditBranchComponent implements OnInit, CrudComponent {
+export class BranchFormComponent implements OnInit, CrudComponent {
   private readonly svc = inject(BranchService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   loading = this.svc.model.loading;
   ready = signal(false);
-  branchId = 0;
+  id: number | null = null;
   form: BranchRequest = { name: "", address: "", isWarehouse: false };
 
   isPreview = false;
+
+  get isEdit(): boolean {
+    return this.id != null;
+  }
 
   constructor() {
     effect(() => {
@@ -47,15 +51,21 @@ export class EditBranchComponent implements OnInit, CrudComponent {
   }
 
   ngOnInit() {
-    this.branchId = Number(this.route.snapshot.paramMap.get("id"));
+    const idParam = this.route.snapshot.paramMap.get("id");
+    this.id = idParam ? Number(idParam) : null;
     this.isPreview =
       this.route.snapshot.queryParamMap.get("isPreview") === "true";
-    this.svc.retrieveDetail(this.branchId);
+
+    if (this.isEdit) {
+      this.svc.retrieveDetail(this.id!);
+    } else {
+      this.ready.set(true);
+    }
   }
 
   onSubmit() {
     if (!this.form.name.trim() || !this.form.address.trim()) return;
-    this.svc.save(this.form, this.branchId, this);
+    this.svc.save(this.form, this.id ?? undefined, this);
   }
 
   afterSave() {

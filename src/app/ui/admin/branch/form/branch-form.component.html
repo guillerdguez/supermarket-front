@@ -7,7 +7,7 @@
           Volver a sucursales
         </a>
       }
-      <h1>Editar sucursal</h1>
+      <h1>{{ isEdit ? "Editar sucursal" : "Nueva sucursal" }}</h1>
     </div>
   </header>
 
@@ -18,7 +18,7 @@
           <div class="form-grid">
             <div class="field">
               <label for="name">Nombre <span class="req">*</span></label>
-              <input id="name" name="name" [(ngModel)]="form.name" required />
+              <input id="name" name="name" [(ngModel)]="form.name" required placeholder="Ej. Sucursal Centro" />
             </div>
             <div class="field">
               <label for="address">Dirección <span class="req">*</span></label>
@@ -27,6 +27,7 @@
                 name="address"
                 [(ngModel)]="form.address"
                 required
+                placeholder="Calle y número"
               />
             </div>
             <div class="field field--full">
@@ -36,7 +37,7 @@
                   name="wh"
                   [(ngModel)]="form.isWarehouse"
                 />
-                Almacén central
+                Es almacén
               </label>
             </div>
           </div>
@@ -64,7 +65,7 @@
           <button
             type="submit"
             pButton
-            [label]="loading() ? 'Guardando…' : 'Guardar cambios'"
+            [label]="loading() ? (isEdit ? 'Guardando…' : 'Creando…') : (isEdit ? 'Guardar cambios' : 'Crear sucursal')"
             [loading]="loading()"
             [disabled]="loading() || !form.name.trim()"
           ></button>
