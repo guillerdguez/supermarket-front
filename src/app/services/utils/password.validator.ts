@@ -1,3 +1,5 @@
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
 export interface PasswordChecks {
   minLength: boolean;
   hasUpperCase: boolean;
@@ -5,7 +7,7 @@ export interface PasswordChecks {
   hasSpecialChar: boolean;
 }
 
-const SPECIAL = /[!@#$%^&*(),.?":{}|<>_\-+=[\]\\/~`]/;
+const SPECIAL = /[!@#$%^&*(),.?":{}|<>_\-+=[\]\\/~`;']/;
 
 export function checkPassword(password: string): PasswordChecks {
   return {
@@ -18,4 +20,21 @@ export function checkPassword(password: string): PasswordChecks {
 
 export function isPasswordValid(c: PasswordChecks): boolean {
   return Object.values(c).every(Boolean);
+}
+
+export function passwordRulesValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value as string | null;
+    if (!value) return null;
+    return isPasswordValid(checkPassword(value)) ? null : { passwordRules: true };
+  };
+}
+
+export function passwordsMatchValidator(passwordKey: string, confirmKey: string): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const password = group.get(passwordKey)?.value;
+    const confirm = group.get(confirmKey)?.value;
+    if (!confirm) return null;
+    return password === confirm ? null : { passwordsMismatch: true };
+  };
 }
