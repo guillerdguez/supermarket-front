@@ -179,22 +179,5 @@
   }
 }
 
-::ng-deep .fixed-table table,
-::ng-deep .fixed-table .p-datatable-table {
-  width: 100%;
-  table-layout: fixed;
-}
-
-::ng-deep .fixed-table th,
-::ng-deep .fixed-table td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-::ng-deep .fixed-table .p-datatable-thead > tr > th:last-child,
-::ng-deep .fixed-table .p-datatable-tbody > tr > td:last-child {
-  text-align: center;
-}
-
+@include pos-fixed-table;
 @include pos-dense-table;
