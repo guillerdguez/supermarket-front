@@ -179,5 +179,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import("./ui/profile/change-password/change-password.component").then((m) => m.ChangePasswordComponent),
   },
-  { path: "**", redirectTo: "auth/login" },
+  {
+    path: "403",
+    loadComponent: () =>
+      import("./ui/errors/forbidden/forbidden.component").then((m) => m.ForbiddenComponent),
+  },
+  {
+    path: "**",
+    loadComponent: () =>
+      import("./ui/errors/not-found/not-found.component").then((m) => m.NotFoundComponent),
+  },
 ];

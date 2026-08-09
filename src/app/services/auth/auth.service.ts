@@ -4,7 +4,7 @@ import { AuthDao } from "../../DAO/auth/auth.dao";
 import { LoginRequest, UserResponse } from "../../DTO/auth.dto";
 import { AuthModel } from "../../model/Domain/auth.model";
 import { MessageProcessingService } from "../../../util/messageProcessingCenter/message-processing.service";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export const TOKEN_KEY = "access_token";
 export const USER_KEY = "current_user";
@@ -46,17 +46,17 @@ export class AuthService {
         this.setCurrentUser(res.user);
         this.model.loading.set(false);
 
-        this.router.navigateByUrl(
-          res.user.role === "CASHIER"
-            ? "/cashier/dashboard"
-            : "/admin/dashboard",
-        );
+        this.router.navigateByUrl(this.homeUrl());
       },
       error: (err) => {
         this.model.loading.set(false);
         this.messages.publishErrorMsg("errorLogin", err);
       },
     });
+  }
+
+  homeUrl(): string {
+    return this.model.currentUser()?.role === "CASHIER" ? "/cashier/dashboard" : "/admin/dashboard";
   }
 
   logout(): void {
@@ -76,9 +76,9 @@ export class AuthService {
     if (!token) return false;
 
     try {
-      const decoded: any = jwtDecode(token);
+      const decoded = jwtDecode<JwtPayload>(token);
       const now = Math.floor(Date.now() / 1000);
-      return decoded.exp > now;
+      return (decoded.exp ?? 0) > now;
     } catch {
       return false;
     }

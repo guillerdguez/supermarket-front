@@ -16,6 +16,6 @@ export function roleGuard(roles: string[]): CanActivateFn {
       return true;
     }
 
-    return router.createUrlTree(["/auth/login"]);
+    return router.createUrlTree(["/403"]);
   };
 }

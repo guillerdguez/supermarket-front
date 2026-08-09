@@ -59,7 +59,7 @@ describe("roleGuard", () => {
     expect(run(["ADMIN", "MANAGER"])).toBe(true);
   });
 
-  it("redirects to login when the user's role is not in the allowed list", () => {
+  it("redirects to /403 when the user's role is not in the allowed list", () => {
     const auth = TestBed.inject(AuthService);
     auth.model.currentUser.set(cashier);
 
@@ -67,7 +67,7 @@ describe("roleGuard", () => {
 
     const router = TestBed.inject(Router);
     expect((result as UrlTree).toString()).toBe(
-      router.createUrlTree(["/auth/login"]).toString(),
+      router.createUrlTree(["/403"]).toString(),
     );
   });
 });
