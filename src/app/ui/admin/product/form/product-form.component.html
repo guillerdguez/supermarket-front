@@ -36,26 +36,27 @@
                 </div>
               </div>
             } @else {
-              <form class="form" (ngSubmit)="onSubmit()" novalidate>
+              <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
                 <div class="form-scroll">
                   <section class="form-section">
                     <h2 class="pos-section-title">Información general</h2>
                     <div class="form-grid">
-                      <div class="field field--full">
+                      <div class="field field--full" [class.has-error]="form.controls.name.invalid && form.controls.name.touched">
                         <label for="name"
                           >Nombre <span class="req">*</span></label
                         >
                         <input
                           id="name"
-                          name="name"
-                          [(ngModel)]="form.name"
-                          required
+                          formControlName="name"
                           placeholder="Ej. Leche entera 1L"
+                          [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+                          [attr.aria-describedby]="form.controls.name.invalid && form.controls.name.touched ? 'name-error' : null"
                         />
                         <span class="field-hint">
                           Nombre visible en el catálogo, el POS y el ticket de
                           venta.
                         </span>
+                        <app-field-error id="name-error" [message]="fieldError(form.controls.name, { required: 'El nombre es obligatorio' })" />
                       </div>
 
                       <div class="field">
@@ -67,8 +68,7 @@
                           ></i>
                           <input
                             id="barcode"
-                            name="barcode"
-                            [(ngModel)]="form.barcode"
+                            formControlName="barcode"
                             placeholder="8412345678901"
                           />
                         </span>
@@ -83,8 +83,7 @@
                           ></i>
                           <input
                             id="category"
-                            name="category"
-                            [(ngModel)]="form.category"
+                            formControlName="category"
                             placeholder="Ej. Lácteos"
                           />
                         </span>
@@ -95,7 +94,7 @@
                   <section class="form-section form-section--price">
                     <h2 class="pos-section-title">Precio</h2>
                     <div class="form-grid">
-                      <div class="field">
+                      <div class="field" [class.has-error]="form.controls.price.invalid && form.controls.price.touched">
                         <label for="price"
                           >Precio de venta <span class="req">*</span></label
                         >
@@ -103,18 +102,19 @@
                           <span class="input-icon input-icon--text">€</span>
                           <input
                             id="price"
-                            name="price"
                             type="number"
                             min="0.01"
                             step="0.01"
-                            [(ngModel)]="form.price"
-                            required
+                            formControlName="price"
                             placeholder="0.00"
+                            [attr.aria-invalid]="form.controls.price.invalid && form.controls.price.touched"
+                            [attr.aria-describedby]="form.controls.price.invalid && form.controls.price.touched ? 'price-error' : null"
                           />
                         </span>
                         <span class="field-hint"
                           >Precio final, impuestos incluidos.</span
                         >
+                        <app-field-error id="price-error" [message]="fieldError(form.controls.price, { required: 'El precio es obligatorio', min: 'El precio debe ser mayor que 0' })" />
                       </div>
                     </div>
                   </section>
@@ -145,7 +145,7 @@
                     pButton
                     [label]="loading() ? (isEdit ? 'Guardando…' : 'Creando…') : (isEdit ? 'Guardar cambios' : 'Crear producto')"
                     [loading]="loading()"
-                    [disabled]="loading() || !form.name || form.price <= 0"
+                    [disabled]="loading()"
                   ></button>
                 </div>
               </form>
@@ -163,18 +163,18 @@
                   <i class="pi pi-box" aria-hidden="true"></i>
                 </div>
                 <strong class="preview-name">{{
-                  form.name || "Nombre del producto"
+                  formValue().name || "Nombre del producto"
                 }}</strong>
-                @if (form.category) {
-                  <span class="preview-tag">{{ form.category }}</span>
+                @if (formValue().category) {
+                  <span class="preview-tag">{{ formValue().category }}</span>
                 }
                 <div class="preview-price">
-                  {{ form.price || 0 | currency: "EUR" : "symbol" : "1.2-2" }}
+                  {{ formValue().price || 0 | currency: "EUR" : "symbol" : "1.2-2" }}
                 </div>
-                @if (form.barcode) {
+                @if (formValue().barcode) {
                   <div class="preview-barcode">
                     <i class="pi pi-hashtag" aria-hidden="true"></i>
-                    {{ form.barcode }}
+                    {{ formValue().barcode }}
                   </div>
                 }
               </div>

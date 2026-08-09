@@ -1,24 +1,26 @@
 import { Component, effect, inject, OnInit, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { CurrencyPipe } from "@angular/common";
 import { ButtonModule } from "primeng/button";
 import { ProductService } from "../../../../services/product/product.service";
-import { ProductRequest } from "../../../../DTO/product.dto";
 import { CrudComponent } from "../../../../model/Domain/crud-component";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
+import { FieldErrorComponent } from "../../../shared/field-error/field-error.component";
 
 @Component({
   selector: "app-product-form",
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     RouterLink,
     CurrencyPipe,
     ButtonModule,
     PosPanelComponent,
     PosPageShellComponent,
+    FieldErrorComponent,
   ],
   templateUrl: "./product-form.component.html",
   styleUrl: "./product-form.component.scss",
@@ -27,6 +29,7 @@ export class ProductFormComponent implements OnInit, CrudComponent {
   private readonly products = inject(ProductService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
 
   loading = this.products.model.loading;
   ready = signal(false);
@@ -34,12 +37,14 @@ export class ProductFormComponent implements OnInit, CrudComponent {
 
   isPreview = false;
 
-  form: ProductRequest = {
-    name: "",
-    barcode: "",
-    price: 0,
-    category: "",
-  };
+  form = this.fb.nonNullable.group({
+    name: ["", [Validators.required]],
+    barcode: [""],
+    price: [0, [Validators.required, Validators.min(0.01)]],
+    category: [""],
+  });
+
+  formValue = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
 
   get isEdit(): boolean {
     return this.id != null;
@@ -49,12 +54,12 @@ export class ProductFormComponent implements OnInit, CrudComponent {
     effect(() => {
       const product = this.products.model.editing();
       if (!product) return;
-      this.form = {
+      this.form.patchValue({
         name: product.name,
         barcode: product.barcode || "",
         price: product.price,
         category: product.category || "",
-      };
+      });
       this.ready.set(true);
     });
   }
@@ -72,9 +77,18 @@ export class ProductFormComponent implements OnInit, CrudComponent {
     }
   }
 
+  fieldError(control: AbstractControl | null, messages: Record<string, string>): string | null {
+    if (!control || !(control.touched || control.dirty) || control.valid) return null;
+    const key = Object.keys(control.errors ?? {})[0];
+    return key ? (messages[key] ?? "Campo inválido") : null;
+  }
+
   onSubmit() {
-    if (!this.form.name.trim() || this.form.price <= 0) return;
-    this.products.save(this.form, this.id ?? undefined, this);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.products.save(this.form.getRawValue(), this.id ?? undefined, this);
   }
 
   afterSave() {
