@@ -1,5 +1,6 @@
-import { Component, inject, computed, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component, computed, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -7,11 +8,20 @@ import { ProfileService } from "../../../services/profile/profile.service";
 import { CrudComponent } from "../../../model/Domain/crud-component";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
+import { checkPassword, passwordRulesValidator, passwordsMatchValidator } from "../../../services/utils/password.validator";
+import { FieldErrorComponent } from "../../shared/field-error/field-error.component";
 
 @Component({
   selector: "app-change-password",
   standalone: true,
-  imports: [FormsModule, RouterLink, ButtonModule, PosPanelComponent, PosPageShellComponent],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    ButtonModule,
+    PosPanelComponent,
+    PosPageShellComponent,
+    FieldErrorComponent,
+  ],
   templateUrl: "./change-password.component.html",
   styleUrl: "./change-password.component.scss",
 })
@@ -19,36 +29,34 @@ export class ChangePasswordComponent implements CrudComponent {
   private readonly profileSvc = inject(ProfileService);
   private readonly router = inject(Router);
   private readonly messages = inject(MessageService);
+  private readonly fb = inject(FormBuilder);
 
   loading = this.profileSvc.model.loading;
 
-  currentPassword = "";
-  newPassword = signal("");
-  confirmPassword = "";
-  mismatch = signal(false);
+  form = this.fb.nonNullable.group(
+    {
+      currentPassword: ["", [Validators.required]],
+      newPassword: ["", [Validators.required, passwordRulesValidator()]],
+      confirmPassword: ["", [Validators.required]],
+    },
+    { validators: [passwordsMatchValidator("newPassword", "confirmPassword")] },
+  );
 
-  rules = computed(() => {
-    const p = this.newPassword();
-    return {
-      minLength: p.length >= 8,
-      hasUpperCase: /[A-Z]/.test(p),
-      hasNumber: /\d/.test(p),
-      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>_\-+=[\]\\|;'/`~]/.test(p),
-    };
+  private readonly newPasswordValue = toSignal(this.form.controls.newPassword.valueChanges, {
+    initialValue: "",
   });
 
-  isPasswordValid = computed(() => {
-    const r = this.rules();
-    return r.minLength && r.hasUpperCase && r.hasNumber && r.hasSpecialChar;
-  });
+  rules = computed(() => checkPassword(this.newPasswordValue() ?? ""));
 
-  onNewPasswordChange(value: string) {
-    this.newPassword.set(value);
-    this.mismatch.set(false);
+  fieldError(control: AbstractControl | null, messages: Record<string, string>): string | null {
+    if (!control || !(control.touched || control.dirty) || control.valid) return null;
+    const key = Object.keys(control.errors ?? {})[0];
+    return key ? (messages[key] ?? "Campo inválido") : null;
   }
 
   onSubmit() {
-    if (!this.currentPassword) {
+    if (this.form.controls.currentPassword.invalid) {
+      this.form.controls.currentPassword.markAsTouched();
       this.messages.add({
         severity: "warn",
         summary: "Contraseña",
@@ -57,7 +65,8 @@ export class ChangePasswordComponent implements CrudComponent {
       return;
     }
 
-    if (!this.isPasswordValid()) {
+    if (this.form.controls.newPassword.invalid) {
+      this.form.controls.newPassword.markAsTouched();
       this.messages.add({
         severity: "warn",
         summary: "Contraseña",
@@ -66,8 +75,8 @@ export class ChangePasswordComponent implements CrudComponent {
       return;
     }
 
-    if (this.newPassword() !== this.confirmPassword) {
-      this.mismatch.set(true);
+    if (this.form.errors?.["passwordsMismatch"]) {
+      this.form.markAllAsTouched();
       this.messages.add({
         severity: "error",
         summary: "Contraseña",
@@ -76,13 +85,8 @@ export class ChangePasswordComponent implements CrudComponent {
       return;
     }
 
-    this.profileSvc.changePassword(
-      {
-        currentPassword: this.currentPassword,
-        newPassword: this.newPassword(),
-      },
-      this,
-    );
+    const { currentPassword, newPassword } = this.form.getRawValue();
+    this.profileSvc.changePassword({ currentPassword, newPassword }, this);
   }
 
   afterSave() {
