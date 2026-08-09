@@ -36,12 +36,12 @@ describe("LoginComponent", () => {
     const auth = TestBed.inject(AuthService);
     const loginSpy = jest.spyOn(auth, "login").mockImplementation(() => undefined);
 
-    fixture.componentInstance.email = "";
-    fixture.componentInstance.password = "";
+    fixture.componentInstance.form.setValue({ email: "", password: "" });
     fixture.componentInstance.onSubmit();
 
     expect(loginSpy).not.toHaveBeenCalled();
-    expect(fixture.componentInstance.submitted()).toBe(true);
+    expect(fixture.componentInstance.form.controls.email.touched).toBe(true);
+    expect(fixture.componentInstance.form.controls.password.touched).toBe(true);
   });
 
   it("does not call auth.login when password is blank but email is set", () => {
@@ -49,11 +49,22 @@ describe("LoginComponent", () => {
     const auth = TestBed.inject(AuthService);
     const loginSpy = jest.spyOn(auth, "login").mockImplementation(() => undefined);
 
-    fixture.componentInstance.email = "admin@supermarket.com";
-    fixture.componentInstance.password = "";
+    fixture.componentInstance.form.patchValue({ email: "admin@supermarket.com", password: "" });
     fixture.componentInstance.onSubmit();
 
     expect(loginSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not call auth.login when the email format is invalid", () => {
+    const fixture = create();
+    const auth = TestBed.inject(AuthService);
+    const loginSpy = jest.spyOn(auth, "login").mockImplementation(() => undefined);
+
+    fixture.componentInstance.form.setValue({ email: "no-es-un-email", password: "password" });
+    fixture.componentInstance.onSubmit();
+
+    expect(loginSpy).not.toHaveBeenCalled();
+    expect(fixture.componentInstance.form.controls.email.errors?.["email"]).toBeTruthy();
   });
 
   it("calls auth.login with the trimmed email and the password when both are set", () => {
@@ -61,8 +72,10 @@ describe("LoginComponent", () => {
     const auth = TestBed.inject(AuthService);
     const loginSpy = jest.spyOn(auth, "login").mockImplementation(() => undefined);
 
-    fixture.componentInstance.email = "  admin@supermarket.com  ";
-    fixture.componentInstance.password = "password";
+    fixture.componentInstance.form.setValue({
+      email: "  admin@supermarket.com  ",
+      password: "password",
+    });
     fixture.componentInstance.onSubmit();
 
     expect(loginSpy).toHaveBeenCalledWith({
