@@ -271,6 +271,16 @@ label.checkbox {
   font-size: 13px;
 }
 
+.field.has-error input,
+.field.has-error .p-select,
+.field.has-error .p-password {
+  border-color: var(--pos-danger);
+}
+
+.field.has-error input:focus {
+  box-shadow: 0 0 0 3px var(--pos-danger-bg);
+}
+
 .field-hint {
   font-size: var(--pos-font-size-xs);
   color: var(--pos-text-muted);
@@ -280,6 +290,35 @@ label.checkbox {
 
 .row-warning {
   background: var(--pos-warning-bg) !important;
+}
+
+.status-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--pos-space-2);
+  padding: var(--pos-space-5) var(--pos-space-3);
+  max-width: 420px;
+  margin-inline: auto;
+
+  i {
+    font-size: 40px;
+    color: var(--pos-text-muted);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: var(--pos-font-size-lg);
+    font-weight: var(--pos-font-weight-emphasis);
+    color: var(--pos-text);
+  }
+
+  p {
+    margin: 0;
+    color: var(--pos-text-muted);
+    font-size: var(--pos-font-size-sm);
+  }
 }
 
 .row-danger {
