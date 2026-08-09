@@ -126,6 +126,23 @@
     color: var(--pos-primary);
     border-bottom-color: var(--pos-primary);
   }
+
+  &.p-menubar-mobile-active .p-menubar-root-list {
+    position: fixed;
+    top: var(--pos-nav-height);
+    left: 0;
+    right: 0;
+    width: auto;
+    max-height: calc(100vh - var(--pos-nav-height));
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--pos-space-1);
+    background: var(--pos-surface);
+    border-top: 1px solid var(--pos-border);
+    box-shadow: var(--pos-shadow-md);
+  }
 }
 
 @media (max-width: 768px) {

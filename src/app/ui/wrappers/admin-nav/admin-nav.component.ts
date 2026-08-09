@@ -1,4 +1,4 @@
-import { Component, inject, computed } from "@angular/core";
+import { Component, ElementRef, HostListener, inject, computed } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { MenuItem, ConfirmationService } from "primeng/api";
 import { MenubarModule } from "primeng/menubar";
@@ -23,7 +23,21 @@ import { NotificationsBellComponent } from "../../shared/notifications-bell/noti
 export class AdminNavComponent {
   private readonly auth = inject(AuthService);
   private readonly confirm = inject(ConfirmationService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   user = this.auth.model.currentUser;
+
+  // PrimeNG's Menubar deja de escuchar clics fuera del menú al colapsar a
+  // móvil (su listener interno se desvincula por un effect propio de la
+  // librería), así que el cierre por clic externo se maneja aquí.
+  @HostListener("document:click", ["$event"])
+  onDocumentClick(event: MouseEvent) {
+    const nav = this.elementRef.nativeElement;
+    if (nav.contains(event.target as Node)) return;
+    const openMenubar = nav.querySelector(".p-menubar.p-menubar-mobile-active");
+    if (!openMenubar) return;
+    const toggleBtn = openMenubar.querySelector(".p-menubar-button");
+    (toggleBtn as HTMLElement | null)?.click();
+  }
 
   isAdmin = computed(() => {
     const r = this.user()?.role;
