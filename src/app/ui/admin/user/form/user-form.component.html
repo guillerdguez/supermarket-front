@@ -8,7 +8,7 @@
             Volver a usuarios
           </a>
         }
-        <h1>{{ isEdit ? "Editar usuario" : "Nuevo usuario" }}</h1>
+        <h1>{{ isEdit() ? "Editar usuario" : "Nuevo usuario" }}</h1>
       </div>
     </header>
 
@@ -17,39 +17,53 @@
         <div class="slot">
           <pos-panel title="Datos del usuario">
             @if (ready()) {
-              <form class="form" (ngSubmit)="onSubmit()" novalidate>
+              <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
                 <div class="form-scroll">
                   <section class="form-section">
                     <h2 class="pos-section-title">Datos personales</h2>
                     <div class="form-grid">
-                      <div class="field">
+                      <div class="field" [class.has-error]="form.controls.username.invalid && form.controls.username.touched">
                         <label for="u">Usuario <span class="req">*</span></label>
                         <input
                           id="u"
-                          name="u"
-                          [(ngModel)]="form.username"
-                          required
+                          formControlName="username"
                           autocomplete="off"
+                          [attr.aria-invalid]="form.controls.username.invalid && form.controls.username.touched"
+                          [attr.aria-describedby]="form.controls.username.invalid && form.controls.username.touched ? 'u-error' : null"
                         />
+                        <app-field-error id="u-error" [message]="fieldError(form.controls.username, { required: 'El usuario es obligatorio' })" />
                       </div>
-                      <div class="field">
+                      <div class="field" [class.has-error]="form.controls.email.invalid && form.controls.email.touched">
                         <label for="e">Email <span class="req">*</span></label>
                         <input
                           id="e"
-                          name="e"
                           type="email"
-                          [(ngModel)]="form.email"
-                          required
+                          formControlName="email"
                           autocomplete="off"
+                          [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                          [attr.aria-describedby]="form.controls.email.invalid && form.controls.email.touched ? 'e-error' : null"
                         />
+                        <app-field-error id="e-error" [message]="fieldError(form.controls.email, { required: 'El email es obligatorio', email: 'Introduce un email válido' })" />
                       </div>
-                      <div class="field">
+                      <div class="field" [class.has-error]="form.controls.firstName.invalid && form.controls.firstName.touched">
                         <label for="f">Nombre <span class="req">*</span></label>
-                        <input id="f" name="f" [(ngModel)]="form.firstName" required />
+                        <input
+                          id="f"
+                          formControlName="firstName"
+                          [attr.aria-invalid]="form.controls.firstName.invalid && form.controls.firstName.touched"
+                          [attr.aria-describedby]="form.controls.firstName.invalid && form.controls.firstName.touched ? 'f-error' : null"
+                        />
+                        <app-field-error id="f-error" [message]="fieldError(form.controls.firstName, { required: 'El nombre es obligatorio' })" />
                       </div>
-                      <div class="field">
+                      <div class="field" [class.has-error]="form.controls.lastName.invalid && form.controls.lastName.touched">
                         <label for="l">Apellido <span class="req">*</span></label>
-                        <input id="l" name="l" [(ngModel)]="form.lastName" required />
+                        <input
+                          id="l"
+                          formControlName="lastName"
+                          [attr.aria-invalid]="form.controls.lastName.invalid && form.controls.lastName.touched"
+                          [attr.aria-describedby]="form.controls.lastName.invalid && form.controls.lastName.touched ? 'l-error' : null"
+                        />
+                        <app-field-error id="l-error" [message]="fieldError(form.controls.lastName, { required: 'El apellido es obligatorio' })" />
                       </div>
                     </div>
                   </section>
@@ -57,15 +71,15 @@
                   <section class="form-section">
                     <h2 class="pos-section-title">Acceso y permisos</h2>
                     <div class="form-grid">
-                      <div class="field field--full">
-                        @if (isEdit) {
+                      <div class="field field--full" [class.has-error]="form.controls.password.invalid && form.controls.password.touched">
+                        @if (isEdit()) {
                           <div class="field-label-row">
                             <label for="p">Contraseña</label>
-                            @if (!cambiarPassword) {
+                            @if (!cambiarPassword()) {
                               <button
                                 type="button"
                                 class="link-btn"
-                                (click)="cambiarPassword = true"
+                                (click)="cambiarPassword.set(true)"
                               >
                                 <i class="pi pi-key" aria-hidden="true"></i>
                                 Cambiar contraseña
@@ -73,7 +87,7 @@
                             }
                           </div>
 
-                          @if (!cambiarPassword) {
+                          @if (!cambiarPassword()) {
                             <div class="password-masked">
                               <i class="pi pi-lock" aria-hidden="true"></i>
                               ••••••••
@@ -84,13 +98,12 @@
                                 <i class="pi pi-key input-icon" aria-hidden="true"></i>
                                 <input
                                   id="p"
-                                  name="p"
                                   type="password"
-                                  [(ngModel)]="form.password"
-                                  required
-                                  minlength="8"
+                                  formControlName="password"
                                   autocomplete="new-password"
                                   placeholder="Nueva contraseña"
+                                  [attr.aria-invalid]="form.controls.password.invalid && form.controls.password.touched"
+                                  [attr.aria-describedby]="form.controls.password.invalid && form.controls.password.touched ? 'p-error' : null"
                                 />
                               </span>
                               <div class="field-hint-row">
@@ -103,6 +116,7 @@
                                   Cancelar
                                 </button>
                               </div>
+                              <app-field-error id="p-error" [message]="fieldError(form.controls.password, { required: 'La contraseña es obligatoria', minlength: 'Mínimo 8 caracteres' })" />
                             </div>
                           }
                         } @else {
@@ -111,15 +125,15 @@
                             <i class="pi pi-key input-icon" aria-hidden="true"></i>
                             <input
                               id="p"
-                              name="p"
                               type="password"
-                              [(ngModel)]="form.password"
-                              required
-                              minlength="8"
+                              formControlName="password"
                               autocomplete="new-password"
+                              [attr.aria-invalid]="form.controls.password.invalid && form.controls.password.touched"
+                              [attr.aria-describedby]="form.controls.password.invalid && form.controls.password.touched ? 'p-error' : null"
                             />
                           </span>
                           <span class="field-hint">Mínimo 8 caracteres</span>
+                          <app-field-error id="p-error" [message]="fieldError(form.controls.password, { required: 'La contraseña es obligatoria', minlength: 'Mínimo 8 caracteres' })" />
                         }
                       </div>
 
@@ -130,8 +144,7 @@
                           [options]="roleOptions"
                           optionLabel="label"
                           optionValue="value"
-                          [(ngModel)]="form.role"
-                          name="r"
+                          formControlName="role"
                           styleClass="w-full"
                         />
                       </div>
@@ -142,8 +155,7 @@
                           [options]="branchList()"
                           optionLabel="name"
                           optionValue="id"
-                          [(ngModel)]="form.branchId"
-                          name="b"
+                          formControlName="branchId"
                           placeholder="— Sin sucursal —"
                           styleClass="w-full"
                           [showClear]="true"
@@ -182,7 +194,7 @@
                   <button
                     type="submit"
                     pButton
-                    [label]="loading() ? (isEdit ? 'Guardando…' : 'Creando…') : (isEdit ? 'Guardar cambios' : 'Crear usuario')"
+                    [label]="loading() ? (isEdit() ? 'Guardando…' : 'Creando…') : (isEdit() ? 'Guardar cambios' : 'Crear usuario')"
                     [loading]="loading()"
                     [disabled]="loading()"
                   ></button>
@@ -209,18 +221,18 @@
               <div class="preview">
                 <div class="preview-icon">{{ initials }}</div>
                 <strong class="preview-name">{{
-                  form.firstName || form.lastName
-                    ? (form.firstName + " " + form.lastName).trim()
+                  formValue().firstName || formValue().lastName
+                    ? (formValue().firstName + " " + formValue().lastName).trim()
                     : "Nombre del usuario"
                 }}</strong>
-                <span class="preview-tag">&#64;{{ form.username || "usuario" }}</span>
+                <span class="preview-tag">&#64;{{ formValue().username || "usuario" }}</span>
 
                 <div class="preview-badges">
                   <p-tag
-                    [severity]="roleSeverity(form.role)"
-                    [value]="roleLabel(form.role)"
+                    [severity]="roleSeverity(formValue().role)"
+                    [value]="roleLabel(formValue().role)"
                   />
-                  @if (isEdit) {
+                  @if (isEdit()) {
                     @if (editingUser()?.active === false) {
                       <p-tag severity="secondary" value="Inactivo" />
                     } @else {

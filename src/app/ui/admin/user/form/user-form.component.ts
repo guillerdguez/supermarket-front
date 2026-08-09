@@ -1,5 +1,6 @@
-import { Component, effect, inject, OnInit, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component, computed, effect, inject, OnInit, signal } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { SelectModule } from "primeng/select";
@@ -11,18 +12,20 @@ import { CrudComponent } from "../../../../model/Domain/crud-component";
 import { USER_ROLE_OPTIONS } from "../../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
+import { FieldErrorComponent } from "../../../shared/field-error/field-error.component";
 
 @Component({
   selector: "app-user-form",
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     RouterLink,
     ButtonModule,
     SelectModule,
     TagModule,
     PosPanelComponent,
     PosPageShellComponent,
+    FieldErrorComponent,
   ],
   templateUrl: "./user-form.component.html",
   styleUrl: "./user-form.component.scss",
@@ -32,37 +35,46 @@ export class UserFormComponent implements OnInit, CrudComponent {
   private readonly branches = inject(BranchService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
 
   isPreview = false;
-  cambiarPassword = false;
+  cambiarPassword = signal(false);
 
   loading = this.svc.model.loading;
   error = this.svc.model.error;
   editingUser = this.svc.model.editing;
   ready = signal(false);
-  id: number | null = null;
+  id = signal<number | null>(null);
 
   branchList = this.branches.model.list;
   readonly roleOptions = USER_ROLE_OPTIONS;
-  form: UserRequest = {
-    username: "",
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    role: "CASHIER",
-    branchId: null,
-  };
 
-  get isEdit(): boolean {
-    return this.id != null;
-  }
+  form = this.fb.nonNullable.group({
+    username: ["", [Validators.required]],
+    email: ["", [Validators.required, Validators.email]],
+    password: [""],
+    firstName: ["", [Validators.required]],
+    lastName: ["", [Validators.required]],
+    role: ["CASHIER"],
+    branchId: [null as number | null],
+  });
+
+  formValue = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
+
+  isEdit = computed(() => this.id() != null);
 
   constructor() {
     effect(() => {
+      const needsPassword = !this.isEdit() || this.cambiarPassword();
+      const pwCtrl = this.form.controls.password;
+      pwCtrl.setValidators(needsPassword ? [Validators.required, Validators.minLength(8)] : []);
+      pwCtrl.updateValueAndValidity({ emitEvent: false });
+    });
+
+    effect(() => {
       const user = this.svc.model.editing();
       if (!user) return;
-      this.form = {
+      this.form.patchValue({
         username: user.username,
         email: user.email,
         password: "",
@@ -70,7 +82,7 @@ export class UserFormComponent implements OnInit, CrudComponent {
         lastName: user.lastName,
         role: user.role,
         branchId: user.branchId ?? null,
-      };
+      });
       this.ready.set(true);
     });
   }
@@ -78,28 +90,28 @@ export class UserFormComponent implements OnInit, CrudComponent {
   ngOnInit() {
     this.branches.retrieveList();
     const idParam = this.route.snapshot.paramMap.get("id");
-    this.id = idParam ? Number(idParam) : null;
+    this.id.set(idParam ? Number(idParam) : null);
     this.isPreview =
       this.route.snapshot.queryParamMap.get("isPreview") === "true";
 
-    if (this.isEdit) {
-      this.svc.retrieveDetail(this.id!);
+    if (this.isEdit()) {
+      this.svc.retrieveDetail(this.id()!);
     } else {
       this.ready.set(true);
     }
   }
 
   get initials(): string {
-    const f = this.form.firstName?.trim().charAt(0) ?? "";
-    const l = this.form.lastName?.trim().charAt(0) ?? "";
+    const f = this.formValue().firstName?.trim().charAt(0) ?? "";
+    const l = this.formValue().lastName?.trim().charAt(0) ?? "";
     return (f + l).toUpperCase() || "?";
   }
 
-  roleLabel(role?: string): string {
+  roleLabel(role?: string | null): string {
     return this.roleOptions.find((r) => r.value === role)?.label ?? role ?? "—";
   }
 
-  roleSeverity(role?: string): "danger" | "warn" | "info" {
+  roleSeverity(role?: string | null): "danger" | "warn" | "info" {
     if (role === "ADMIN") return "danger";
     if (role === "MANAGER") return "warn";
     return "info";
@@ -107,25 +119,33 @@ export class UserFormComponent implements OnInit, CrudComponent {
 
   selectedBranchName(): string | null {
     return (
-      this.branchList().find((b) => b.id === this.form.branchId)?.name ??
+      this.branchList().find((b) => b.id === this.formValue().branchId)?.name ??
       null
     );
   }
 
+  fieldError(control: AbstractControl | null, messages: Record<string, string>): string | null {
+    if (!control || !(control.touched || control.dirty) || control.valid) return null;
+    const key = Object.keys(control.errors ?? {})[0];
+    return key ? (messages[key] ?? "Campo inválido") : null;
+  }
+
   cancelPasswordChange() {
-    this.cambiarPassword = false;
-    this.form.password = "";
+    this.cambiarPassword.set(false);
+    this.form.controls.password.setValue("");
   }
 
   onSubmit() {
-    if (!this.form.username.trim() || !this.form.email.trim()) return;
-    if (!this.isEdit && !this.form.password) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-    const payload = { ...this.form };
-    if (this.isEdit && !this.cambiarPassword) {
+    const payload: UserRequest = { ...this.form.getRawValue() };
+    if (this.isEdit() && !this.cambiarPassword()) {
       delete payload.password;
     }
-    this.svc.save(payload, this.id ?? undefined, this);
+    this.svc.save(payload, this.id() ?? undefined, this);
   }
 
   afterSave() {
