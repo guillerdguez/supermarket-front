@@ -1,0 +1,12 @@
+<pos-page-shell>
+  <div class="status-page">
+    <i class="pi pi-map" aria-hidden="true"></i>
+    <h1>404 · Página no encontrada</h1>
+    <p>La URL a la que intentas acceder no existe o fue movida.</p>
+    @if (isAuthenticated()) {
+      <a [routerLink]="homeUrl()" pButton label="Volver al inicio"></a>
+    } @else {
+      <a routerLink="/auth/login" pButton label="Ir a iniciar sesión"></a>
+    }
+  </div>
+</pos-page-shell>

@@ -1,0 +1,12 @@
+<pos-page-shell>
+  <div class="status-page">
+    <i class="pi pi-lock" aria-hidden="true"></i>
+    <h1>403 · No tienes permiso para ver esta sección</h1>
+    <p>Tu cuenta no tiene el rol necesario para acceder a esta pantalla.</p>
+    @if (isAuthenticated()) {
+      <a [routerLink]="homeUrl()" pButton label="Volver al inicio"></a>
+    } @else {
+      <a routerLink="/auth/login" pButton label="Ir a iniciar sesión"></a>
+    }
+  </div>
+</pos-page-shell>
