@@ -98,7 +98,10 @@ El build de producción usa `src/environments/environment.prod.ts` (vía `fileRe
 
 ## ☁️ Despliegue
 
-Pensado para desplegarse como sitio estático (Vercel/Netlify) contra un backend en Railway/Render — ver el README del [backend](https://github.com/guillerdguez/supermarket-back) para esa parte. Antes de desplegar, completar `apiUrl` en `src/environments/environment.prod.ts` con la URL pública del backend.
+El proyecto está desplegado en Railway y disponible en:
+https://supermarket-front-production.up.railway.app
+Antes de desplegar, completar apiUrl en src/environments/environment.prod.ts con la URL pública del backend desplegado en Railway.
+Para el despliegue del backend, consulta el README del backend
 
 ---
 
