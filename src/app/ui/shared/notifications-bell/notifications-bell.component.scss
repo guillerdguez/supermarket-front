@@ -133,7 +133,8 @@
   color: inherit;
 
   &:hover {
-    background: var(--pos-surface-alt);
+
+      background: var(--pos-primary-light-hover);
   }
 }
 
