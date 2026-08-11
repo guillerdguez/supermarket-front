@@ -1,33 +1,23 @@
 # 🛒 Supermarket POS — Frontend
 
-Frontend de un sistema de punto de venta (POS) para supermercados con múltiples sucursales: cobro, inventario, transferencias de stock entre sucursales, cierres de caja con detección de discrepancias, reportes de negocio y notificaciones en tiempo real.
+Frontend de un sistema de punto de venta (POS) para supermercados con múltiples sucursales: cobro, inventario, transferencias de stock entre sucursales, cierres de caja con detección de discrepancias, reportes de negocio y notificaciones.
 
 Construido con **Angular 20** en modo standalone (sin `NgModule`), usando **señales** (`signal`/`computed`) para todo el estado — sin NgRx ni otro store externo.
 
 **Backend:** [supermarket-back](https://github.com/guillerdguez/supermarket-back) (Spring Boot 3 / Java 17).
 
-<!-- 🔗 Demo en vivo: pendiente — ver "Despliegue" más abajo -->
-
-## 📸 Capturas
-
-| Login | POS — Cobrar | Reportes |
-| --- | --- | --- |
-| ![Login](docs/screenshots/login.png) | ![POS](docs/screenshots/pos.png) | ![Reportes](docs/screenshots/reports.png) |
-
-| Mis ventas | Notificaciones |
-| --- | --- |
-| ![Mis ventas](docs/screenshots/my-sales.png) | ![Notificaciones](docs/screenshots/notifications.png) |
+🔗 **Demo en vivo:** [supermarket-front-production.up.railway.app](https://supermarket-front-production.up.railway.app)
 
 ## ✨ Funcionalidades
 
-- **Punto de venta**: cobro con carrito, múltiples formas de pago (efectivo, tarjeta, transferencia), impresión de ticket.
+- **Punto de venta**: cobro con carrito y múltiples formas de pago (efectivo, tarjeta, transferencia).
 - **Catálogo**: productos y sucursales con control de stock por sucursal.
 - **Transferencias de stock**: solicitar, aprobar/rechazar, completar transferencias entre sucursales, con historial y estado.
 - **Caja registradora**: apertura/cierre de turno con detección automática de superávit/déficit.
 - **Ventas**: historial propio (cajero) y listado general (admin), con detalle de líneas y forma de pago en un diálogo, sin salir de la pantalla.
 - **Reportes** (admin/manager): ventas por sucursal/cajero/producto, comparativa entre periodos, estado e inventory turnover del inventario, cierres de caja con discrepancias — todos filtrables por fecha y sucursal.
 - **Usuarios** (admin): alta/edición, activar/reactivar, cambio de rol independiente.
-- **Notificaciones**: alertas de stock bajo, transferencias, discrepancias de caja y ventas canceladas, con deep-link al detalle de la venta/transferencia referenciada.
+- **Notificaciones**: alertas de stock bajo, transferencias, discrepancias de caja y ventas canceladas, con deep-link al detalle de la venta/transferencia referenciada. Se cargan al iniciar sesión y al navegar — no hay push/WebSocket en tiempo real.
 - **Auditoría**: registro de quién hizo qué y cuándo en operaciones críticas.
 
 ## 🛠️ Stack
