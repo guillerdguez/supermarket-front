@@ -10,10 +10,10 @@
   </header>
 
   <pos-panel title="Datos de la transferencia">
-    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-scroll">
         <div class="form-grid">
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched">
             <label for="s">Origen <span class="req">*</span></label>
 
             <p-select
@@ -21,45 +21,56 @@
               [options]="branchList()"
               optionLabel="name"
               optionValue="id"
-              [(ngModel)]="form.sourceBranchId"
-              name="s"
+              formControlName="sourceBranchId"
               placeholder="Seleccionar…"
               styleClass="w-full"
-              required
+              [attr.aria-invalid]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched"
+              [attr.aria-describedby]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched ? 's-error' : null"
             />
+            <app-field-error id="s-error" [message]="fieldError(form.controls.sourceBranchId, { required: 'La sucursal de origen es obligatoria' })" />
           </div>
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.targetBranchId.invalid && form.controls.targetBranchId.touched">
             <label for="t">Destino <span class="req">*</span></label>
             <p-select
               id="t"
               [options]="branchList()"
               optionLabel="name"
               optionValue="id"
-              [(ngModel)]="form.targetBranchId"
-              name="t"
+              formControlName="targetBranchId"
               placeholder="Seleccionar…"
               styleClass="w-full"
-              required
+              [attr.aria-invalid]="form.controls.targetBranchId.invalid && form.controls.targetBranchId.touched"
+              [attr.aria-describedby]="form.controls.targetBranchId.invalid && form.controls.targetBranchId.touched ? 't-error' : null"
             />
+            <app-field-error id="t-error" [message]="fieldError(form.controls.targetBranchId, { required: 'La sucursal de destino es obligatoria' })" />
           </div>
 
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.productId.invalid && form.controls.productId.touched">
             <label for="p">Producto <span class="req">*</span></label>
             <p-select
               id="p"
               [options]="productList()"
               optionLabel="name"
               optionValue="id"
-              [(ngModel)]="form.productId"
-              name="p"
+              formControlName="productId"
               placeholder="Seleccionar…"
               styleClass="w-full"
-              required
+              [attr.aria-invalid]="form.controls.productId.invalid && form.controls.productId.touched"
+              [attr.aria-describedby]="form.controls.productId.invalid && form.controls.productId.touched ? 'p-error' : null"
             />
+            <app-field-error id="p-error" [message]="fieldError(form.controls.productId, { required: 'El producto es obligatorio' })" />
           </div>
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.quantity.invalid && form.controls.quantity.touched">
             <label for="q">Cantidad <span class="req">*</span></label>
-            <input id="q" name="q" type="number" min="1" [(ngModel)]="form.quantity" required />
+            <input
+              id="q"
+              formControlName="quantity"
+              type="number"
+              min="1"
+              [attr.aria-invalid]="form.controls.quantity.invalid && form.controls.quantity.touched"
+              [attr.aria-describedby]="form.controls.quantity.invalid && form.controls.quantity.touched ? 'q-error' : null"
+            />
+            <app-field-error id="q-error" [message]="fieldError(form.controls.quantity, { required: 'La cantidad es obligatoria', min: 'La cantidad debe ser al menos 1' })" />
           </div>
         </div>
       </div>

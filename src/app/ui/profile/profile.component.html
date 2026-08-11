@@ -10,12 +10,12 @@
   </header>
 
   <pos-panel title="Datos personales">
-    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-scroll">
         <div class="profile-header">
-          <span class="pos-avatar">{{ form.firstName[0] }}{{ form.lastName[0] }}</span>
+          <span class="pos-avatar">{{ formValue().firstName?.charAt(0) }}{{ formValue().lastName?.charAt(0) }}</span>
           <div class="profile-header__text">
-            <strong>{{ form.firstName }} {{ form.lastName }}</strong>
+            <strong>{{ formValue().firstName }} {{ formValue().lastName }}</strong>
             <span class="pos-role-pill">{{ role }}</span>
           </div>
         </div>
@@ -29,17 +29,35 @@
             <label for="branch">Sucursal</label>
             <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
           </div>
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.username.invalid && form.controls.username.touched">
             <label for="u">Usuario <span class="req">*</span></label>
-            <input id="u" name="u" [(ngModel)]="form.username" required />
+            <input
+              id="u"
+              formControlName="username"
+              [attr.aria-invalid]="form.controls.username.invalid && form.controls.username.touched"
+              [attr.aria-describedby]="form.controls.username.invalid && form.controls.username.touched ? 'u-error' : null"
+            />
+            <app-field-error id="u-error" [message]="fieldError(form.controls.username, { required: 'El usuario es obligatorio' })" />
           </div>
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.firstName.invalid && form.controls.firstName.touched">
             <label for="f">Nombre <span class="req">*</span></label>
-            <input id="f" name="f" [(ngModel)]="form.firstName" required />
+            <input
+              id="f"
+              formControlName="firstName"
+              [attr.aria-invalid]="form.controls.firstName.invalid && form.controls.firstName.touched"
+              [attr.aria-describedby]="form.controls.firstName.invalid && form.controls.firstName.touched ? 'f-error' : null"
+            />
+            <app-field-error id="f-error" [message]="fieldError(form.controls.firstName, { required: 'El nombre es obligatorio' })" />
           </div>
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.lastName.invalid && form.controls.lastName.touched">
             <label for="l">Apellido <span class="req">*</span></label>
-            <input id="l" name="l" [(ngModel)]="form.lastName" required />
+            <input
+              id="l"
+              formControlName="lastName"
+              [attr.aria-invalid]="form.controls.lastName.invalid && form.controls.lastName.touched"
+              [attr.aria-describedby]="form.controls.lastName.invalid && form.controls.lastName.touched ? 'l-error' : null"
+            />
+            <app-field-error id="l-error" [message]="fieldError(form.controls.lastName, { required: 'El apellido es obligatorio' })" />
           </div>
         </div>
       </div>

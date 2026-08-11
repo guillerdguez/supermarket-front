@@ -12,6 +12,7 @@ import { ButtonModule } from "primeng/button";
 import { MessageModule } from "primeng/message";
 import { AuthService } from "../../../services/auth/auth.service";
 import { FieldErrorComponent } from "../../shared/field-error/field-error.component";
+import { fieldError } from "../../../../util/form/field-error";
 
 function trimmedEmailValidator(control: AbstractControl): ValidationErrors | null {
   const trimmed = ((control.value as string) ?? "").trim();
@@ -44,11 +45,7 @@ export class LoginComponent {
     password: ["", [Validators.required]],
   });
 
-  fieldError(control: AbstractControl | null, messages: Record<string, string>): string | null {
-    if (!control || !(control.touched || control.dirty) || control.valid) return null;
-    const key = Object.keys(control.errors ?? {})[0];
-    return key ? (messages[key] ?? "Campo inválido") : null;
-  }
+  protected readonly fieldError = fieldError;
 
   onSubmit() {
     if (this.form.invalid) {

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { SelectModule } from "primeng/select";
 import { ButtonModule } from "primeng/button";
@@ -9,28 +9,56 @@ import { AuthService } from "../../../../services/auth/auth.service";
 import { CrudComponent } from "../../../../model/Domain/crud-component";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
+import { FieldErrorComponent } from "../../../shared/field-error/field-error.component";
+import { fieldError } from "../../../../../util/form/field-error";
 
 @Component({
-  selector: "app-cashier-create-transfer", standalone: true,
-  imports: [FormsModule, RouterLink, SelectModule, ButtonModule, PosPanelComponent, PosPageShellComponent],
-  templateUrl: "./create-transfer.component.html", styleUrl: "./create-transfer.component.scss",
+  selector: "app-cashier-create-transfer",
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    SelectModule,
+    ButtonModule,
+    PosPanelComponent,
+    PosPageShellComponent,
+    FieldErrorComponent,
+  ],
+  templateUrl: "./create-transfer.component.html",
+  styleUrl: "./create-transfer.component.scss",
 })
 export class CashierCreateTransferComponent implements OnInit, CrudComponent {
   private readonly transfers = inject(TransferService);
   private readonly products = inject(ProductService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+
   loading = this.transfers.model.loading;
   productList = this.products.model.list;
   branchName = this.auth.model.branchName;
-  form: { productId: number; quantity: number } = { productId: 0, quantity: 1 };
 
-  ngOnInit() { this.products.retrieveList(); }
+  form = this.fb.nonNullable.group({
+    productId: [null as number | null, [Validators.required]],
+    quantity: [1, [Validators.required, Validators.min(1)]],
+  });
 
-  onSubmit() {
-    if (!this.form.productId || this.form.quantity < 1) return;
-    this.transfers.save({ productId: this.form.productId, quantity: this.form.quantity }, this);
+  protected readonly fieldError = fieldError;
+
+  ngOnInit() {
+    this.products.retrieveList();
   }
 
-  afterSave() { this.router.navigateByUrl("/cashier/transfers"); }
+  onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const { productId, quantity } = this.form.getRawValue();
+    this.transfers.save({ productId: productId!, quantity }, this);
+  }
+
+  afterSave() {
+    this.router.navigateByUrl("/cashier/transfers");
+  }
 }

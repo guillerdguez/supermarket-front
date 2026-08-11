@@ -13,7 +13,7 @@
     @if (error()) {
       <p class="error">{{ error() }}</p>
     }
-    <form class="form" (ngSubmit)="onSubmit()" novalidate>
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-scroll">
         <div class="form-grid">
           @if (assignedBranchId() !== null) {
@@ -23,32 +23,34 @@
               <span class="field-hint">Sucursal asignada a tu usuario</span>
             </div>
           } @else {
-            <div class="field">
+            <div class="field" [class.has-error]="form.controls.branchId.invalid && form.controls.branchId.touched">
               <label for="branchId">Sucursal <span class="req">*</span></label>
               <p-select
                 id="branchId"
                 [options]="branchList()"
                 optionLabel="name"
                 optionValue="id"
-                [(ngModel)]="form.branchId"
-                name="branchId"
+                formControlName="branchId"
                 placeholder="Seleccionar…"
                 styleClass="w-full"
-                required
+                [attr.aria-invalid]="form.controls.branchId.invalid && form.controls.branchId.touched"
+                [attr.aria-describedby]="form.controls.branchId.invalid && form.controls.branchId.touched ? 'branchId-error' : null"
               />
+              <app-field-error id="branchId-error" [message]="fieldError(form.controls.branchId, { required: 'La sucursal es obligatoria' })" />
             </div>
           }
-          <div class="field">
+          <div class="field" [class.has-error]="form.controls.openingBalance.invalid && form.controls.openingBalance.touched">
             <label for="openingBalance">Saldo inicial <span class="req">*</span></label>
             <input
               id="openingBalance"
-              name="openingBalance"
+              formControlName="openingBalance"
               type="number"
               min="0"
               step="0.01"
-              [(ngModel)]="form.openingBalance"
-              required
+              [attr.aria-invalid]="form.controls.openingBalance.invalid && form.controls.openingBalance.touched"
+              [attr.aria-describedby]="form.controls.openingBalance.invalid && form.controls.openingBalance.touched ? 'openingBalance-error' : null"
             />
+            <app-field-error id="openingBalance-error" [message]="fieldError(form.controls.openingBalance, { required: 'El saldo inicial es obligatorio', min: 'El saldo inicial no puede ser negativo' })" />
           </div>
         </div>
       </div>

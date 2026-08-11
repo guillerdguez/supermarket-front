@@ -75,7 +75,7 @@ describe("OpenRegisterComponent", () => {
     const cash = TestBed.inject(CashRegisterService);
     const openSpy = jest.spyOn(cash, "open").mockImplementation(() => undefined);
 
-    fixture.componentInstance.form.openingBalance = -10;
+    fixture.componentInstance.form.controls.openingBalance.setValue(-10);
     fixture.componentInstance.onSubmit();
 
     expect(openSpy).not.toHaveBeenCalled();
@@ -87,8 +87,8 @@ describe("OpenRegisterComponent", () => {
     const cash = TestBed.inject(CashRegisterService);
     const openSpy = jest.spyOn(cash, "open").mockImplementation(() => undefined);
 
-    fixture.componentInstance.form.openingBalance = 100;
-    fixture.componentInstance.form.branchId = undefined;
+    fixture.componentInstance.form.controls.openingBalance.setValue(100);
+    fixture.componentInstance.form.controls.branchId.setValue(null);
     fixture.componentInstance.onSubmit();
 
     expect(openSpy).not.toHaveBeenCalled();
@@ -100,7 +100,7 @@ describe("OpenRegisterComponent", () => {
     const cash = TestBed.inject(CashRegisterService);
     const openSpy = jest.spyOn(cash, "open").mockImplementation(() => undefined);
 
-    fixture.componentInstance.form.openingBalance = 150;
+    fixture.componentInstance.form.controls.openingBalance.setValue(150);
     fixture.componentInstance.onSubmit();
 
     expect(openSpy).toHaveBeenCalledWith({ openingBalance: 150 }, fixture.componentInstance);
@@ -112,8 +112,8 @@ describe("OpenRegisterComponent", () => {
     const cash = TestBed.inject(CashRegisterService);
     const openSpy = jest.spyOn(cash, "open").mockImplementation(() => undefined);
 
-    fixture.componentInstance.form.openingBalance = 200;
-    fixture.componentInstance.form.branchId = 3;
+    fixture.componentInstance.form.controls.openingBalance.setValue(200);
+    fixture.componentInstance.form.controls.branchId.setValue(3);
     fixture.componentInstance.onSubmit();
 
     expect(openSpy).toHaveBeenCalledWith(

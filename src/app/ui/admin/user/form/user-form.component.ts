@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, OnInit, signal } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { SelectModule } from "primeng/select";
@@ -13,6 +13,7 @@ import { USER_ROLE_OPTIONS } from "../../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../../wrappers/page-shell/page-shell.component";
 import { FieldErrorComponent } from "../../../shared/field-error/field-error.component";
+import { fieldError } from "../../../../../util/form/field-error";
 
 @Component({
   selector: "app-user-form",
@@ -124,11 +125,7 @@ export class UserFormComponent implements OnInit, CrudComponent {
     );
   }
 
-  fieldError(control: AbstractControl | null, messages: Record<string, string>): string | null {
-    if (!control || !(control.touched || control.dirty) || control.valid) return null;
-    const key = Object.keys(control.errors ?? {})[0];
-    return key ? (messages[key] ?? "Campo inválido") : null;
-  }
+  protected readonly fieldError = fieldError;
 
   cancelPasswordChange() {
     this.cambiarPassword.set(false);

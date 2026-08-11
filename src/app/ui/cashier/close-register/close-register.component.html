@@ -11,7 +11,7 @@
 
   <pos-panel title="Datos de cierre">
     @if (current(); as reg) {
-      <form class="form" (ngSubmit)="onSubmit()" novalidate>
+      <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
         <div class="form-scroll">
           <div class="pos-detail-grid">
             <span class="label">Caja</span>
@@ -21,17 +21,18 @@
           </div>
 
           <div class="form-grid">
-            <div class="field field--full">
+            <div class="field field--full" [class.has-error]="form.controls.closingBalance.invalid && form.controls.closingBalance.touched">
               <label for="closing">Saldo de cierre <span class="req">*</span></label>
               <input
                 id="closing"
-                name="closing"
+                formControlName="closingBalance"
                 type="number"
                 min="0"
                 step="0.01"
-                [(ngModel)]="closingBalance"
-                required
+                [attr.aria-invalid]="form.controls.closingBalance.invalid && form.controls.closingBalance.touched"
+                [attr.aria-describedby]="form.controls.closingBalance.invalid && form.controls.closingBalance.touched ? 'closing-error' : null"
               />
+              <app-field-error id="closing-error" [message]="fieldError(form.controls.closingBalance, { required: 'El saldo de cierre es obligatorio', min: 'El saldo de cierre no puede ser negativo' })" />
             </div>
           </div>
         </div>

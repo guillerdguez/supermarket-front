@@ -84,7 +84,7 @@ describe("CloseRegisterComponent", () => {
     const cash = TestBed.inject(CashRegisterService);
     const closeSpy = jest.spyOn(cash, "close").mockImplementation(() => undefined);
 
-    fixture.componentInstance.closingBalance = 200;
+    fixture.componentInstance.form.controls.closingBalance.setValue(200);
     fixture.componentInstance.onSubmit();
 
     expect(closeSpy).not.toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe("CloseRegisterComponent", () => {
     cash.model.current.set(openRegister);
     const closeSpy = jest.spyOn(cash, "close").mockImplementation(() => undefined);
 
-    fixture.componentInstance.closingBalance = -5;
+    fixture.componentInstance.form.controls.closingBalance.setValue(-5);
     fixture.componentInstance.onSubmit();
 
     expect(closeSpy).not.toHaveBeenCalled();
@@ -110,7 +110,7 @@ describe("CloseRegisterComponent", () => {
     cash.model.current.set(openRegister);
     const closeSpy = jest.spyOn(cash, "close").mockImplementation(() => undefined);
 
-    fixture.componentInstance.closingBalance = 320.5;
+    fixture.componentInstance.form.controls.closingBalance.setValue(320.5);
     fixture.componentInstance.onSubmit();
 
     expect(closeSpy).toHaveBeenCalledWith(
