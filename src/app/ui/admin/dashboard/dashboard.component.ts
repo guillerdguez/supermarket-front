@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, computed } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { CurrencyPipe, DatePipe } from "@angular/common";
 import { CardModule } from "primeng/card";
 import { ButtonModule } from "primeng/button";
@@ -42,7 +42,6 @@ export class AdminDashboardComponent implements OnInit {
   private readonly cash = inject(CashRegisterService);
   private readonly branches = inject(BranchService);
   private readonly auth = inject(AuthService);
-  private readonly router = inject(Router);
 
   user = this.auth.model.currentUser;
   summary = this.reports.model.summary;
@@ -77,10 +76,5 @@ export class AdminDashboardComponent implements OnInit {
     this.inventory.retrieveLowStock();
     this.cash.retrieveList();
     this.branches.retrieveList();
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(["/login"]);
   }
 }

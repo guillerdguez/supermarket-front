@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { provideRouter, Router } from "@angular/router";
+import { provideRouter } from "@angular/router";
 import { provideHttpClient } from "@angular/common/http";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { MessageService, ConfirmationService } from "primeng/api";
@@ -104,17 +104,4 @@ describe("AdminDashboardComponent", () => {
     expect(fixture.componentInstance.greeting()).toBe("Buenos días");
   });
 
-  it("logs out and navigates to /login", () => {
-    stubRetrieves();
-    const fixture = create();
-    const auth = TestBed.inject(AuthService);
-    const router = TestBed.inject(Router);
-    const logoutSpy = jest.spyOn(auth, "logout").mockImplementation(() => undefined);
-    const navSpy = jest.spyOn(router, "navigate").mockResolvedValue(true);
-
-    fixture.componentInstance.logout();
-
-    expect(logoutSpy).toHaveBeenCalled();
-    expect(navSpy).toHaveBeenCalledWith(["/login"]);
-  });
 });
