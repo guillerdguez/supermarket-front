@@ -46,6 +46,9 @@ export const MESSAGES = {
   errorUpdatingProfile: { summary: "Perfil", detail: "Error al actualizar el perfil" },
   passwordUpdated: { summary: "Contraseña", detail: "Contraseña actualizada correctamente" },
   errorUpdatingPassword: { summary: "Contraseña", detail: "Error al cambiar la contraseña" },
+  passwordCurrentRequired: { summary: "Contraseña", detail: "Introduce tu contraseña actual" },
+  passwordRulesNotMet: { summary: "Contraseña", detail: "La nueva contraseña no cumple todas las reglas" },
+  passwordsMismatch: { summary: "Contraseña", detail: "Las contraseñas no coinciden" },
 
   errorGettingRegister: { summary: "Caja", detail: "Error al cargar la caja" },
   errorGettingRegisters: { summary: "Cajas", detail: "Error al cargar las cajas" },
@@ -88,6 +91,7 @@ export const MESSAGES = {
   errorGettingReports: { summary: "Informes", detail: "Error al cargar los informes" },
   errorGettingCashRegisterReport: { summary: "Informes", detail: "Error al cargar el informe de cierres de caja" },
   errorGettingAuditLog: { summary: "Auditoría", detail: "Error al cargar el registro de auditoría" },
+  errorGettingAuditLogDetail: { summary: "Auditoría", detail: "Error al cargar el detalle del registro" },
 } as const satisfies Record<string, MessageDefinition>;
 
 export type MessageKey = keyof typeof MESSAGES;

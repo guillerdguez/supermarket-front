@@ -91,7 +91,7 @@
                 </tr></ng-template
               >
               <ng-template pTemplate="body" let-row>
-                <tr>
+                <tr class="clickable-row" (click)="openDetail(row.id)">
                   <td>{{ row.timestamp | date: "dd/MM/yyyy HH:mm" }}</td>
                   <td title="{{ row.username }}">{{ row.username || "—" }}</td>
                   <td title="{{ row.action }}">{{ row.action }}</td>
@@ -116,4 +116,26 @@
       </pos-panel>
     </div>
   </pos-page-shell>
+
+  <p-dialog
+    header="Registro #{{ detail()?.id }}"
+    [visible]="detailDialogVisible()"
+    (visibleChange)="detailDialogVisible.set($event)"
+    [modal]="true"
+    [dismissableMask]="true"
+    [style]="{ width: 'min(480px, 94vw)' }"
+  >
+    @if (detail(); as log) {
+      <div class="audit-detail">
+        <div><strong>Usuario:</strong> {{ log.username || "—" }}</div>
+        <div><strong>Acción:</strong> {{ log.action }}</div>
+        <div><strong>Fecha:</strong> {{ log.timestamp | date: "dd/MM/yyyy HH:mm:ss" }}</div>
+        <div><strong>IP:</strong> {{ log.ipAddress || "—" }}</div>
+        <div><strong>Estado:</strong> {{ log.status }}</div>
+        <div><strong>Detalle:</strong> {{ log.details || "—" }}</div>
+      </div>
+    } @else {
+      <p class="muted">Cargando detalle…</p>
+    }
+  </p-dialog>
 </div>

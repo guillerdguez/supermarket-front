@@ -27,4 +27,12 @@ export class AuditLogService {
     this.model.list.set(list);
     this.model.loading.set(false);
   }
+
+  retrieveDetail(id: number): void {
+    this.model.detail.set(null);
+    this.dao.getDetail(id).subscribe({
+      next: (log) => this.model.detail.set(log),
+      error: (err) => this.messages.publishErrorMsg("errorGettingAuditLogDetail", err),
+    });
+  }
 }

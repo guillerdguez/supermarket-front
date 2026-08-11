@@ -14,4 +14,8 @@ export class AuditLogDao {
     const params = new HttpParams().set("page", page).set("size", size);
     return this.http.get<PageResponse<AuditLogResponse>>(this.url.auditCrud(), { params });
   }
+
+  getDetail(id: number): Observable<AuditLogResponse> {
+    return this.http.get<AuditLogResponse>(this.url.auditCrud(id));
+  }
 }

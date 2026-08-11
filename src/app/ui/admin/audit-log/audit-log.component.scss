@@ -54,6 +54,17 @@
   overflow: hidden;
 }
 
+.clickable-row {
+  cursor: pointer;
+}
+
+.audit-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pos-space-2);
+  font-size: var(--pos-font-size-sm);
+}
+
 @media (max-height: 820px) {
   .page-header__text h1 {
     font-size: var(--pos-font-size-base);

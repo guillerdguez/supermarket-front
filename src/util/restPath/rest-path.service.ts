@@ -169,7 +169,7 @@ export class RestPathService {
     return `${this.base}/reports/cash-registers`;
   }
 
-  auditCrud(): string {
-    return `${this.base}/audit-logs`;
+  auditCrud(id?: number): string {
+    return id != null ? `${this.base}/audit-logs/${id}` : `${this.base}/audit-logs`;
   }
 }
