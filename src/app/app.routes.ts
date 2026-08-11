@@ -117,6 +117,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import("./ui/admin/notification/notification.component").then((m) => m.NotificationComponent),
   },
+  // Ruta separada (sin restricción de rol) para que cajeros lleguen a la misma pantalla
+  // desde la campana de notificaciones, que es visible para cualquier usuario autenticado.
   {
     path: "notifications",
     canActivate: [authGuard],
@@ -163,7 +165,7 @@ export const routes: Routes = [
   },
   {
     path: "pos",
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER", "CASHIER"])],
     loadComponent: () =>
       import("./ui/pos/pos.component").then((m) => m.PosComponent),
   },
