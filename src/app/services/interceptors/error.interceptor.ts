@@ -18,6 +18,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         messages.publishWarnMsg("sessionExpired");
         router.navigateByUrl("/auth/login");
       }
+      if (err.status === 403) {
+        messages.publishErrorMsg("accessDenied");
+        if (req.method === "GET") {
+          router.navigateByUrl("/403");
+        }
+      }
       return throwError(() => err);
     }),
   );

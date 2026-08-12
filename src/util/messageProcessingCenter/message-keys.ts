@@ -9,6 +9,7 @@ export interface MessageDefinition {
 export const MESSAGES = {
   errorLogin: { summary: "Login", detail: "Credenciales incorrectas" },
   sessionExpired: { summary: "Sesión", detail: "Tu sesión expiró. Iniciá sesión de nuevo." },
+  accessDenied: { summary: "Acceso denegado", detail: "No tenés permisos para realizar esta acción." },
 
   errorGettingProducts: { summary: "Productos", detail: "Error al cargar productos" },
   errorGettingProduct: { summary: "Producto", detail: "Producto no encontrado" },

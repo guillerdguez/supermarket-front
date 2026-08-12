@@ -69,4 +69,30 @@ describe("errorInterceptor", () => {
     expect(localStorage.getItem(TOKEN_KEY)).toBe("some-token");
     expect(navSpy).not.toHaveBeenCalled();
   });
+
+  it("shows a toast and redirects to /403 on a 403 from a GET request", () => {
+    const router = TestBed.inject(Router);
+    const navSpy = jest.spyOn(router, "navigateByUrl").mockResolvedValue(true);
+    const messages = TestBed.inject(MessageProcessingService);
+    const errorSpy = jest.spyOn(messages, "publishErrorMsg").mockImplementation(() => undefined);
+
+    http.get("/products").subscribe({ error: () => undefined });
+    controller.expectOne("/products").flush(null, { status: 403, statusText: "Forbidden" });
+
+    expect(errorSpy).toHaveBeenCalledWith("accessDenied");
+    expect(navSpy).toHaveBeenCalledWith("/403");
+  });
+
+  it("shows a toast but does not redirect on a 403 from a non-GET request", () => {
+    const router = TestBed.inject(Router);
+    const navSpy = jest.spyOn(router, "navigateByUrl").mockResolvedValue(true);
+    const messages = TestBed.inject(MessageProcessingService);
+    const errorSpy = jest.spyOn(messages, "publishErrorMsg").mockImplementation(() => undefined);
+
+    http.delete("/products/1").subscribe({ error: () => undefined });
+    controller.expectOne("/products/1").flush(null, { status: 403, statusText: "Forbidden" });
+
+    expect(errorSpy).toHaveBeenCalledWith("accessDenied");
+    expect(navSpy).not.toHaveBeenCalled();
+  });
 });
