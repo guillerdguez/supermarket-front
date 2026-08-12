@@ -3,6 +3,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 export interface PasswordChecks {
   minLength: boolean;
   hasUpperCase: boolean;
+  hasLowerCase: boolean;
   hasNumber: boolean;
   hasSpecialChar: boolean;
 }
@@ -13,6 +14,7 @@ export function checkPassword(password: string): PasswordChecks {
   return {
     minLength: password.length >= 8,
     hasUpperCase: /[A-Z]/.test(password),
+    hasLowerCase: /[a-z]/.test(password),
     hasNumber: /\d/.test(password),
     hasSpecialChar: SPECIAL.test(password),
   };
