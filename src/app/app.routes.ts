@@ -1,11 +1,22 @@
+import { inject } from "@angular/core";
 import { Routes } from "@angular/router";
 import { authGuard } from "./services/guards/auth.guard";
 import { roleGuard } from "./services/guards/role.guard";
+import { guestGuard } from "./services/guards/guest.guard";
+import { AuthService } from "./services/auth/auth.service";
 
 export const routes: Routes = [
-  { path: "", pathMatch: "full", redirectTo: "auth/login" },
+  {
+    path: "",
+    pathMatch: "full",
+    redirectTo: () => {
+      const auth = inject(AuthService);
+      return auth.isTokenValid() ? auth.homeUrl() : "/auth/login";
+    },
+  },
   {
     path: "auth/login",
+    canActivate: [guestGuard],
     loadComponent: () =>
       import("./ui/auth/login/login.component").then((m) => m.LoginComponent),
   },
