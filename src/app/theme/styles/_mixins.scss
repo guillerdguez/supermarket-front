@@ -348,8 +348,20 @@ $pos-bp-phone: 480px;
   }
 
   .form {
+    max-width: none;
+  }
+
+  .form-scroll > .form-section {
+    width: 100%;
     max-width: 640px;
     margin-inline: auto;
+  }
+
+  .error,
+  .form-actions {
+    max-width: 640px;
+    margin-inline: auto;
+    width: 100%;
   }
 
   .form-section--price .form-grid {
