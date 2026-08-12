@@ -10,7 +10,7 @@
 
     <div class="nav-menus">
       @if (isAdmin()) {
-        <p-menubar [model]="adminItems" styleClass="pos-menubar" />
+        <p-menubar [model]="adminItems()" styleClass="pos-menubar" />
       }
       @if (isCashier()) {
         <p-menubar [model]="cashierItems" styleClass="pos-menubar" />

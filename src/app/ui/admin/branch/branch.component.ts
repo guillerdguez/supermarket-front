@@ -4,6 +4,7 @@ import {
   HostListener,
   inject,
   OnInit,
+  computed,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { TableModule } from "primeng/table";
@@ -13,6 +14,7 @@ import { ContextMenuModule } from "primeng/contextmenu";
 import { ConfirmationService, MenuItem } from "primeng/api";
 import { BranchService } from "../../../services/branch/branch.service";
 import { BranchResponse } from "../../../DTO/branch.dto";
+import { AuthService } from "../../../services/auth/auth.service";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
@@ -38,36 +40,46 @@ export class BranchComponent implements OnInit {
   private readonly confirm = inject(ConfirmationService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly auth = inject(AuthService);
   items = this.svc.model.list;
   loading = this.svc.model.loading;
   error = this.svc.model.error;
   selected: BranchResponse | null = null;
   selectedRows: BranchResponse[] = [];
 
-  menuItems: MenuItem[] = [
-    {
-      label: "Vista rápida",
-      icon: "pi pi-external-link",
-      command: () => {
-        if (this.selected) this.openPreview(this.selected.id);
+  canManageBranches = computed(() => this.auth.model.currentUser()?.role === "ADMIN");
+
+  menuItems = computed<MenuItem[]>(() => {
+    const items: MenuItem[] = [
+      {
+        label: "Vista rápida",
+        icon: "pi pi-external-link",
+        command: () => {
+          if (this.selected) this.openPreview(this.selected.id);
+        },
       },
-    },
-    {
-      label: "Editar",
-      icon: "pi pi-pencil",
-      command: () => {
-        if (this.selected)
-          this.router.navigate(["/admin/branches/edit", this.selected.id]);
-      },
-    },
-    {
-      label: "Eliminar",
-      icon: "pi pi-trash",
-      command: () => {
-        if (this.selected) this.onDelete(this.selected.id, this.selected.name);
-      },
-    },
-  ];
+    ];
+    if (this.canManageBranches()) {
+      items.push(
+        {
+          label: "Editar",
+          icon: "pi pi-pencil",
+          command: () => {
+            if (this.selected)
+              this.router.navigate(["/admin/branches/edit", this.selected.id]);
+          },
+        },
+        {
+          label: "Eliminar",
+          icon: "pi pi-trash",
+          command: () => {
+            if (this.selected) this.onDelete(this.selected.id, this.selected.name);
+          },
+        },
+      );
+    }
+    return items;
+  });
 
   ngOnInit() {
     this.svc.retrieveList();

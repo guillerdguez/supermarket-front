@@ -6,12 +6,14 @@
         <p class="muted">Tiendas y almacenes del supermercado</p>
       </div>
       <div class="page-header__actions">
-        <a
-          routerLink="/admin/branches/create"
-          pButton
-          label="Nueva sucursal"
-          icon="pi pi-plus"
-        ></a>
+        @if (canManageBranches()) {
+          <a
+            routerLink="/admin/branches/create"
+            pButton
+            label="Nueva sucursal"
+            icon="pi pi-plus"
+          ></a>
+        }
         <button
           pButton
           type="button"
@@ -47,18 +49,20 @@
               Registrá tu primera tienda o almacén para poder asignarle
               inventario, cajas y usuarios.
             </p>
-            <a
-              routerLink="/admin/branches/create"
-              pButton
-              label="Crear la primera"
-              icon="pi pi-plus"
-              size="small"
-              class="empty-state__action"
-            ></a>
+            @if (canManageBranches()) {
+              <a
+                routerLink="/admin/branches/create"
+                pButton
+                label="Crear la primera"
+                icon="pi pi-plus"
+                size="small"
+                class="empty-state__action"
+              ></a>
+            }
           </div>
         } @else {
-          <p-contextMenu #cm [model]="menuItems" />
-          @if (selectedRows.length > 0) {
+          <p-contextMenu #cm [model]="menuItems()" />
+          @if (selectedRows.length > 0 && canManageBranches()) {
             <div class="pos-toolbar">
               <span class="toolbar-count muted">
                 {{ selectedRows.length }} seleccionada{{ selectedRows.length === 1 ? "" : "s" }}

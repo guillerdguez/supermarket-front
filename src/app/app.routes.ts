@@ -116,9 +116,7 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
     loadComponent: () =>
       import("./ui/admin/notification/notification.component").then((m) => m.NotificationComponent),
-  },
-  // Ruta separada (sin restricción de rol) para que cajeros lleguen a la misma pantalla
-  // desde la campana de notificaciones, que es visible para cualquier usuario autenticado.
+  }, 
   {
     path: "notifications",
     canActivate: [authGuard],

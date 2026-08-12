@@ -13,8 +13,7 @@ describe("Admin — Inventory", () => {
   });
 
   it("filters to low-stock rows only", () => {
-    cy.contains("label.checkbox", "Solo stock bajo").find("input").check({ force: true });
-    // Toda fila visible, si hay alguna, debe estar marcada como stock bajo/agotado.
+    cy.contains("label.checkbox", "Solo stock bajo").find("input").check({ force: true }); 
     cy.get(".table-wrap tbody tr").each(($row) => {
       cy.wrap($row).should("satisfy", (el: JQuery<HTMLElement>) => {
         return el.hasClass("row-warning") || el.hasClass("row-danger");

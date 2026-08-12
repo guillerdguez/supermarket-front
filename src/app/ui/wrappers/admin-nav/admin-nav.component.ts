@@ -1,4 +1,10 @@
-import { Component, ElementRef, HostListener, inject, computed } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  computed,
+} from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { MenuItem, ConfirmationService } from "primeng/api";
 import { MenubarModule } from "primeng/menubar";
@@ -26,9 +32,6 @@ export class AdminNavComponent {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   user = this.auth.model.currentUser;
 
-  // PrimeNG's Menubar deja de escuchar clics fuera del menú al colapsar a
-  // móvil (su listener interno se desvincula por un effect propio de la
-  // librería), así que el cierre por clic externo se maneja aquí.
   @HostListener("document:click", ["$event"])
   onDocumentClick(event: MouseEvent) {
     const nav = this.elementRef.nativeElement;
@@ -39,69 +42,143 @@ export class AdminNavComponent {
     (toggleBtn as HTMLElement | null)?.click();
   }
 
-  isAdmin = computed(() => {
-    const r = this.user()?.role;
-    return r === "ADMIN" || r === "MANAGER";
-  });
+  private readonly role = computed(() => this.user()?.role);
+
+  isAdmin = computed(
+    () => this.role() === "ADMIN" || this.role() === "MANAGER",
+  );
+  isSuperAdmin = computed(() => this.role() === "ADMIN");
 
   isCashier = computed(() => this.user()?.role === "CASHIER");
 
-  adminItems: MenuItem[] = [
+  adminItems = computed<MenuItem[]>(() => [
     { label: "Dashboard", icon: "pi pi-home", routerLink: "/admin/dashboard" },
     {
       label: "Catálogo",
       icon: "pi pi-tags",
       items: [
-        { label: "Productos", icon: "pi pi-tags", routerLink: "/admin/products" },
-        { label: "Inventario", icon: "pi pi-box", routerLink: "/admin/inventory" },
+        {
+          label: "Productos",
+          icon: "pi pi-tags",
+          routerLink: "/admin/products",
+        },
+        {
+          label: "Inventario",
+          icon: "pi pi-box",
+          routerLink: "/admin/inventory",
+        },
       ],
     },
     {
       label: "Ventas",
       icon: "pi pi-shopping-cart",
       items: [
-        { label: "Ventas", icon: "pi pi-shopping-cart", routerLink: "/admin/sales" },
-        { label: "Cajas", icon: "pi pi-wallet", routerLink: "/admin/cash-registers" },
+        {
+          label: "Ventas",
+          icon: "pi pi-shopping-cart",
+          routerLink: "/admin/sales",
+        },
+        {
+          label: "Cajas",
+          icon: "pi pi-wallet",
+          routerLink: "/admin/cash-registers",
+        },
       ],
     },
     {
       label: "Organización",
       icon: "pi pi-building",
       items: [
-        { label: "Sucursales", icon: "pi pi-building", routerLink: "/admin/branches" },
-        { label: "Usuarios", icon: "pi pi-users", routerLink: "/admin/users" },
-        { label: "Transferencias", icon: "pi pi-arrows-h", routerLink: "/admin/transfers" },
+        {
+          label: "Sucursales",
+          icon: "pi pi-building",
+          routerLink: "/admin/branches",
+        },
+        ...(this.isSuperAdmin()
+          ? [
+              {
+                label: "Usuarios",
+                icon: "pi pi-users",
+                routerLink: "/admin/users",
+              },
+            ]
+          : []),
+        {
+          label: "Transferencias",
+          icon: "pi pi-arrows-h",
+          routerLink: "/admin/transfers",
+        },
       ],
     },
     {
       label: "Análisis",
       icon: "pi pi-chart-bar",
       items: [
-        { label: "Reportes", icon: "pi pi-chart-bar", routerLink: "/admin/reports" },
-        { label: "Auditoría", icon: "pi pi-history", routerLink: "/admin/audit" },
-        { label: "Notificaciones", icon: "pi pi-bell", routerLink: "/admin/notifications" },
+        {
+          label: "Reportes",
+          icon: "pi pi-chart-bar",
+          routerLink: "/admin/reports",
+        },
+        ...(this.isSuperAdmin()
+          ? [
+              {
+                label: "Auditoría",
+                icon: "pi pi-history",
+                routerLink: "/admin/audit",
+              },
+            ]
+          : []),
+        {
+          label: "Notificaciones",
+          icon: "pi pi-bell",
+          routerLink: "/admin/notifications",
+        },
       ],
     },
-  ];
+  ]);
 
   cashierItems: MenuItem[] = [
-    { label: "Dashboard", icon: "pi pi-home", routerLink: "/cashier/dashboard" },
+    {
+      label: "Dashboard",
+      icon: "pi pi-home",
+      routerLink: "/cashier/dashboard",
+    },
     { label: "Cobrar", icon: "pi pi-desktop", routerLink: "/pos" },
-    { label: "Mis ventas", icon: "pi pi-list", routerLink: "/cashier/my-sales" },
+    {
+      label: "Mis ventas",
+      icon: "pi pi-list",
+      routerLink: "/cashier/my-sales",
+    },
     {
       label: "Transferencias",
       icon: "pi pi-arrows-h",
       items: [
-        { label: "Ver transferencias", icon: "pi pi-list", routerLink: "/cashier/transfers" },
-        { label: "Nueva transferencia", icon: "pi pi-plus", routerLink: "/cashier/transfers/create" },
+        {
+          label: "Ver transferencias",
+          icon: "pi pi-list",
+          routerLink: "/cashier/transfers",
+        },
+        {
+          label: "Nueva transferencia",
+          icon: "pi pi-plus",
+          routerLink: "/cashier/transfers/create",
+        },
       ],
     },
     {
       label: "Caja",
       icon: "pi pi-wallet",
       items: [
-        { label: "Abrir caja", icon: "pi pi-lock-open", routerLink: "/cashier/open-register" },
-        { label: "Cerrar caja", icon: "pi pi-lock", routerLink: "/cashier/close-register" },
+        {
+          label: "Abrir caja",
+          icon: "pi pi-lock-open",
+          routerLink: "/cashier/open-register",
+        },
+        {
+          label: "Cerrar caja",
+          icon: "pi pi-lock",
+          routerLink: "/cashier/close-register",
+        },
       ],
     },
   ];
