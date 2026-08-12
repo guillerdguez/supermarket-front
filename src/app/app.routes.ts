@@ -47,31 +47,31 @@ export const routes: Routes = [
   },
   {
     path: "admin/branches/create",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/branch/form/branch-form.component").then((m) => m.BranchFormComponent),
   },
   {
     path: "admin/branches/edit/:id",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/branch/form/branch-form.component").then((m) => m.BranchFormComponent),
   },
   {
     path: "admin/users",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/user/user.component").then((m) => m.UserComponent),
   },
   {
     path: "admin/users/create",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/user/form/user-form.component").then((m) => m.UserFormComponent),
   },
   {
     path: "admin/users/edit/:id",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/user/form/user-form.component").then((m) => m.UserFormComponent),
   },
@@ -101,7 +101,7 @@ export const routes: Routes = [
   },
   {
     path: "admin/audit",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER"])],
+    canActivate: [authGuard, roleGuard(["ADMIN"])],
     loadComponent: () =>
       import("./ui/admin/audit-log/audit-log.component").then((m) => m.AuditLogComponent),
   },
