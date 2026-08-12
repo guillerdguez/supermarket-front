@@ -152,18 +152,7 @@ export class AdminNavComponent {
     {
       label: "Transferencias",
       icon: "pi pi-arrows-h",
-      items: [
-        {
-          label: "Ver transferencias",
-          icon: "pi pi-list",
-          routerLink: "/cashier/transfers",
-        },
-        {
-          label: "Nueva transferencia",
-          icon: "pi pi-plus",
-          routerLink: "/cashier/transfers/create",
-        },
-      ],
+      routerLink: "/cashier/transfers",
     },
     {
       label: "Caja",
