@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, computed, inject, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { SelectModule } from "primeng/select";
@@ -35,11 +35,10 @@ export class CreateTransferComponent implements OnInit, CrudComponent {
   private readonly fb = inject(FormBuilder);
 
   loading = this.transfers.model.loading;
-  branchList = this.branches.model.list;
+  targetBranchList = computed(() => this.branches.model.list().filter((b) => !b.isWarehouse));
   productList = this.products.model.list;
 
   form = this.fb.nonNullable.group({
-    sourceBranchId: [null as number | null, [Validators.required]],
     targetBranchId: [null as number | null, [Validators.required]],
     productId: [null as number | null, [Validators.required]],
     quantity: [1, [Validators.required, Validators.min(1)]],
@@ -57,11 +56,8 @@ export class CreateTransferComponent implements OnInit, CrudComponent {
       this.form.markAllAsTouched();
       return;
     }
-    const { sourceBranchId, targetBranchId, productId, quantity } = this.form.getRawValue();
-    this.transfers.save(
-      { sourceBranchId: sourceBranchId!, targetBranchId: targetBranchId!, productId: productId!, quantity },
-      this,
-    );
+    const { targetBranchId, productId, quantity } = this.form.getRawValue();
+    this.transfers.save({ targetBranchId: targetBranchId!, productId: productId!, quantity }, this);
   }
 
   afterSave() {

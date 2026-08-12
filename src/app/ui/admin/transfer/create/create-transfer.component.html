@@ -13,27 +13,11 @@
     <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-scroll">
         <div class="form-grid">
-          <div class="field" [class.has-error]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched">
-            <label for="s">Origen <span class="req">*</span></label>
-
-            <p-select
-              id="s"
-              [options]="branchList()"
-              optionLabel="name"
-              optionValue="id"
-              formControlName="sourceBranchId"
-              placeholder="Seleccionar…"
-              styleClass="w-full"
-              [attr.aria-invalid]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched"
-              [attr.aria-describedby]="form.controls.sourceBranchId.invalid && form.controls.sourceBranchId.touched ? 's-error' : null"
-            />
-            <app-field-error id="s-error" [message]="fieldError(form.controls.sourceBranchId, { required: 'La sucursal de origen es obligatoria' })" />
-          </div>
           <div class="field" [class.has-error]="form.controls.targetBranchId.invalid && form.controls.targetBranchId.touched">
             <label for="t">Destino <span class="req">*</span></label>
             <p-select
               id="t"
-              [options]="branchList()"
+              [options]="targetBranchList()"
               optionLabel="name"
               optionValue="id"
               formControlName="targetBranchId"
@@ -60,7 +44,7 @@
             />
             <app-field-error id="p-error" [message]="fieldError(form.controls.productId, { required: 'El producto es obligatorio' })" />
           </div>
-          <div class="field" [class.has-error]="form.controls.quantity.invalid && form.controls.quantity.touched">
+          <div class="field field--full" [class.has-error]="form.controls.quantity.invalid && form.controls.quantity.touched">
             <label for="q">Cantidad <span class="req">*</span></label>
             <input
               id="q"
