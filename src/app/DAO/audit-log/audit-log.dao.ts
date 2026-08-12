@@ -10,7 +10,7 @@ export class AuditLogDao {
   private readonly http = inject(HttpClient);
   private readonly url = inject(RestPathService);
 
-  getAll(page = 0, size = 50): Observable<PageResponse<AuditLogResponse>> {
+  getAll(page = 0, size = 200): Observable<PageResponse<AuditLogResponse>> {
     const params = new HttpParams().set("page", page).set("size", size);
     return this.http.get<PageResponse<AuditLogResponse>>(this.url.auditCrud(), { params });
   }

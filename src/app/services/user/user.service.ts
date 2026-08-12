@@ -17,7 +17,7 @@ export class UserService {
     this.model.loading.set(true);
     this.model.error.set(null);
 
-    this.dao.getAll(0, 100, username).subscribe({
+    this.dao.getAll(0, 200, username).subscribe({
       next: (page) => this.afterRetrieveList(page?.content ?? []),
       error: (err) => {
         this.model.list.set([]);

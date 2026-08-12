@@ -15,8 +15,9 @@ export class SaleDao {
   private readonly http = inject(HttpClient);
   private readonly url = inject(RestPathService);
 
-  getAll(): Observable<SaleResponse[]> {
-    return this.http.get<SaleResponse[]>(this.url.salesCrud());
+  getAll(size = 200): Observable<PageResponse<SaleResponse>> {
+    const params = new HttpParams().set("page", "0").set("size", size);
+    return this.http.get<PageResponse<SaleResponse>>(this.url.salesCrud(), { params });
   }
 
   getDetail(id: number): Observable<SaleResponse> {

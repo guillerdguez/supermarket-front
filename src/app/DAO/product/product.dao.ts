@@ -11,7 +11,7 @@ export class ProductDao {
   private readonly url = inject(RestPathService);
 
   getAll(search?: string): Observable<PageResponse<ProductResponse>> {
-    let params = new HttpParams().set("page", "0").set("size", "50");
+    let params = new HttpParams().set("page", "0").set("size", "100");
     if (search?.trim()) {
       params = params.set("name", search.trim());
     }

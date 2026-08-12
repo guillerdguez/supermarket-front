@@ -17,7 +17,7 @@ export class TransferService {
     this.model.loading.set(true);
 
     this.dao.getAll().subscribe({
-      next: (list) => this.afterRetrieveList(list ?? []),
+      next: (res) => this.afterRetrieveList(res?.content ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
