@@ -16,5 +16,7 @@ export interface SaleResponse {
   branchId: number; branchName?: string; createdAt?: string;
   details?: SaleDetailResponse[]; cashRegisterId?: number; createdByUsername?: string;
   payments?: PaymentResponse[];
+  cancelledById?: number; cancelledByUsername?: string;
+  cancellationReason?: string; cancelledAt?: string;
 }
 export interface CancelSaleRequest { reason: string; }

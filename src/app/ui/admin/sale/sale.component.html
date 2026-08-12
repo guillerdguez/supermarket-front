@@ -56,6 +56,8 @@
               [contextMenu]="cm"
               sortMode="single"
               [resizableColumns]="true"
+              [scrollable]="true"
+              [scrollHeight]="'flex'"
             >
               <ng-template pTemplate="header">
                 <tr class="table-header-row">
@@ -192,6 +194,14 @@
             <div>{{ paymentLabel(payment.paymentType) }} — {{ payment.amount | currency: "EUR":"symbol":"1.2-2" }}</div>
           }
         </div>
+
+        @if (sale.status === "CANCELLED") {
+          <div class="sale-detail__cancellation">
+            <div><strong>Cancelada por:</strong> {{ sale.cancelledByUsername || "—" }}</div>
+            <div><strong>Motivo:</strong> {{ sale.cancellationReason || "—" }}</div>
+            <div><strong>Fecha de cancelación:</strong> {{ sale.cancelledAt | date: "dd/MM/yyyy HH:mm" }}</div>
+          </div>
+        }
 
         <div class="sale-detail__totals">
           <span>Total</span>
