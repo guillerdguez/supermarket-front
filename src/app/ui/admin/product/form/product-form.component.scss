@@ -1,6 +1,6 @@
 @use "../../../../theme/styles/mixins" as *;
 
-@include pos-form-page($max-width: none);
+@include pos-form-page($max-width: 1400px);
 @include pos-form-page-with-preview;
 
 .prod-form-fit {

@@ -23,6 +23,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
 h1,
 h2,
 h3,
@@ -112,7 +119,7 @@ a {
 
   i:first-child {
     color: var(--pos-primary);
-    font-size: 0.95rem;
+    font-size: var(--pos-font-size-sm);
     flex-shrink: 0;
   }
 
@@ -187,6 +194,10 @@ label.checkbox {
   --p-content-border-radius: var(--pos-radius-md);
 }
 
+.p-overlay-mask.p-overlay-mask-leave {
+  pointer-events: none !important;
+}
+
 .p-datatable {
   --p-checkbox-width: 16px;
   --p-checkbox-height: 16px;
@@ -220,6 +231,36 @@ label.checkbox {
     padding-inline: var(--pos-space-1);
   }
 
+  .p-datatable-tbody > tr > td:has(.p-tag) {
+    text-align: center;
+  }
+
+  .p-datatable-tbody > tr > td .p-tag {
+    background: var(--pos-surface-sunken);
+    color: var(--pos-text-faint);
+    border-radius: var(--pos-radius-sm);
+
+    &.p-tag-success {
+      background: var(--pos-success-bg);
+      color: var(--pos-success-hover);
+    }
+
+    &.p-tag-warn {
+      background: var(--pos-warning-bg);
+      color: var(--pos-warning-hover);
+    }
+
+    &.p-tag-danger {
+      background: var(--pos-danger-bg);
+      color: var(--pos-danger-hover);
+    }
+
+    &.p-tag-info {
+      background: var(--pos-primary-light);
+      color: var(--pos-primary);
+    }
+  }
+
   .p-checkbox,
   .p-checkbox-box {
     width: 16px;
@@ -227,11 +268,21 @@ label.checkbox {
   }
 
   .p-checkbox-icon {
-    font-size: 12px;
+    font-size: var(--pos-font-size-xs);
     width: 12px;
     height: 12px;
   }
 }
+
+.p-tag {
+  font-size: var(--pos-font-size-xs);
+  font-weight: var(--pos-font-weight-emphasis);
+  padding: 2px calc(var(--pos-space-1) / 2);
+  line-height: 1.35;
+  border-radius: 0px !important;
+  min-width: 100%;
+}
+
 .dense-table .p-datatable-thead {
   z-index: 2 !important;
 }
@@ -268,7 +319,7 @@ label.checkbox {
 .field-error {
   margin: 0;
   color: var(--pos-danger);
-  font-size: 13px;
+  font-size: var(--pos-font-size-xs);
 }
 
 .field.has-error input,
@@ -303,7 +354,7 @@ label.checkbox {
   margin-inline: auto;
 
   i {
-    font-size: 40px;
+    font-size: var(--pos-font-size-3xl);
     color: var(--pos-text-muted);
   }
 
@@ -348,7 +399,7 @@ label.checkbox {
 
 .pos-detail-section h4 {
   margin: 0 0 var(--pos-space-1);
-  font-size: 12px;
+  font-size: var(--pos-font-size-xs);
   color: var(--pos-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -416,7 +467,7 @@ label.checkbox {
 
 .kpi-value {
   font-size: var(--pos-font-size-xl);
-  font-weight: 650;
+  font-weight: var(--pos-font-weight-emphasis);
   line-height: 1.15;
   color: var(--pos-text);
   white-space: nowrap;
@@ -455,7 +506,7 @@ label.checkbox {
 }
 
 .empty-state i {
-  font-size: 2.25rem;
+  font-size: var(--pos-font-size-3xl);
   margin-bottom: 8px;
   color: var(--pos-text-subtle);
 }
@@ -609,7 +660,7 @@ label.checkbox {
   display: inline-flex;
   align-items: center;
   color: var(--pos-text-muted);
-  font-size: 11px;
+  font-size: var(--pos-font-size-xs);
   font-weight: var(--pos-font-weight-emphasis);
   padding: 2px 8px;
   background: var(--pos-surface-alt);

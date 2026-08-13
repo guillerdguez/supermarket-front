@@ -357,4 +357,13 @@
   .cart-list {
     max-height: 50vh;
   }
+
+  .cart {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: var(--pos-surface);
+    box-shadow: var(--pos-shadow-lg);
+    border-radius: var(--pos-radius-lg) var(--pos-radius-lg) 0 0;
+  }
 }

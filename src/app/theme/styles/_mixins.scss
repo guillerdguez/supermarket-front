@@ -126,7 +126,7 @@ $pos-bp-phone: 480px;
     box-shadow 0.15s;
 
   &::placeholder {
-    color: var(--pos-text-subtle);
+    color: var(--pos-text-muted);
   }
 
   &:hover:not(:disabled) {
@@ -240,8 +240,7 @@ $pos-bp-phone: 480px;
   }
 
   .field input::placeholder {
-    color: var(--pos-text-subtle);
-    opacity: 0.7;
+    color: var(--pos-text-muted);
   }
 
   .input-icon-wrap {
@@ -525,6 +524,10 @@ $pos-bp-phone: 480px;
       }
     }
 
+    .p-datatable-thead > tr.table-header-row > th.col-center {
+      text-align: center;
+    }
+
     .p-datatable-tbody > tr > td {
       height: var(--pos-space-3);
       padding: 0 var(--pos-space-2);
@@ -552,7 +555,8 @@ $pos-bp-phone: 480px;
 
 @mixin pos-fit-viewport(
   $nav-h: var(--pos-nav-height),
-  $gap: var(--pos-space-1)
+  $gap: var(--pos-space-1),
+  $max-width: none
 ) {
   :host {
     display: block;
@@ -563,7 +567,7 @@ $pos-bp-phone: 480px;
     --pos-page-display: flex;
     --pos-page-padding: #{$gap};
     --pos-page-gap: #{$gap};
-    --pos-page-max-width: none;
+    --pos-page-max-width: #{$max-width};
     --pos-panel-margin-bottom: 0;
     --pos-panel-body-padding: 0;
     --pos-panel-header-padding: var(--pos-space-1) var(--pos-space-2);
@@ -656,12 +660,6 @@ $pos-bp-phone: 480px;
 
     .p-datatable .p-datatable-tbody > tr:hover {
       background: var(--pos-primary-muted);
-    }
-
-    .p-tag {
-      font-size: var(--pos-font-size-xs);
-      padding: 1px var(--pos-space-1);
-      line-height: 1.35;
     }
   }
 

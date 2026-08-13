@@ -74,8 +74,10 @@
                         </span>
                       </div>
 
-                      <div class="field">
-                        <label for="category">Categoría</label>
+                      <div class="field" [class.has-error]="form.controls.category.invalid && form.controls.category.touched">
+                        <label for="category"
+                          >Categoría <span class="req">*</span></label
+                        >
                         <span class="input-icon-wrap">
                           <i
                             class="pi pi-tag input-icon"
@@ -85,8 +87,11 @@
                             id="category"
                             formControlName="category"
                             placeholder="Ej. Lácteos"
+                            [attr.aria-invalid]="form.controls.category.invalid && form.controls.category.touched"
+                            [attr.aria-describedby]="form.controls.category.invalid && form.controls.category.touched ? 'category-error' : null"
                           />
                         </span>
+                        <app-field-error id="category-error" [message]="fieldError(form.controls.category, { required: 'La categoría es obligatoria', minlength: 'La categoría debe tener al menos 2 caracteres', maxlength: 'La categoría no puede superar 50 caracteres' })" />
                       </div>
                     </div>
                   </section>

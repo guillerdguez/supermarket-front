@@ -106,7 +106,12 @@
                     Dirección
                     <p-sortIcon field="address"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="isWarehouse" pResizableColumn style="width: 100px">
+                  <th
+                    pSortableColumn="isWarehouse"
+                    pResizableColumn
+                    style="width: 100px"
+                    class="col-center"
+                  >
                     Tipo
                     <p-sortIcon field="isWarehouse"></p-sortIcon>
                   </th>
@@ -120,9 +125,7 @@
                   <th>
                     <p-columnFilter type="text" field="address" display="row"></p-columnFilter>
                   </th>
-                  <th>
-                    <p-columnFilter type="boolean" field="isWarehouse" display="row"></p-columnFilter>
-                  </th>
+                  <th></th>
                   <th></th>
                 </tr>
               </ng-template>

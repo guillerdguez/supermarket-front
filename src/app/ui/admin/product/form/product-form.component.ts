@@ -42,7 +42,7 @@ export class ProductFormComponent implements OnInit, CrudComponent {
     name: ["", [Validators.required]],
     barcode: [""],
     price: [0, [Validators.required, Validators.min(0.01)]],
-    category: [""],
+    category: ["", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
   });
 
   formValue = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });

@@ -3,14 +3,14 @@ import { environment } from "../../environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class RestPathService {
-  private readonly base = environment.apiUrl;
+  private readonly base = `${environment.apiUrl}/api`;
 
   authLogin(): string {
-    return `${this.base}/api/auth/login`;
+    return `${this.base}/auth/login`;
   }
 
   authLogout(): string {
-    return `${this.base}/api/auth/logout`;
+    return `${this.base}/auth/logout`;
   }
 
   productsCrud(id?: number): string {

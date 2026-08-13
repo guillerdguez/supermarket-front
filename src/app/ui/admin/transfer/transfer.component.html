@@ -83,16 +83,16 @@
                   <th
                     pSortableColumn="productName"
                     pResizableColumn
-                    style="width: 22%"
+                    style="width: 18%"
                   >
                     Producto
                     <p-sortIcon field="productName"></p-sortIcon>
                   </th>
-                  <th pResizableColumn style="width: 24%">Origen → Destino</th>
+                  <th pResizableColumn style="width: 20%">Origen → Destino</th>
                   <th
                     pSortableColumn="quantity"
                     pResizableColumn
-                    style="width: 10%"
+                    style="width: 8%"
                   >
                     Cant
                     <p-sortIcon field="quantity"></p-sortIcon>
@@ -106,9 +106,17 @@
                     <p-sortIcon field="status"></p-sortIcon>
                   </th>
                   <th
-                    pSortableColumn="requestedAt"
+                    pSortableColumn="requestedByUsername"
                     pResizableColumn
                     style="width: 14%"
+                  >
+                    Solicitado por
+                    <p-sortIcon field="requestedByUsername"></p-sortIcon>
+                  </th>
+                  <th
+                    pSortableColumn="requestedAt"
+                    pResizableColumn
+                    style="width: 12%"
                   >
                     Fecha
                     <p-sortIcon field="requestedAt"></p-sortIcon>
@@ -135,6 +143,7 @@
                   </th>
                   <th></th>
                   <th></th>
+                  <th></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-row>
@@ -159,6 +168,9 @@
                       [severity]="severity(row.status)"
                       [value]="row.status"
                     />
+                  </td>
+                  <td title="{{ row.requestedByUsername }}">
+                    {{ row.requestedByUsername || "—" }}
                   </td>
                   <td>{{ row.requestedAt | date: "dd/MM HH:mm" }}</td>
                   <td class="col-actions">
