@@ -16,8 +16,8 @@ export class BranchService {
     this.model.loading.set(true);
     this.model.error.set(null);
 
-    this.dao.getAll().subscribe({
-      next: (list) => this.afterRetrieveList(list ?? []),
+    this.dao.get().subscribe({
+      next: (list) => this.afterRetrieveList((list as BranchResponse[]) ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
@@ -34,8 +34,8 @@ export class BranchService {
   retrieveDetail(id: number): void {
     this.model.editing.set(null);
 
-    this.dao.getById(id).subscribe({
-      next: (branch) => this.model.editing.set(branch),
+    this.dao.get(id).subscribe({
+      next: (branch) => this.model.editing.set(branch as BranchResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingBranch", err),
     });
   }

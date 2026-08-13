@@ -13,7 +13,6 @@ import {
   CashRegisterReportResponse,
   CashRegisterFilterRequest,
 } from "../../DTO/report.dto";
-import { PageResponse } from "../../DTO/pagination.dto";
 import { RestPathService } from "../../../util/restPath/rest-path.service";
 
 @Injectable({ providedIn: "root" })
@@ -52,8 +51,8 @@ export class ReportDao {
     return this.http.get<InventoryStatusResponse>(this.url.reportsInventoryStatus());
   }
 
-  salesByProduct(filter?: ReportFilterRequest): Observable<PageResponse<SalesByProductDTO>> {
-    return this.http.get<PageResponse<SalesByProductDTO>>(this.url.reportsSalesByProduct(), {
+  salesByProduct(filter?: ReportFilterRequest): Observable<SalesByProductDTO[]> {
+    return this.http.get<SalesByProductDTO[]>(this.url.reportsSalesByProduct(), {
       params: this.toParams(filter),
     });
   }
@@ -64,8 +63,8 @@ export class ReportDao {
     });
   }
 
-  productPerformance(filter?: ReportFilterRequest): Observable<PageResponse<ProductPerformanceDTO>> {
-    return this.http.get<PageResponse<ProductPerformanceDTO>>(this.url.reportsInventoryPerformance(), {
+  productPerformance(filter?: ReportFilterRequest): Observable<ProductPerformanceDTO[]> {
+    return this.http.get<ProductPerformanceDTO[]>(this.url.reportsInventoryPerformance(), {
       params: this.toParams(filter),
     });
   }

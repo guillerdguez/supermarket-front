@@ -1,12 +1,11 @@
 import { Injectable, inject } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
   TransferRequest,
   TransferResponse,
   RejectTransferRequest,
 } from "../../DTO/transfer.dto";
-import { PageResponse } from "../../DTO/pagination.dto";
 import { RestPathService } from "../../../util/restPath/rest-path.service";
 
 @Injectable({ providedIn: "root" })
@@ -14,13 +13,12 @@ export class TransferDao {
   private readonly http = inject(HttpClient);
   private readonly url = inject(RestPathService);
 
-  getAll(size = 200): Observable<PageResponse<TransferResponse>> {
-    const params = new HttpParams().set("page", "0").set("size", size);
-    return this.http.get<PageResponse<TransferResponse>>(this.url.transfersCrud(), { params });
-  }
-
-  getDetail(id: number): Observable<TransferResponse> {
-    return this.http.get<TransferResponse>(this.url.transfersCrud(id));
+  get(id?: number): Observable<TransferResponse[] | TransferResponse> {
+    if (id) {
+      return this.http.get<TransferResponse>(this.url.transfersCrud(id));
+    } else {
+      return this.http.get<TransferResponse[]>(this.url.transfersCrud());
+    }
   }
 
   getMine(): Observable<TransferResponse[]> {

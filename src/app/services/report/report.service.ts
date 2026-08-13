@@ -27,9 +27,9 @@ export class ReportService {
         this.model.summary.set(summary);
         this.model.byBranch.set(byBranch ?? []);
         this.model.byCashier.set(byCashier ?? []);
-        this.model.byProduct.set(byProduct?.content ?? []);
+        this.model.byProduct.set(byProduct ?? []);
         this.model.comparison.set(comparison);
-        this.model.performance.set(performance?.content ?? []);
+        this.model.performance.set(performance ?? []);
         this.model.loading.set(false);
       },
       error: (err) => {

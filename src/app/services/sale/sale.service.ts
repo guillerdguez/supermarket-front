@@ -14,8 +14,8 @@ export class SaleService {
   retrieveList(): void {
     this.model.loading.set(true);
 
-    this.dao.getAll().subscribe({
-      next: (res) => this.afterRetrieveList(res?.content ?? []),
+    this.dao.get().subscribe({
+      next: (list) => this.afterRetrieveList((list as SaleResponse[]) ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
@@ -33,8 +33,8 @@ export class SaleService {
     this.model.loading.set(true);
 
     this.dao.getMySales().subscribe({
-      next: (page) => {
-        this.model.mySales.set(page?.content ?? []);
+      next: (list) => {
+        this.model.mySales.set(list ?? []);
         this.model.loading.set(false);
       },
       error: (err) => {
@@ -49,8 +49,8 @@ export class SaleService {
   retrieveSaleDetail(id: number): void {
     this.model.detail.set(null);
 
-    this.dao.getDetail(id).subscribe({
-      next: (sale) => this.model.detail.set(sale),
+    this.dao.get(id).subscribe({
+      next: (sale) => this.model.detail.set(sale as SaleResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingSaleDetail", err),
     });
   }
@@ -98,8 +98,7 @@ export class SaleService {
       },
       error: (err) => {
         this.model.loading.set(false);
-        this.messages.publishErrorMsg("errorCreatingSale", err);
-        component?.afterSave?.();
+        this.messages.publishErrorMsg("errorCreatingSale", err); 
       },
     });
   }

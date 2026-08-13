@@ -16,8 +16,8 @@ export class ProductService {
     this.model.loading.set(true);
     this.model.error.set(null);
 
-    this.dao.getAll(search).subscribe({
-      next: (page) => this.afterRetrieveList(page?.content ?? []),
+    this.dao.get(undefined, search).subscribe({
+      next: (list) => this.afterRetrieveList((list as ProductResponse[]) ?? []),
       error: (err) => {
         this.model.error.set(
           this.messages.resolveErrorDetail("errorGettingProducts", err),
@@ -37,8 +37,8 @@ export class ProductService {
   retrieveDetail(id: number): void {
     this.model.editing.set(null);
 
-    this.dao.getById(id).subscribe({
-      next: (product) => this.model.editing.set(product),
+    this.dao.get(id).subscribe({
+      next: (product) => this.model.editing.set(product as ProductResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingProduct", err),
     });
   }

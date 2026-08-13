@@ -10,11 +10,11 @@ export class AuditLogService {
   private readonly messages = inject(MessageProcessingService);
   readonly model = inject(AuditLogModel);
 
-  retrieveList(page = 0): void {
+  retrieveList(): void {
     this.model.loading.set(true);
 
-    this.dao.getAll(page).subscribe({
-      next: (result) => this.afterRetrieveList(result?.content ?? []),
+    this.dao.get().subscribe({
+      next: (list) => this.afterRetrieveList((list as AuditLogResponse[]) ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
@@ -30,8 +30,8 @@ export class AuditLogService {
 
   retrieveDetail(id: number): void {
     this.model.detail.set(null);
-    this.dao.getDetail(id).subscribe({
-      next: (log) => this.model.detail.set(log),
+    this.dao.get(id).subscribe({
+      next: (log) => this.model.detail.set(log as AuditLogResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingAuditLogDetail", err),
     });
   }

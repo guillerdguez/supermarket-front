@@ -17,8 +17,8 @@ export class UserService {
     this.model.loading.set(true);
     this.model.error.set(null);
 
-    this.dao.getAll(0, 200, username).subscribe({
-      next: (page) => this.afterRetrieveList(page?.content ?? []),
+    this.dao.get(undefined, username).subscribe({
+      next: (list) => this.afterRetrieveList((list as UserResponse[]) ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
@@ -35,8 +35,8 @@ export class UserService {
   retrieveDetail(id: number): void {
     this.model.editing.set(null);
 
-    this.dao.getById(id).subscribe({
-      next: (user) => this.model.editing.set(user),
+    this.dao.get(id).subscribe({
+      next: (user) => this.model.editing.set(user as UserResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingUser", err),
     });
   }

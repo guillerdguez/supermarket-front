@@ -9,12 +9,12 @@ export class BranchDao {
   private readonly http = inject(HttpClient);
   private readonly url = inject(RestPathService);
 
-  getAll(): Observable<BranchResponse[]> {
-    return this.http.get<BranchResponse[]>(this.url.branchesCrud());
-  }
-
-  getById(id: number): Observable<BranchResponse> {
-    return this.http.get<BranchResponse>(this.url.branchesCrud(id));
+  get(id?: number): Observable<BranchResponse[] | BranchResponse> {
+    if (id) {
+      return this.http.get<BranchResponse>(this.url.branchesCrud(id));
+    } else {
+      return this.http.get<BranchResponse[]>(this.url.branchesCrud());
+    }
   }
 
   create(body: BranchRequest): Observable<BranchResponse> {

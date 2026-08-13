@@ -16,8 +16,8 @@ export class TransferService {
   retrieveList(): void {
     this.model.loading.set(true);
 
-    this.dao.getAll().subscribe({
-      next: (res) => this.afterRetrieveList(res?.content ?? []),
+    this.dao.get().subscribe({
+      next: (list) => this.afterRetrieveList((list as TransferResponse[]) ?? []),
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
@@ -34,8 +34,8 @@ export class TransferService {
   retrieveDetail(id: number): void {
     this.model.detail.set(null);
 
-    this.dao.getDetail(id).subscribe({
-      next: (transfer) => this.model.detail.set(transfer),
+    this.dao.get(id).subscribe({
+      next: (transfer) => this.model.detail.set(transfer as TransferResponse),
       error: (err) => this.messages.publishErrorMsg("errorGettingTransferDetail", err),
     });
   }
