@@ -48,9 +48,9 @@ export class AuthService {
 
         this.router.navigateByUrl(this.homeUrl());
       },
-      error: (err) => {
+      error: () => {
         this.model.loading.set(false);
-        this.messages.publishErrorMsg("errorLogin", err);
+        this.messages.publishErrorMsg("errorLogin");
       },
     });
   }
