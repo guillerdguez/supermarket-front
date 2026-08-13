@@ -4,7 +4,6 @@ export interface ProductResponse {
   barcode: string;
   price: number;
   category: string;
-  stock?: number;
 }
 
 export interface ProductRequest {
