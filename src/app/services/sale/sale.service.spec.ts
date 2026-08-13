@@ -55,14 +55,14 @@ describe("SaleService", () => {
     expect(component.afterSave).not.toHaveBeenCalled();
   });
 
-  it("still calls afterSave when the sale was created but the payment registration fails", () => {
+  it("does not call afterSave when the sale was created but the payment registration fails, so the cart/dialog stay open for a retry", () => {
     jest.spyOn(dao, "create").mockReturnValue(of(sale));
     jest.spyOn(dao, "registerPayment").mockReturnValue(throwError(() => ({ status: 400 })));
     const component: CrudComponent = { afterSave: jest.fn() };
 
     service.save(request, "CARD", 2.3, component);
 
-    expect(component.afterSave).toHaveBeenCalled();
+    expect(component.afterSave).not.toHaveBeenCalled();
     expect(service.model.loading()).toBe(false);
   });
 
