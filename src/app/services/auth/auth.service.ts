@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   homeUrl(): string {
-    return this.model.currentUser()?.role === "CASHIER" ? "/cashier/dashboard" : "/admin/dashboard";
+    return this.model.currentUser()?.role === "CASHIER" ? "/pos" : "/admin/dashboard";
   }
 
   logout(): void {

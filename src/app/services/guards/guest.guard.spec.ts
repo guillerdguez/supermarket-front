@@ -87,7 +87,7 @@ describe("guestGuard", () => {
     expect(result).not.toBe(true);
     const router = TestBed.inject(Router);
     expect((result as UrlTree).toString()).toBe(
-      router.createUrlTree(["/cashier/dashboard"]).toString(),
+      router.createUrlTree(["/pos"]).toString(),
     );
   });
 });

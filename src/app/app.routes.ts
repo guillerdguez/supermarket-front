@@ -135,12 +135,6 @@ export const routes: Routes = [
       import("./ui/admin/notification/notification.component").then((m) => m.NotificationComponent),
   },
   {
-    path: "cashier/dashboard",
-    canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER", "CASHIER"])],
-    loadComponent: () =>
-      import("./ui/cashier/dashboard/dashboard.component").then((m) => m.CashierDashboardComponent),
-  },
-  {
     path: "cashier/open-register",
     canActivate: [authGuard, roleGuard(["ADMIN", "MANAGER", "CASHIER"])],
     loadComponent: () =>
