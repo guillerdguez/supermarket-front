@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit {
 
   backLink(): string {
     return this.auth.model.currentUser()?.role === "CASHIER"
-      ? "/cashier/dashboard"
+      ? "/pos"
       : "/admin/dashboard";
   }
 }

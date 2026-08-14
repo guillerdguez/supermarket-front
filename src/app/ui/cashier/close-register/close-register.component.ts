@@ -56,6 +56,6 @@ export class CloseRegisterComponent implements OnInit, CrudComponent {
   }
 
   afterSave() {
-    this.router.navigateByUrl("/cashier/dashboard");
+    this.router.navigateByUrl("/pos");
   }
 }

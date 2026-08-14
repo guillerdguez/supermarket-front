@@ -1,7 +1,19 @@
 <pos-page-shell>
   <pos-panel title="Mis transferencias">
+    <button
+      panel-header-actions
+      pButton
+      type="button"
+      icon="pi pi-refresh"
+      severity="secondary"
+      [outlined]="true"
+      size="small"
+      (click)="refresh()"
+      aria-label="Refrescar"
+      title="Refrescar"
+    ></button>
     <div class="pos-toolbar">
-      <p class="muted" style="margin: 0"><a routerLink="/cashier/dashboard">← Dashboard</a></p>
+      <p class="muted" style="margin: 0"><a routerLink="/pos">← Cobrar</a></p>
       <a
         routerLink="/cashier/transfers/create"
         pButton
@@ -10,17 +22,6 @@
         size="small"
         style="margin-left: auto"
       ></a>
-      <button
-        pButton
-        type="button"
-        icon="pi pi-refresh"
-        severity="secondary"
-        [outlined]="true"
-        size="small"
-        (click)="refresh()"
-        aria-label="Refrescar"
-        title="Refrescar"
-      ></button>
     </div>
     @if (loading()) {
       <div class="skeleton-table" aria-hidden="true">

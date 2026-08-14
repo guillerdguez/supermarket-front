@@ -75,6 +75,6 @@ export class OpenRegisterComponent implements OnInit, CrudComponent {
   }
 
   afterSave() {
-    this.router.navigateByUrl("/cashier/dashboard");
+    this.router.navigateByUrl("/pos");
   }
 }

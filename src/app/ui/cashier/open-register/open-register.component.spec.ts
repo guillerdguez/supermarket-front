@@ -130,6 +130,6 @@ describe("OpenRegisterComponent", () => {
 
     fixture.componentInstance.afterSave();
 
-    expect(navSpy).toHaveBeenCalledWith("/cashier/dashboard");
+    expect(navSpy).toHaveBeenCalledWith("/pos");
   });
 });
