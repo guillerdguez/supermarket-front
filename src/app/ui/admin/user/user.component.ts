@@ -3,7 +3,6 @@ import {
   ElementRef,
   HostListener,
   inject,
-  OnDestroy,
   OnInit,
   signal,
 } from "@angular/core";
@@ -12,7 +11,6 @@ import { Router, RouterLink } from "@angular/router";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
-import { InputTextModule } from "primeng/inputtext";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { DialogModule } from "primeng/dialog";
 import { SelectModule } from "primeng/select";
@@ -23,7 +21,6 @@ import { USER_ROLE_OPTIONS } from "../../../model/Domain/user.model";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
-import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.service";
 
 @Component({
   selector: "app-user",
@@ -34,7 +31,6 @@ import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.s
     TableModule,
     TagModule,
     ButtonModule,
-    InputTextModule,
     ContextMenuModule,
     DialogModule,
     SelectModule,
@@ -45,16 +41,13 @@ import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.s
   templateUrl: "./user.component.html",
   styleUrl: "./user.component.scss",
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
   private readonly svc = inject(UserService);
   private readonly confirm = inject(ConfirmationService);
   private readonly router = inject(Router);
-  private readonly listUiState = inject(ListUiStateService);
-  private readonly stateKey = "users";
   private readonly host = inject(ElementRef<HTMLElement>);
   items = this.svc.model.list;
   loading = this.svc.model.loading;
-  search = signal("");
   selected: UserResponse | null = null;
   selectedRows: UserResponse[] = [];
 
@@ -101,30 +94,11 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const saved = this.listUiState.get(this.stateKey);
-    if (saved) {
-      this.search.set(saved.search);
-    }
-    this.svc.retrieveList(this.search() || undefined);
-  }
-
-  ngOnDestroy() {
-    this.listUiState.set(this.stateKey, {
-      search: this.search(),
-    });
-  }
-
-  onSearch() {
-    this.svc.retrieveList(this.search() || undefined);
-  }
-
-  clearSearch() {
-    this.search.set("");
-    this.onSearch();
+    this.svc.retrieveList();
   }
 
   refresh() {
-    this.svc.retrieveList(this.search() || undefined);
+    this.svc.retrieveList();
   }
 
   openPreview(id: number) {

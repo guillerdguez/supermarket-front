@@ -1,55 +1,15 @@
 <div class="prod-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Productos</h1>
-        <p class="muted">Catálogo de productos del supermercado</p>
-      </div>
-
-      <div class="page-header__actions">
-        <a
-          routerLink="/admin/products/create"
-          pButton
-          label="Nuevo producto"
-          icon="pi pi-plus"
-        ></a>
-      </div>
-    </header>
-
     <div class="slot">
       <pos-panel title="Catálogo">
-        <div class="prod-toolbar">
-          <span class="search-wrap">
-            <i class="pi pi-search search-icon" aria-hidden="true"></i>
-            <input
-              pInputText
-              type="text"
-              [ngModel]="search()"
-              (ngModelChange)="search.set($event)"
-              (keyup.enter)="onSearch()"
-              placeholder="Buscar por nombre o código…"
-            />
-            @if (search()) {
-              <button
-                type="button"
-                class="clear-btn"
-                (click)="clearSearch()"
-                aria-label="Limpiar búsqueda"
-              >
-                <i class="pi pi-times" aria-hidden="true"></i>
-              </button>
-            }
-          </span>
-
-          <button
+        <div panel-header-actions class="header-actions">
+          <a
+            routerLink="/admin/products/create"
             pButton
-            type="button"
-            label="Buscar"
-            icon="pi pi-search"
+            label="Nuevo producto"
+            icon="pi pi-plus"
             size="small"
-            (click)="onSearch()"
-          ></button>
-
+          ></a>
           <button
             pButton
             type="button"
@@ -61,8 +21,9 @@
             aria-label="Refrescar"
             title="Refrescar"
           ></button>
-
-          @if (selectedRows.length > 0) {
+        </div>
+        @if (selectedRows.length > 0) {
+          <div class="prod-toolbar">
             <span class="toolbar-count muted">
               {{ selectedRows.length }} seleccionado{{ selectedRows.length === 1 ? "" : "s" }}
             </span>
@@ -76,8 +37,8 @@
               size="small"
               (click)="onDeleteSelected()"
             ></button>
-          }
-        </div>
+          </div>
+        }
 
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">
@@ -126,7 +87,7 @@
             >
               <ng-template pTemplate="header">
                 <tr class="table-header-row">
-                  <th style="width: 40px">
+                  <th class="col-checkbox">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
 
@@ -145,7 +106,7 @@
                     <p-sortIcon field="category"></p-sortIcon>
                   </th>
 
-                  <th pSortableColumn="price" pResizableColumn style="width: 15%">
+                  <th pSortableColumn="price" pResizableColumn style="width: 15%" class="col-right">
                     Precio
                     <p-sortIcon field="price"></p-sortIcon>
                   </th>
@@ -168,7 +129,7 @@
 
               <ng-template pTemplate="body" let-row>
                 <tr [pContextMenuRow]="row" (dblclick)="openPreview(row.id)">
-                  <td>
+                  <td class="col-checkbox">
                     <p-tableCheckbox [value]="row"></p-tableCheckbox>
                   </td>
                   <td title="{{ row.name }}">{{ row.name }}</td>

@@ -3,16 +3,12 @@ import {
   ElementRef,
   HostListener,
   inject,
-  OnDestroy,
   OnInit,
-  signal,
 } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { CurrencyPipe } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { ButtonModule } from "primeng/button";
-import { InputTextModule } from "primeng/inputtext";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { ConfirmationService, MenuItem } from "primeng/api";
 import { ProductService } from "../../../services/product/product.service";
@@ -20,18 +16,15 @@ import { ProductResponse } from "../../../DTO/product.dto";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
-import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.service";
 
 @Component({
   selector: "app-product",
   standalone: true,
   imports: [
-    FormsModule,
     RouterLink,
     CurrencyPipe,
     TableModule,
     ButtonModule,
-    InputTextModule,
     ContextMenuModule,
     PosPanelComponent,
     PosPageShellComponent,
@@ -40,18 +33,15 @@ import { ListUiStateService } from "../../../../util/listUiState/list-ui-state.s
   templateUrl: "./product.component.html",
   styleUrl: "./product.component.scss",
 })
-export class ProductComponent implements OnInit, OnDestroy {
+export class ProductComponent implements OnInit {
   private readonly products = inject(ProductService);
   private readonly confirm = inject(ConfirmationService);
   private readonly router = inject(Router);
-  private readonly listUiState = inject(ListUiStateService);
-  private readonly stateKey = "products";
   private readonly host = inject(ElementRef<HTMLElement>);
 
   items = this.products.model.list;
   loading = this.products.model.loading;
   error = this.products.model.error;
-  search = signal("");
   selected: ProductResponse | null = null;
   selectedRows: ProductResponse[] = [];
 
@@ -81,17 +71,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    const saved = this.listUiState.get(this.stateKey);
-    if (saved) {
-      this.search.set(saved.search);
-    }
-    this.products.retrieveList(this.search() || undefined);
-  }
-
-  ngOnDestroy() {
-    this.listUiState.set(this.stateKey, {
-      search: this.search(),
-    });
+    this.products.retrieveList();
   }
 
   openPreview(id: number) {
@@ -106,15 +86,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     );
   }
 
-  onSearch() {
-    this.products.retrieveList(this.search());
-  }
-  clearSearch() {
-    this.search.set("");
-    this.onSearch();
-  }
   refresh() {
-    this.products.retrieveList(this.search() || undefined);
+    this.products.retrieveList();
   }
   onDelete(id: number, name: string) {
     this.confirm.confirm({
