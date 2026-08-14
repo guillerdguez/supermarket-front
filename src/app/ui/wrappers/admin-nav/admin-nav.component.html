@@ -1,9 +1,6 @@
 @if (user()) {
   <nav class="admin-nav">
-    <a
-      class="brand"
-      [routerLink]="isAdmin() ? '/admin/dashboard' : '/cashier/dashboard'"
-    >
+    <a class="brand" [routerLink]="isAdmin() ? '/admin/dashboard' : '/pos'">
       <i class="pi pi-shop" aria-hidden="true"></i>
       Supermarket POS
     </a>
@@ -13,11 +10,41 @@
         <p-menubar [model]="adminItems()" styleClass="pos-menubar" />
       }
       @if (isCashier()) {
-        <p-menubar [model]="cashierItems" styleClass="pos-menubar" />
+        <p-menubar [model]="cashierItems()" styleClass="pos-menubar" />
       }
     </div>
 
     <div class="nav-right">
+      <span class="nav-divider" aria-hidden="true"></span>
+      @if (isCashier() && branchName(); as name) {
+        <div
+          class="register-status"
+          [class.is-open]="registerOpen()"
+          [title]="
+            registerOpen() && registerCurrent()
+              ? 'Apertura: ' +
+                (registerCurrent()!.openingBalance
+                  | currency: 'EUR' : 'symbol' : '1.2-2') +
+                ' · ' +
+                (registerCurrent()!.openingTime | date: 'dd/MM HH:mm')
+              : ''
+          "
+        >
+          <span class="branch-name">{{ name }}</span>
+          <span class="sep">·</span>
+          <i
+            class="pi lock-icon"
+            [class.pi-lock-open]="registerOpen()"
+            [class.pi-lock]="!registerOpen()"
+          ></i>
+          @if (registerOpen() && registerCurrent(); as reg) {
+            <span class="reg-label">Caja #{{ reg.id }} abierta</span>
+          } @else {
+            <span class="reg-label">Caja cerrada</span>
+          }
+        </div>
+        <span class="nav-divider" aria-hidden="true"></span>
+      }
       <app-notifications-bell />
 
       <a

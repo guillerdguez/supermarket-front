@@ -2,10 +2,6 @@
 
 @include pos-form-page($max-width: 480px);
 
-.form-grid {
-  grid-template-columns: 1fr;
-}
-
 .profile-header {
   display: flex;
   align-items: center;

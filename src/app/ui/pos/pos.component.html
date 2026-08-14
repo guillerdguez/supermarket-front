@@ -1,16 +1,4 @@
 <div class="pos-layout">
-  <header class="pos-header">
-    <div class="left">
-      <a routerLink="/cashier/dashboard">← Dashboard</a>
-      <strong>Punto de venta</strong>
-    </div>
-    @if (isOpen() && currentRegister(); as reg) {
-      <span class="badge open"><i class="pi pi-lock-open"></i> Caja #{{ reg.id }} abierta</span>
-    } @else {
-      <span class="badge closed"><i class="pi pi-lock"></i> Caja cerrada</span>
-    }
-  </header>
-
   <div class="pos-body">
     <section class="catalog">
       <pos-panel title="Catálogo">

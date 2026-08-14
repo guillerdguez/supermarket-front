@@ -528,6 +528,17 @@ $pos-bp-phone: 480px;
       text-align: center;
     }
 
+    .p-datatable-thead > tr.table-header-row > th.col-right {
+      text-align: right;
+    }
+
+    .p-datatable-thead > tr.table-header-row > th.col-checkbox,
+    .p-datatable-tbody > tr > td.col-checkbox {
+      width: 40px;
+      padding: 0 var(--pos-space-1);
+      text-align: center;
+    }
+
     .p-datatable-tbody > tr > td {
       height: var(--pos-space-3);
       padding: 0 var(--pos-space-2);
@@ -611,7 +622,7 @@ $pos-bp-phone: 480px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      padding: 0;
+      // padding: var(--pos-space-1) 0;
     }
 
     p-table {

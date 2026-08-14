@@ -4,13 +4,16 @@ import {
   HostListener,
   inject,
   computed,
+  effect,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
+import { CurrencyPipe, DatePipe } from "@angular/common";
 import { MenuItem, ConfirmationService } from "primeng/api";
 import { MenubarModule } from "primeng/menubar";
 import { ButtonModule } from "primeng/button";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { AuthService } from "../../../services/auth/auth.service";
+import { CashRegisterService } from "../../../services/cash-register/cash-register.service";
 import { NotificationsBellComponent } from "../../shared/notifications-bell/notifications-bell.component";
 
 @Component({
@@ -18,6 +21,8 @@ import { NotificationsBellComponent } from "../../shared/notifications-bell/noti
   standalone: true,
   imports: [
     RouterLink,
+    CurrencyPipe,
+    DatePipe,
     MenubarModule,
     ButtonModule,
     ConfirmDialogModule,
@@ -28,9 +33,25 @@ import { NotificationsBellComponent } from "../../shared/notifications-bell/noti
 })
 export class AdminNavComponent {
   private readonly auth = inject(AuthService);
+  private readonly cash = inject(CashRegisterService);
   private readonly confirm = inject(ConfirmationService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   user = this.auth.model.currentUser;
+  branchName = this.auth.model.branchName;
+  registerCurrent = this.cash.model.current;
+  registerOpen = this.cash.model.isOpen;
+
+  private fetchedBranch: number | null = null;
+
+  constructor() {
+    effect(() => {
+      const branch = this.auth.model.branchId();
+      if (this.isCashier() && branch != null && branch !== this.fetchedBranch) {
+        this.fetchedBranch = branch;
+        this.cash.retrieveCurrent(branch);
+      }
+    });
+  }
 
   @HostListener("document:click", ["$event"])
   onDocumentClick(event: MouseEvent) {
@@ -137,12 +158,7 @@ export class AdminNavComponent {
     },
   ]);
 
-  cashierItems: MenuItem[] = [
-    {
-      label: "Dashboard",
-      icon: "pi pi-home",
-      routerLink: "/cashier/dashboard",
-    },
+  cashierItems = computed<MenuItem[]>(() => [
     { label: "Cobrar", icon: "pi pi-desktop", routerLink: "/pos" },
     {
       label: "Mis ventas",
@@ -154,23 +170,19 @@ export class AdminNavComponent {
       icon: "pi pi-arrows-h",
       routerLink: "/cashier/transfers",
     },
-    {
-      label: "Caja",
-      icon: "pi pi-wallet",
-      items: [
-        {
-          label: "Abrir caja",
-          icon: "pi pi-lock-open",
-          routerLink: "/cashier/open-register",
-        },
-        {
+    this.registerOpen()
+      ? {
           label: "Cerrar caja",
           icon: "pi pi-lock",
           routerLink: "/cashier/close-register",
+        }
+      : {
+          label: "Abrir caja",
+          icon: "pi pi-lock-open",
+          routerLink: "/cashier/open-register",
+          styleClass: "cashier-primary-action",
         },
-      ],
-    },
-  ];
+  ]);
 
   logout() {
     this.confirm.confirm({
