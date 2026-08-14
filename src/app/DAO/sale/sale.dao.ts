@@ -4,7 +4,6 @@ import { Observable } from "rxjs";
 import {
   SaleRequest,
   SaleResponse,
-  PaymentRequest,
   CancelSaleRequest,
 } from "../../DTO/sale.dto";
 import { RestPathService } from "../../../util/restPath/rest-path.service";
@@ -28,10 +27,6 @@ export class SaleDao {
 
   cancel(id: number, body: CancelSaleRequest): Observable<SaleResponse> {
     return this.http.post<SaleResponse>(this.url.saleCancel(id), body);
-  }
-
-  registerPayment(body: PaymentRequest): Observable<unknown> {
-    return this.http.post(this.url.paymentsCrud(), body);
   }
 
   getMySales(): Observable<SaleResponse[]> {

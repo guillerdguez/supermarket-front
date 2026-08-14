@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { SaleDao } from "../../DAO/sale/sale.dao";
-import { SaleRequest, SaleResponse, PaymentRequest } from "../../DTO/sale.dto";
+import { SaleRequest, SaleResponse } from "../../DTO/sale.dto";
 import { SaleModel } from "../../model/Domain/sale.model";
 import { CrudComponent } from "../../model/Domain/crud-component";
 import { MessageProcessingService } from "../../../util/messageProcessingCenter/message-processing.service";
@@ -64,33 +64,12 @@ export class SaleService {
     });
   }
 
-  save(
-    request: SaleRequest,
-    paymentType: PaymentRequest["paymentType"],
-    amount: number,
-    component?: CrudComponent,
-  ): void {
+  save(request: SaleRequest, component?: CrudComponent): void {
     this.model.loading.set(true);
     this.model.error.set(null);
 
     this.dao.create(request).subscribe({
-      next: (sale) => this.registerPayment(sale, paymentType, amount, component),
-      error: (err) => {
-        this.model.loading.set(false);
-        this.model.error.set(this.messages.resolveErrorDetail("errorCreatingSale", err));
-        this.messages.publishErrorMsg("errorCreatingSale", err);
-      },
-    });
-  }
-
-  private registerPayment(
-    sale: SaleResponse,
-    paymentType: PaymentRequest["paymentType"],
-    amount: number,
-    component?: CrudComponent,
-  ): void {
-    this.dao.registerPayment({ saleId: sale.id, amount, paymentType }).subscribe({
-      next: () => {
+      next: (sale) => {
         this.model.loading.set(false);
         this.model.list.update((list) => [sale, ...list]);
         this.messages.publishSuccessMsg("saleCreated");
@@ -98,7 +77,8 @@ export class SaleService {
       },
       error: (err) => {
         this.model.loading.set(false);
-        this.messages.publishErrorMsg("errorCreatingSale", err); 
+        this.model.error.set(this.messages.resolveErrorDetail("errorCreatingSale", err));
+        this.messages.publishErrorMsg("errorCreatingSale", err);
       },
     });
   }

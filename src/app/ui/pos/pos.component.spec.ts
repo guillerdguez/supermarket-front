@@ -172,9 +172,12 @@ describe("PosComponent", () => {
     fixture.componentInstance.confirmPayment();
 
     expect(saveSpy).toHaveBeenCalledWith(
-      { branchId: 1, details: [{ productId: 1, quantity: 1 }] },
-      "CARD",
-      1.15,
+      {
+        branchId: 1,
+        details: [{ productId: 1, quantity: 1 }],
+        amount: 1.15,
+        paymentType: "CARD",
+      },
       fixture.componentInstance,
     );
   });

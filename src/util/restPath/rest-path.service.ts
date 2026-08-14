@@ -65,10 +65,6 @@ export class RestPathService {
     return `${this.base}/sales/${id}/cancel`;
   }
 
-  paymentsCrud(): string {
-    return `${this.base}/payments`;
-  }
-
   cashierMySales(): string {
     return `${this.base}/cashier/my-sales`;
   }

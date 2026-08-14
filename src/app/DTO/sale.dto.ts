@@ -1,8 +1,7 @@
 export interface SaleDetailRequest { productId: number; quantity: number; }
-export interface SaleRequest { branchId: number; details: SaleDetailRequest[]; date?: string; }
-export interface PaymentRequest {
-  saleId: number; amount: number;
-  paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER"; reference?: string;
+export interface SaleRequest {
+  branchId: number; details: SaleDetailRequest[]; date?: string;
+  amount: number; paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER"; reference?: string;
 }
 export interface SaleDetailResponse {
   id: number; productName: string; quantity: number; unitPrice: number; subtotal: number;

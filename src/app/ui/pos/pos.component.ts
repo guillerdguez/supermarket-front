@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
 import { CurrencyPipe } from "@angular/common";
 import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
@@ -21,7 +20,6 @@ import { PosPanelComponent } from "../wrappers/panel/panel.component";
   standalone: true,
   imports: [
     FormsModule,
-    RouterLink,
     CurrencyPipe,
     DialogModule,
     ButtonModule,
@@ -66,10 +64,6 @@ export class PosComponent implements OnInit, CrudComponent {
     const r = this.amountReceived();
     const t = this.cartTotal();
     return r > t ? r - t : 0;
-  });
-
-  backLink = computed(() => {
-    return "/cashier/dashboard";
   });
 
   ngOnInit() {
@@ -146,9 +140,11 @@ export class PosComponent implements OnInit, CrudComponent {
         productId: i.product.id,
         quantity: i.quantity,
       })),
+      amount: this.cartTotal(),
+      paymentType: this.paymentMethod(),
     };
 
-    this.sales.save(request, this.paymentMethod(), this.amountReceived(), this);
+    this.sales.save(request, this);
   }
 
   afterSave() {
