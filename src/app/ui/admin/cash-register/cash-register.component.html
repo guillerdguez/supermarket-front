@@ -1,19 +1,17 @@
 <pos-page-shell>
   <pos-panel title="Cajas registradoras">
-    <div class="pos-toolbar">
-      <button
-        pButton
-        type="button"
-        icon="pi pi-refresh"
-        severity="secondary"
-        [outlined]="true"
-        size="small"
-        style="margin-left: auto"
-        (click)="refresh()"
-        aria-label="Refrescar"
-        title="Refrescar"
-      ></button>
-    </div>
+    <button
+      panel-header-actions
+      pButton
+      type="button"
+      icon="pi pi-refresh"
+      severity="secondary"
+      [outlined]="true"
+      size="small"
+      (click)="refresh()"
+      aria-label="Refrescar"
+      title="Refrescar"
+    ></button>
     @if (loading()) {
       <div class="skeleton-table" aria-hidden="true">
         @for (row of [1, 2, 3, 4]; track row) {

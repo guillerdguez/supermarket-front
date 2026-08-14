@@ -1,13 +1,9 @@
 <div class="audit-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Auditoría</h1>
-        <p class="muted">Registro de acciones sensibles del sistema</p>
-      </div>
-
-      <div class="page-header__actions">
+    <div class="slot">
+      <pos-panel title="Registro">
         <button
+          panel-header-actions
           pButton
           type="button"
           icon="pi pi-refresh"
@@ -18,11 +14,6 @@
           aria-label="Refrescar"
           title="Refrescar"
         ></button>
-      </div>
-    </header>
-
-    <div class="slot">
-      <pos-panel title="Registro">
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">
             @for (row of [1, 2, 3, 4, 5]; track row) {

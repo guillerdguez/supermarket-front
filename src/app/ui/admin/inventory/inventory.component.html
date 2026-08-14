@@ -34,6 +34,18 @@
       <div class="inv-body__main">
         <div class="slot">
           <pos-panel title="Inventario por sucursal">
+            <button
+              panel-header-actions
+              pButton
+              type="button"
+              icon="pi pi-refresh"
+              severity="secondary"
+              [outlined]="true"
+              size="small"
+              (click)="refresh()"
+              aria-label="Refrescar"
+              title="Refrescar"
+            ></button>
             <div class="pos-toolbar">
               <i class="pi pi-shop" aria-hidden="true"></i>
               <label for="branch">Sucursal</label>
@@ -55,18 +67,6 @@
                 />
                 Solo stock bajo
               </label>
-              <button
-                pButton
-                type="button"
-                icon="pi pi-refresh"
-                severity="secondary"
-                [outlined]="true"
-                size="small"
-                style="margin-left: auto"
-                (click)="refresh()"
-                aria-label="Refrescar"
-                title="Refrescar"
-              ></button>
             </div>
             @if (loading()) {
               <div class="skeleton-table" aria-hidden="true">

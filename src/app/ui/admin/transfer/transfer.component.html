@@ -1,33 +1,26 @@
 <div class="transfer-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Transferencias</h1>
-        <p class="muted">Movimientos de stock entre sucursales</p>
-      </div>
-
-      <div class="page-header__actions">
-        <a
-          routerLink="/admin/transfers/create"
-          pButton
-          label="Solicitar"
-          icon="pi pi-plus"
-        ></a>
-        <button
-          pButton
-          type="button"
-          icon="pi pi-refresh"
-          severity="secondary"
-          [outlined]="true"
-          (click)="refresh()"
-          aria-label="Refrescar"
-          title="Refrescar"
-        ></button>
-      </div>
-    </header>
-
     <div class="slot">
       <pos-panel title="Listado de transferencias">
+        <div panel-header-actions class="header-actions">
+          <a
+            routerLink="/admin/transfers/create"
+            pButton
+            label="Solicitar"
+            icon="pi pi-plus"
+            size="small"
+          ></a>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-refresh"
+            severity="secondary"
+            [outlined]="true"
+            (click)="refresh()"
+            aria-label="Refrescar"
+            title="Refrescar"
+          ></button>
+        </div>
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">
             @for (row of [1, 2, 3, 4, 5]; track row) {

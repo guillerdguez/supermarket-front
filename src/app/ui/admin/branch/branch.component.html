@@ -1,34 +1,28 @@
 <div class="branch-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Sucursales</h1>
-        <p class="muted">Tiendas y almacenes del supermercado</p>
-      </div>
-      <div class="page-header__actions">
-        @if (canManageBranches()) {
-          <a
-            routerLink="/admin/branches/create"
-            pButton
-            label="Nueva sucursal"
-            icon="pi pi-plus"
-          ></a>
-        }
-        <button
-          pButton
-          type="button"
-          icon="pi pi-refresh"
-          severity="secondary"
-          [outlined]="true"
-          (click)="refresh()"
-          aria-label="Refrescar"
-          title="Refrescar"
-        ></button>
-      </div>
-    </header>
-
     <div class="slot">
       <pos-panel title="Listado de sucursales">
+        <div panel-header-actions class="header-actions">
+          @if (canManageBranches()) {
+            <a
+              routerLink="/admin/branches/create"
+              pButton
+              label="Nueva sucursal"
+              icon="pi pi-plus"
+              size="small"
+            ></a>
+          }
+          <button
+            pButton
+            type="button"
+            icon="pi pi-refresh"
+            severity="secondary"
+            [outlined]="true"
+            (click)="refresh()"
+            aria-label="Refrescar"
+            title="Refrescar"
+          ></button>
+        </div>
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">
             @for (row of [1, 2, 3, 4]; track row) {
@@ -95,7 +89,7 @@
             >
               <ng-template pTemplate="header">
                 <tr class="table-header-row">
-                  <th style="width: 40px">
+                  <th class="col-checkbox">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
                   <th pSortableColumn="name" pResizableColumn style="width: 30%">
@@ -131,7 +125,7 @@
               </ng-template>
               <ng-template pTemplate="body" let-row>
                 <tr [pContextMenuRow]="row" (dblclick)="openPreview(row.id)">
-                  <td>
+                  <td class="col-checkbox">
                     <p-tableCheckbox [value]="row"></p-tableCheckbox>
                   </td>
                   <td title="{{ row.name }}">{{ row.name }}</td>
