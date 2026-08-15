@@ -27,20 +27,3 @@
   color: var(--pos-text);
 }
 
-.pos-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  border-radius: var(--pos-radius-sm);
-  color: var(--pos-text-muted);
-  cursor: pointer;
-
-  &:hover {
-    background: var(--pos-surface-alt);
-    color: var(--pos-primary);
-  }
-}

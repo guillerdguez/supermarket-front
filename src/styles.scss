@@ -148,6 +148,24 @@ a {
   color: var(--pos-text-muted);
 }
 
+.pos-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--pos-radius-sm);
+  color: var(--pos-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--pos-surface-alt);
+    color: var(--pos-primary);
+  }
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -203,6 +221,7 @@ label.checkbox {
   --p-checkbox-height: 16px;
   --p-checkbox-sm-width: 16px;
   --p-checkbox-sm-height: 16px;
+  --pos-tag-min-width: 100%;
 
   .p-datatable-thead > tr > th {
     background: var(--pos-surface-alt);
@@ -280,7 +299,7 @@ label.checkbox {
   padding: 2px calc(var(--pos-space-1) / 2);
   line-height: 1.35;
   border-radius: 0px !important;
-  min-width: 100%;
+  min-width: var(--pos-tag-min-width);
 }
 
 .dense-table .p-datatable-thead {
