@@ -5,7 +5,7 @@ import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
 import { ContextMenuModule } from "primeng/contextmenu";
-import { MenuItem } from "primeng/api";
+import { ConfirmationService, MenuItem } from "primeng/api";
 import { TransferService } from "../../../services/transfer/transfer.service";
 import { TransferResponse } from "../../../DTO/transfer.dto";
 import { transferStatusSeverity } from "../../../model/Domain/transfer.model";
@@ -34,6 +34,7 @@ import { PosReasonDialogComponent } from "../../wrappers/reason-dialog/reason-di
 })
 export class TransferComponent implements OnInit {
   private readonly svc = inject(TransferService);
+  private readonly confirm = inject(ConfirmationService);
   items = this.svc.model.list;
   loading = this.svc.model.loading;
   selected: TransferResponse | null = null;
@@ -61,7 +62,7 @@ export class TransferComponent implements OnInit {
       items.push(
         { label: "Aprobar", icon: "pi pi-check", command: () => this.approve(row.id) },
         { label: "Rechazar", icon: "pi pi-times", command: () => this.reject(row.id) },
-        { label: "Cancelar", icon: "pi pi-ban", command: () => this.cancel(row.id) },
+        { label: "Cancelar", icon: "pi pi-ban", command: () => this.cancel(row) },
       );
     }
     if (row.status === "APPROVED") {
@@ -76,8 +77,16 @@ export class TransferComponent implements OnInit {
   complete(id: number) {
     this.svc.complete(id);
   }
-  cancel(id: number) {
-    this.svc.cancel(id);
+  cancel(row: TransferResponse) {
+    this.confirm.confirm({
+      header: "Cancelar transferencia",
+      message: `¿Cancelar la solicitud de «${row.productName}»?`,
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Sí, cancelar",
+      rejectLabel: "No",
+      acceptButtonStyleClass: "p-button-danger",
+      accept: () => this.svc.cancel(row.id),
+    });
   }
   reject(id: number) {
     this.rejectTargetId = id;

@@ -4,6 +4,7 @@ import { DatePipe } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import { ButtonModule } from "primeng/button";
+import { ConfirmationService } from "primeng/api";
 import { TransferService } from "../../../services/transfer/transfer.service";
 import { TransferResponse } from "../../../DTO/transfer.dto";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
@@ -17,6 +18,7 @@ import { PosTableFooterComponent } from "../../wrappers/table-footer/table-foote
 })
 export class CashierTransferComponent implements OnInit {
   private readonly svc = inject(TransferService);
+  private readonly confirm = inject(ConfirmationService);
   items = this.svc.model.mine;
   loading = this.svc.model.loading;
 
@@ -35,6 +37,14 @@ export class CashierTransferComponent implements OnInit {
   }
 
   cancel(row: TransferResponse) {
-    this.svc.cancel(row.id);
+    this.confirm.confirm({
+      header: "Cancelar transferencia",
+      message: `¿Cancelar la solicitud de «${row.productName}»?`,
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Sí, cancelar",
+      rejectLabel: "No",
+      acceptButtonStyleClass: "p-button-danger",
+      accept: () => this.svc.cancel(row.id),
+    });
   }
 }
