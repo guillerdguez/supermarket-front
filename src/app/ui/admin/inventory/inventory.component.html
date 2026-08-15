@@ -1,12 +1,5 @@
 <div class="inv-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Inventario</h1>
-        <p class="muted">Stock por sucursal y alertas</p>
-      </div>
-    </header>
-
     <section class="kpi-row" aria-label="Indicadores">
       <article class="kpi-card">
         <span class="kpi-label">Productos</span>
@@ -34,18 +27,6 @@
       <div class="inv-body__main">
         <div class="slot">
           <pos-panel title="Inventario por sucursal">
-            <button
-              panel-header-actions
-              pButton
-              type="button"
-              icon="pi pi-refresh"
-              severity="secondary"
-              [outlined]="true"
-              size="small"
-              (click)="refresh()"
-              aria-label="Refrescar"
-              title="Refrescar"
-            ></button>
             <div class="pos-toolbar">
               <i class="pi pi-shop" aria-hidden="true"></i>
               <label for="branch">Sucursal</label>
@@ -67,6 +48,16 @@
                 />
                 Solo stock bajo
               </label>
+              <button
+                panel-header-actions
+                class="pos-icon-btn"
+                type="button"
+                (click)="refresh()"
+                aria-label="Refrescar"
+                title="Refrescar"
+              >
+                <i class="pi pi-refresh" aria-hidden="true"></i>
+              </button>
             </div>
             @if (loading()) {
               <div class="skeleton-table" aria-hidden="true">
@@ -100,19 +91,35 @@
                 >
                   <ng-template pTemplate="header">
                     <tr class="table-header-row">
-                      <th pSortableColumn="productName" pResizableColumn style="width: 34%">
+                      <th
+                        pSortableColumn="productName"
+                        pResizableColumn
+                        style="width: 34%"
+                      >
                         Producto
                         <p-sortIcon field="productName"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="productCategory" pResizableColumn style="width: 24%">
+                      <th
+                        pSortableColumn="productCategory"
+                        pResizableColumn
+                        style="width: 24%"
+                      >
                         Categoría
                         <p-sortIcon field="productCategory"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="stock" pResizableColumn style="width: 15%">
+                      <th
+                        pSortableColumn="stock"
+                        pResizableColumn
+                        style="width: 15%"
+                      >
                         Stock
                         <p-sortIcon field="stock"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="minStock" pResizableColumn style="width: 15%">
+                      <th
+                        pSortableColumn="minStock"
+                        pResizableColumn
+                        style="width: 15%"
+                      >
                         Mínimo
                         <p-sortIcon field="minStock"></p-sortIcon>
                       </th>
@@ -173,7 +180,7 @@
                         </div>
                         <p-tag
                           [severity]="a.currentStock === 0 ? 'danger' : 'warn'"
-                          [value]="a.currentStock + ' / ' + a.minStock"
+                          [value]="a.currentStock + '/' + a.minStock"
                         />
                       </li>
                     }
