@@ -11,15 +11,14 @@
             size="small"
           ></a>
           <button
-            pButton
+            class="pos-icon-btn"
             type="button"
-            icon="pi pi-refresh"
-            severity="secondary"
-            [outlined]="true"
             (click)="refresh()"
             aria-label="Refrescar"
             title="Refrescar"
-          ></button>
+          >
+            <i class="pi pi-refresh" aria-hidden="true"></i>
+          </button>
         </div>
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">

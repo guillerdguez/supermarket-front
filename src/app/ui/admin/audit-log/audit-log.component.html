@@ -4,16 +4,14 @@
       <pos-panel title="Registro">
         <button
           panel-header-actions
-          pButton
+          class="pos-icon-btn"
           type="button"
-          icon="pi pi-refresh"
-          severity="secondary"
-          [outlined]="true"
-          size="small"
           (click)="refresh()"
           aria-label="Refrescar"
           title="Refrescar"
-        ></button>
+        >
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+        </button>
         @if (loading()) {
           <div class="skeleton-table" aria-hidden="true">
             @for (row of [1, 2, 3, 4, 5]; track row) {
