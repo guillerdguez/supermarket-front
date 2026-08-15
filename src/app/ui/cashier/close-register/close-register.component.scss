@@ -5,3 +5,7 @@
 .form-grid {
   grid-template-columns: 1fr;
 }
+pos-page-shell,
+.pos-page {
+  min-height: 40px !important;
+}

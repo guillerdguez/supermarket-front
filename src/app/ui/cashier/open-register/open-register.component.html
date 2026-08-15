@@ -1,14 +1,5 @@
 <pos-page-shell>
-  <header class="page-header">
-    <div class="page-header__text">
-      <a routerLink="/pos" class="back-link">
-        <i class="pi pi-arrow-left" aria-hidden="true"></i>
-        Volver a cobrar
-      </a>
-      <h1>Abrir caja</h1>
-    </div>
-  </header>
-
+ 
   <pos-panel title="Datos de apertura">
     @if (error()) {
       <p class="error">{{ error() }}</p>

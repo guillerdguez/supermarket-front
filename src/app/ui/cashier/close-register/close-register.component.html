@@ -1,14 +1,5 @@
 <pos-page-shell>
-  <header class="page-header">
-    <div class="page-header__text">
-      <a routerLink="/pos" class="back-link">
-        <i class="pi pi-arrow-left" aria-hidden="true"></i>
-        Volver a cobrar
-      </a>
-      <h1>Cerrar caja</h1>
-    </div>
-  </header>
-
+ 
   <pos-panel title="Datos de cierre">
     @if (current(); as reg) {
       <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>

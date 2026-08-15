@@ -10,9 +10,7 @@
     >
       <i class="pi pi-refresh" aria-hidden="true"></i>
     </button>
-    <div class="pos-toolbar">
-      <p class="muted" style="margin: 0"><a routerLink="/pos">← Cobrar</a></p>
-    </div>
+ 
     @if (loading()) {
       <div class="skeleton-table" aria-hidden="true">
         @for (row of [1, 2, 3, 4]; track row) {
