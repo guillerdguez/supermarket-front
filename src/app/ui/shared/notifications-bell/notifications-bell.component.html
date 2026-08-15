@@ -47,13 +47,11 @@
         </ul>
       }
 
-      @if (canManageNotifications()) {
-        <div class="dropdown-footer">
-          <a routerLink="/admin/notifications" (click)="close()">
-            <i class="pi pi-list"></i> Ver todas
-          </a>
-        </div>
-      }
+      <div class="dropdown-footer">
+        <a [routerLink]="notificationsLink()" (click)="close()">
+          <i class="pi pi-list"></i> Ver todas
+        </a>
+      </div>
     </div>
   }
 </div>

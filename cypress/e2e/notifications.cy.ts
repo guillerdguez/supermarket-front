@@ -106,12 +106,13 @@ describe("Notifications — nav bell", () => {
   });
 });
 
-describe("Notifications — nav bell (cashier, no manage link)", () => {
-  it("does not show the 'Ver todas' management link for a cashier", () => {
+describe("Notifications — nav bell (cashier)", () => {
+  it("links to the full notifications page for a cashier", () => {
     cy.fixture("users").then((users) => {
       cy.login(users.cashierCentro.email, users.cashierCentro.password);
     });
     cy.get(".bell-btn").click();
-    cy.contains(".dropdown-footer a", "Ver todas").should("not.exist");
+    cy.contains(".dropdown-footer a", "Ver todas").click();
+    cy.url().should("include", "/notifications");
   });
 });

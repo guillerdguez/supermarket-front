@@ -21,9 +21,9 @@ export class NotificationsBellComponent implements OnInit {
   open = signal(false);
 
   
-  canManageNotifications = computed(() => {
+  notificationsLink = computed(() => {
     const r = this.auth.model.currentUser()?.role;
-    return r === "ADMIN" || r === "MANAGER";
+    return r === "ADMIN" || r === "MANAGER" ? "/admin/notifications" : "/notifications";
   });
 
   recentItems = computed(() => this.items().slice(0, 8));
