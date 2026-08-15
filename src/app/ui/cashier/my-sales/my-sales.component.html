@@ -2,16 +2,14 @@
   <pos-panel title="Mis ventas">
     <button
       panel-header-actions
-      pButton
+      class="pos-icon-btn"
       type="button"
-      icon="pi pi-refresh"
-      severity="secondary"
-      [outlined]="true"
-      size="small"
       (click)="refresh()"
       aria-label="Refrescar"
       title="Refrescar"
-    ></button>
+    >
+      <i class="pi pi-refresh" aria-hidden="true"></i>
+    </button>
     <div class="pos-toolbar">
       <p class="muted" style="margin: 0"><a routerLink="/pos">← Cobrar</a></p>
     </div>

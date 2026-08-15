@@ -1,28 +1,24 @@
 <pos-page-shell>
   <pos-panel title="Mis transferencias">
-    <button
-      panel-header-actions
+     <div panel-header-actions class="header-buttons">
+    <a
+      routerLink="/cashier/transfers/create"
       pButton
-      type="button"
-      icon="pi pi-refresh"
-      severity="secondary"
-      [outlined]="true"
+      label="Solicitar stock"
+      icon="pi pi-plus"
       size="small"
+    ></a>
+    <button
+      class="pos-icon-btn"
+      type="button"
       (click)="refresh()"
       aria-label="Refrescar"
       title="Refrescar"
-    ></button>
-    <div class="pos-toolbar">
-      <p class="muted" style="margin: 0"><a routerLink="/pos">← Cobrar</a></p>
-      <a
-        routerLink="/cashier/transfers/create"
-        pButton
-        label="Solicitar stock"
-        icon="pi pi-plus"
-        size="small"
-        style="margin-left: auto"
-      ></a>
-    </div>
+    >
+      <i class="pi pi-refresh" aria-hidden="true"></i>
+    </button>
+  </div>
+
     @if (loading()) {
       <div class="skeleton-table" aria-hidden="true">
         @for (row of [1, 2, 3, 4]; track row) {
@@ -79,15 +75,19 @@
               Estado
               <p-sortIcon field="status"></p-sortIcon>
             </th>
-            <th style="width: 100px"></th>
-          </tr></ng-template
-        >
+            <th style="width: 100px"></th></tr
+        ></ng-template>
         <ng-template pTemplate="body" let-row>
           <tr>
             <td>{{ row.productName }}</td>
             <td>{{ row.quantity }}</td>
             <td>{{ row.requestedAt | date: "dd/MM/yyyy HH:mm" }}</td>
-            <td><p-tag [severity]="severity(row.status)" [value]="row.status"></p-tag></td>
+            <td>
+              <p-tag
+                [severity]="severity(row.status)"
+                [value]="row.status"
+              ></p-tag>
+            </td>
             <td>
               @if (row.status === "PENDING") {
                 <button
@@ -105,7 +105,9 @@
         </ng-template>
       </p-table>
       <pos-table-footer
-        [visibleCount]="dt.filteredValue ? dt.filteredValue.length : items().length"
+        [visibleCount]="
+          dt.filteredValue ? dt.filteredValue.length : items().length
+        "
         [totalCount]="items().length"
       />
     }
