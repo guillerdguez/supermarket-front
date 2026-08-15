@@ -1,16 +1,5 @@
 <div class="dash-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>{{ greeting() }}, {{ firstName() }}</h1>
-        <p class="muted">Resumen operativo del supermercado</p>
-      </div>
-      <div class="page-header__actions">
-        <a routerLink="/pos" pButton label="Ir al POS" icon="pi pi-desktop"></a>
-        <a routerLink="/admin/reports" pButton label="Reportes" icon="pi pi-chart-bar" severity="secondary" [outlined]="true"></a>
-      </div>
-    </header>
-
     <section class="kpi-row" aria-label="Indicadores">
       <article class="kpi-card">
         <span class="kpi-label">Ingresos</span>
@@ -105,7 +94,7 @@
                         </div>
                         <p-tag
                           [severity]="a.currentStock === 0 ? 'danger' : 'warn'"
-                          [value]="a.currentStock + ' / mín ' + a.minStock"
+                          [value]="a.currentStock + '/' + a.minStock"
                         />
                       </li>
                     }
@@ -122,35 +111,32 @@
         </div>
 
         <div class="slot">
-          <pos-panel title="Sucursales">
+          <pos-panel title="Rendimiento por sucursal">
             <div class="panel-stack">
               <div class="panel-stack__body">
-                @if (branchList().length === 0) {
-                  <p class="muted empty-state">Sin sucursales</p>
+                @if (topBranches().length === 0) {
+                  <p class="muted empty-state">Sin ventas registradas</p>
                 } @else {
-                  <ul class="branch-list">
-                    @for (b of branchList(); track b.id) {
+                  <ul class="alert-list">
+                    @for (b of topBranches(); track b.branchId) {
                       <li>
-                        <i
-                          class="pi"
-                          [class]="b.isWarehouse ? 'pi-warehouse' : 'pi-shop'"
-                          aria-hidden="true"
-                        ></i>
-                        <div class="branch-list__text">
-                          <strong>{{ b.name }}</strong>
-                          <span class="muted">{{ b.address || "—" }}</span>
+                        <div class="alert-list__text">
+                          <strong>{{ b.branchName }}</strong>
+                          <span class="muted"
+                            >{{ b.transactionCount }} ventas</span
+                          >
                         </div>
-                        @if (b.isWarehouse) {
-                          <p-tag severity="info" value="Almacén" />
-                        }
+                        <span class="money">{{
+                          b.totalRevenue | currency: "EUR":"symbol":"1.2-2"
+                        }}</span>
                       </li>
                     }
                   </ul>
                 }
               </div>
               <div class="panel-stack__footer">
-                <a routerLink="/admin/branches" class="see-more"
-                  >Ver sucursales →</a
+                <a routerLink="/admin/reports" class="see-more"
+                  >Ver reportes →</a
                 >
               </div>
             </div>
