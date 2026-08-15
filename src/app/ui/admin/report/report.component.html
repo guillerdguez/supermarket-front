@@ -1,15 +1,10 @@
 
 <div class="report-fit">
   <pos-page-shell>
-    <header class="page-header">
-      <div class="page-header__text">
-        <h1>Reportes</h1>
-        <p class="muted">Ventas e inventario por rango de fechas</p>
-      </div>
-    </header>
+ 
 
     <div class="slot">
-      <pos-panel>
+      <pos-panel title="Reportes">
         <div class="pos-toolbar">
           <label for="from">Desde</label>
           <input id="from" type="date" [(ngModel)]="startDate" />
@@ -22,9 +17,18 @@
             icon="pi pi-filter"
             severity="secondary"
             [outlined]="true"
-            style="margin-left: auto"
             (click)="onFilter()"
           ></button>
+          <button
+            type="button"
+            class="pos-icon-btn"
+            style="margin-left: auto"
+            (click)="refresh()"
+            aria-label="Refrescar"
+            title="Refrescar"
+          >
+            <i class="pi pi-refresh" aria-hidden="true"></i>
+          </button>
         </div>
 
         @if (loading()) {

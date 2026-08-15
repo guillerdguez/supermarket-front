@@ -129,6 +129,11 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  refresh() {
+    this.onFilter();
+    this.svc.retrieveInventoryStatus();
+  }
+
   onCashRegisterFilter() {
     this.svc.retrieveCashRegisterReport({
       startDate: this.startDate || undefined,
