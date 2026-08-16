@@ -20,14 +20,40 @@
         </div>
 
         <div class="form-grid">
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" [value]="email" disabled />
-          </div>
-          <div class="field">
-            <label for="branch">Sucursal</label>
-            <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
-          </div>
+          @if (canEditSensitive) {
+            <div class="field" [class.has-error]="form.controls.email.invalid && form.controls.email.touched">
+              <label for="email">Email <span class="req">*</span></label>
+              <input
+                id="email"
+                formControlName="email"
+                [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                [attr.aria-describedby]="form.controls.email.invalid && form.controls.email.touched ? 'email-error' : null"
+              />
+              <app-field-error id="email-error" [message]="fieldError(form.controls.email, { required: 'El email es obligatorio', email: 'Introduce un email válido' })" />
+            </div>
+            <div class="field">
+              <label for="branch">Sucursal</label>
+              <p-select
+                id="branch"
+                [options]="branchList()"
+                optionLabel="name"
+                optionValue="id"
+                formControlName="branchId"
+                placeholder="— Sin sucursal —"
+                styleClass="w-full"
+                [showClear]="true"
+              />
+            </div>
+          } @else {
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" [value]="email" disabled />
+            </div>
+            <div class="field">
+              <label for="branch">Sucursal</label>
+              <input id="branch" [value]="branchName || 'Sin sucursal asignada'" disabled />
+            </div>
+          }
           <div class="field" [class.has-error]="form.controls.username.invalid && form.controls.username.touched">
             <label for="u">Usuario <span class="req">*</span></label>
             <input
