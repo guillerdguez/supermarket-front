@@ -6,7 +6,7 @@ Construido con **Angular 20** en modo standalone (sin `NgModule`), usando **señ
 
 **Backend:** [supermarket-back](https://github.com/guillerdguez/supermarket-back) (Spring Boot 3 / Java 17).
 
-🔗 **Demo en vivo:** [supermarket-front-production.up.railway.app](https://supermarket-front-production.up.railway.app)
+🔗 **Demo en vivo:** [supermarketweb.up.railway.app](https://supermarketweb.up.railway.app)
 
 ## ✨ Funcionalidades
 
