@@ -1,12 +1,19 @@
-
 .login-page {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: var(--pos-space-3);
   background:
-    radial-gradient(ellipse at top left, var(--pos-primary-100) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, var(--pos-primary-muted) 0%, transparent 40%),
+    radial-gradient(
+      ellipse at top left,
+      var(--pos-primary-100) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      var(--pos-primary-muted) 0%,
+      transparent 40%
+    ),
     var(--pos-surface-alt);
 }
 
@@ -96,7 +103,6 @@ label {
     margin-top: 4px;
   }
 }
-
 
 :host ::ng-deep .login-card {
   .p-password,
