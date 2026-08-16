@@ -332,8 +332,6 @@
     border-radius: var(--pos-radius-lg) var(--pos-radius-lg) 0 0;
   }
 }
-//revisar
-// En el archivo .scss del componente POS
 :host ::ng-deep .catalog-panel-no-header .pos-panel-header {
   display: none !important;
 }

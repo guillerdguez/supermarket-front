@@ -336,9 +336,17 @@ label.checkbox {
 }
 
 .field-error {
+  display: block;
   margin: 0;
   color: var(--pos-danger);
   font-size: var(--pos-font-size-xs);
+  line-height: 1.4;
+  min-height: calc(var(--pos-font-size-xs) * 1.4);
+  visibility: hidden;
+}
+
+.field-error--visible {
+  visibility: visible;
 }
 
 .field.has-error input,
@@ -349,6 +357,16 @@ label.checkbox {
 
 .field.has-error input:focus {
   box-shadow: 0 0 0 3px var(--pos-danger-bg);
+}
+ 
+.p-select .p-overlay {
+  width: 100%;
+  max-width: 100%;
+}
+
+.p-select-option {
+  white-space: normal;
+  word-break: break-word;
 }
 
 .field-hint {

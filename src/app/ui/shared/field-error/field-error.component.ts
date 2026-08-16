@@ -4,9 +4,13 @@ import { Component, input } from "@angular/core";
   selector: "app-field-error",
   standalone: true,
   template: `
-    @if (message()) {
-      <small class="field-error" [id]="id()" role="alert">{{ message() }}</small>
-    }
+    <small
+      class="field-error"
+      [class.field-error--visible]="!!message()"
+      [id]="id()"
+      [attr.role]="message() ? 'alert' : null"
+      >{{ message() }}</small
+    >
   `,
 })
 export class FieldErrorComponent {
