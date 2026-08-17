@@ -86,7 +86,6 @@ export class ProductService {
     this.messages.publishErrorMsg(key, err);
   }
 
-  
   delete(ids: number | number[], component?: CrudComponent): void {
     const idList = Array.isArray(ids) ? ids : [ids];
     const snapshot = this.model.list();

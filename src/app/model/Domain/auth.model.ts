@@ -7,7 +7,6 @@ export class AuthModel {
   readonly loading = signal(false);
   readonly isAuthenticated = computed(() => !!this.currentUser());
 
-  
   readonly branchId = computed(() => this.currentUser()?.branchId ?? null);
   readonly branchName = computed(() => this.currentUser()?.branchName ?? null);
 }

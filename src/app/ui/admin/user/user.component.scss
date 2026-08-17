@@ -1,6 +1,8 @@
 @use "../../../theme/styles/mixins" as *;
 
 @include pos-fit-viewport;
+@include pos-fixed-table;
+@include pos-dense-table;
 
 .user-fit {
   height: 100%;
@@ -71,6 +73,3 @@
     overflow: visible;
   }
 }
-
-@include pos-fixed-table;
-@include pos-dense-table;

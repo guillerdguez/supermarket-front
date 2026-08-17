@@ -23,7 +23,9 @@
         @if (selectedRows.length > 0) {
           <div class="prod-toolbar">
             <span class="toolbar-count muted">
-              {{ selectedRows.length }} seleccionado{{ selectedRows.length === 1 ? "" : "s" }}
+              {{ selectedRows.length }} seleccionado{{
+                selectedRows.length === 1 ? "" : "s"
+              }}
             </span>
             <button
               pButton
@@ -54,8 +56,8 @@
             <i class="pi pi-users" aria-hidden="true"></i>
             <p class="empty-state__title">Todavía no hay usuarios</p>
             <p class="empty-state__desc">
-              Creá el primer usuario para que pueda iniciar sesión y operar cajas o
-              administrar el sistema.
+              Creá el primer usuario para que pueda iniciar sesión y operar
+              cajas o administrar el sistema.
             </p>
             <a
               routerLink="/admin/users/create"
@@ -90,23 +92,43 @@
                   <th class="col-checkbox">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
-                  <th pSortableColumn="username" pResizableColumn style="width: 18%">
+                  <th
+                    pSortableColumn="username"
+                    pResizableColumn
+                    style="width: 18%"
+                  >
                     Usuario
                     <p-sortIcon field="username"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="email" pResizableColumn style="width: 22%">
+                  <th
+                    pSortableColumn="email"
+                    pResizableColumn
+                    style="width: 22%"
+                  >
                     Email
                     <p-sortIcon field="email"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="firstName" pResizableColumn style="width: 18%">
+                  <th
+                    pSortableColumn="firstName"
+                    pResizableColumn
+                    style="width: 18%"
+                  >
                     Nombre
                     <p-sortIcon field="firstName"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="role" pResizableColumn style="width: 100px">
+                  <th
+                    pSortableColumn="role"
+                    pResizableColumn
+                    style="width: 100px"
+                  >
                     Rol
                     <p-sortIcon field="role"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="branchName" pResizableColumn style="width: 16%">
+                  <th
+                    pSortableColumn="branchName"
+                    pResizableColumn
+                    style="width: 16%"
+                  >
                     Sucursal
                     <p-sortIcon field="branchName"></p-sortIcon>
                   </th>
@@ -161,11 +183,18 @@
                   </td>
                   <td title="{{ row.username }}">{{ row.username }}</td>
                   <td title="{{ row.email }}">{{ row.email }}</td>
-                  <td title="{{ row.firstName }} {{ row.lastName }}">{{ row.firstName }} {{ row.lastName }}</td>
-                  <td>
-                    <p-tag [severity]="roleSeverity(row.role)" [value]="row.role" />
+                  <td title="{{ row.firstName }} {{ row.lastName }}">
+                    {{ row.firstName }} {{ row.lastName }}
                   </td>
-                  <td title="{{ row.branchName }}">{{ row.branchName || "—" }}</td>
+                  <td>
+                    <p-tag
+                      [severity]="roleSeverity(row.role)"
+                      [value]="row.role"
+                    />
+                  </td>
+                  <td title="{{ row.branchName }}">
+                    {{ row.branchName || "—" }}
+                  </td>
                   <td>
                     @if (row.active === false) {
                       <p-tag severity="secondary" value="Inactivo" />

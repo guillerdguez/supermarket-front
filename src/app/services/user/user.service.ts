@@ -22,7 +22,9 @@ export class UserService {
       error: (err) => {
         this.model.list.set([]);
         this.model.loading.set(false);
-        this.model.error.set(this.messages.resolveErrorDetail("errorGettingUsers", err));
+        this.model.error.set(
+          this.messages.resolveErrorDetail("errorGettingUsers", err),
+        );
       },
     });
   }
@@ -58,7 +60,11 @@ export class UserService {
     }
   }
 
-  private afterSave(saved: UserResponse, isUpdate: boolean, component?: CrudComponent): void {
+  private afterSave(
+    saved: UserResponse,
+    isUpdate: boolean,
+    component?: CrudComponent,
+  ): void {
     this.model.loading.set(false);
     this.model.list.update((list) =>
       list.some((u) => u.id === saved.id)
@@ -69,13 +75,15 @@ export class UserService {
     component?.afterSave?.();
   }
 
-  private onSaveError(key: "errorCreatingUser" | "errorUpdatingUser", err: unknown): void {
+  private onSaveError(
+    key: "errorCreatingUser" | "errorUpdatingUser",
+    err: unknown,
+  ): void {
     this.model.loading.set(false);
     this.model.error.set(this.messages.resolveErrorDetail(key, err));
     this.messages.publishErrorMsg(key, err);
   }
 
-  
   delete(ids: number | number[], component?: CrudComponent): void {
     const idList = Array.isArray(ids) ? ids : [ids];
     const snapshot = this.model.list();
@@ -103,13 +111,21 @@ export class UserService {
 
   changeRole(id: number, role: string, component?: CrudComponent): void {
     this.dao.changeRole(id, { role }).subscribe({
-      next: (updated) => this.applyUpdate(updated, "userRoleChanged", component),
-      error: (err) => this.messages.publishErrorMsg("errorChangingUserRole", err),
+      next: (updated) =>
+        this.applyUpdate(updated, "userRoleChanged", component),
+      error: (err) =>
+        this.messages.publishErrorMsg("errorChangingUserRole", err),
     });
   }
 
-  private applyUpdate(updated: UserResponse, successKey: MessageKey, component?: CrudComponent): void {
-    this.model.list.update((list) => list.map((u) => (u.id === updated.id ? updated : u)));
+  private applyUpdate(
+    updated: UserResponse,
+    successKey: MessageKey,
+    component?: CrudComponent,
+  ): void {
+    this.model.list.update((list) =>
+      list.map((u) => (u.id === updated.id ? updated : u)),
+    );
     this.messages.publishSuccessMsg(successKey);
     component?.afterSave?.();
   }
