@@ -1,21 +1,46 @@
-export interface SaleDetailRequest { productId: number; quantity: number; }
+export interface SaleDetailRequest {
+  productId: number;
+  quantity: number;
+}
 export interface SaleRequest {
-  branchId: number; details: SaleDetailRequest[]; date?: string;
-  amount: number; paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER"; reference?: string;
+  branchId: number;
+  details: SaleDetailRequest[];
+  date?: string;
+  amount: number;
+  paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER";
+  reference?: string;
 }
 export interface SaleDetailResponse {
-  id: number; productName: string; quantity: number; unitPrice: number; subtotal: number;
+  id: number;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  subtotal: number;
 }
 export interface PaymentResponse {
-  id: number; saleId: number; amount: number;
-  paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER"; paymentDate?: string; reference?: string;
+  id: number;
+  saleId: number;
+  amount: number;
+  paymentType: "CASH" | "CARD" | "TRANSFER" | "OTHER";
+  paymentDate?: string;
+  reference?: string;
 }
 export interface SaleResponse {
-  id: number; total: number; status: "REGISTERED" | "CANCELLED" | string;
-  branchId: number; branchName?: string; createdAt?: string;
-  details?: SaleDetailResponse[]; cashRegisterId?: number; createdByUsername?: string;
+  id: number;
+  total: number;
+  status: "REGISTERED" | "CANCELLED" | string;
+  branchId: number;
+  branchName?: string;
+  createdAt?: string;
+  details?: SaleDetailResponse[];
+  cashRegisterId?: number;
+  createdByUsername?: string;
   payments?: PaymentResponse[];
-  cancelledById?: number; cancelledByUsername?: string;
-  cancellationReason?: string; cancelledAt?: string;
+  cancelledById?: number;
+  cancelledByUsername?: string;
+  cancellationReason?: string;
+  cancelledAt?: string;
 }
-export interface CancelSaleRequest { reason: string; }
+export interface CancelSaleRequest {
+  reason: string;
+}

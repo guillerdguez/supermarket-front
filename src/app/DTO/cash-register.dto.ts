@@ -11,5 +11,10 @@ export interface CashRegisterResponse {
   openedByUsername?: string;
   closedByUsername?: string;
 }
-export interface OpenRegisterRequest { branchId?: number | null; openingBalance: number; }
-export interface CloseRegisterRequest { closingBalance: number; }
+export interface OpenRegisterRequest {
+  branchId?: number | null;
+  openingBalance: number;
+}
+export interface CloseRegisterRequest {
+  closingBalance: number;
+}
