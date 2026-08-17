@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit, computed } from "@angular/core";
 import { CurrencyPipe, DatePipe } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
@@ -14,8 +14,12 @@ import { PosTableFooterComponent } from "../../wrappers/table-footer/table-foote
 })
 export class CashRegisterComponent implements OnInit {
   private readonly svc = inject(CashRegisterService);
-  items = this.svc.model.list;
   loading = this.svc.model.loading;
+  items = computed(() =>
+    [...this.svc.model.list()].sort((a, b) =>
+      a.status === b.status ? 0 : a.status === "OPEN" ? -1 : 1,
+    ),
+  );
   ngOnInit() { this.svc.retrieveList(); }
   refresh() { this.svc.retrieveList(); }
 }
