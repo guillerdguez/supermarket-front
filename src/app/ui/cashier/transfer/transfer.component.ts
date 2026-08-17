@@ -7,6 +7,7 @@ import { ButtonModule } from "primeng/button";
 import { ConfirmationService } from "primeng/api";
 import { TransferService } from "../../../services/transfer/transfer.service";
 import { TransferResponse } from "../../../DTO/transfer.dto";
+import { transferStatusSeverity } from "../../../model/Domain/transfer.model";
 import { PosPanelComponent } from "../../wrappers/panel/panel.component";
 import { PosPageShellComponent } from "../../wrappers/page-shell/page-shell.component";
 import { PosTableFooterComponent } from "../../wrappers/table-footer/table-footer.component";
@@ -25,16 +26,7 @@ export class CashierTransferComponent implements OnInit {
   ngOnInit() { this.svc.retrieveMine(); }
   refresh() { this.svc.retrieveMine(); }
 
-  severity(s: string): "success" | "info" | "warn" | "danger" | "secondary" {
-    const map: Record<string, "success" | "info" | "warn" | "danger" | "secondary"> = {
-      COMPLETED: "success",
-      APPROVED: "info",
-      PENDING: "warn",
-      REJECTED: "danger",
-      CANCELLED: "danger",
-    };
-    return map[s] || "secondary";
-  }
+  severity = transferStatusSeverity;
 
   cancel(row: TransferResponse) {
     this.confirm.confirm({
