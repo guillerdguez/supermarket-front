@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, computed } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { CurrencyPipe } from "@angular/common";
+import { DecimalPipe } from "@angular/common";
 import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
 import { ProductService } from "../../services/product/product.service";
@@ -20,7 +20,7 @@ import { PosPanelComponent } from "../wrappers/panel/panel.component";
   standalone: true,
   imports: [
     FormsModule,
-    CurrencyPipe,
+    DecimalPipe,
     DialogModule,
     ButtonModule,
     PosPanelComponent,
@@ -40,9 +40,9 @@ export class PosComponent implements OnInit, CrudComponent {
   branchId = this.auth.model.branchId;
   products = this.productsSvc.model.list;
   productsLoading = this.productsSvc.model.loading;
-  cartItems = this.cart.items;
-  cartTotal = this.cart.total;
-  cartCount = this.cart.itemCount;
+  cartItems = this.cart.model.items;
+  cartTotal = this.cart.model.total;
+  cartCount = this.cart.model.itemCount;
   saleLoading = this.sales.model.loading;
   saleError = this.sales.model.error;
   currentRegister = this.cash.model.current;

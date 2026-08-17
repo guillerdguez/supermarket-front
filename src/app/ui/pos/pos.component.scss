@@ -172,7 +172,7 @@
 
   li {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto minmax(72px, auto);
     gap: var(--pos-space-1);
     align-items: center;
 
@@ -202,6 +202,7 @@
     gap: var(--pos-space-1);
 
     button {
+      flex-shrink: 0;
       width: var(--pos-space-4);
       height: var(--pos-space-4);
       border: 1px solid var(--pos-border);
@@ -217,11 +218,21 @@
     }
   }
 
+  .qty-count {
+    @include pos-money;
+    display: inline-block;
+    min-width: 1.5em;
+    text-align: center;
+  }
+
   .line-total {
     @include pos-money;
+    display: inline-block;
+    width: 100%;
     font-weight: var(--pos-font-weight-emphasis);
     font-size: var(--pos-font-size-sm);
     white-space: nowrap;
+    text-align: right;
   }
 }
 

@@ -47,7 +47,7 @@
                   }
                 </span>
               }
-              <span class="price">{{ p.price | currency: "EUR":"symbol":"1.2-2" }}</span>
+              <span class="price">{{ p.price | number: "1.2-2" }} €</span>
             </button>
           }
         </div>
@@ -65,11 +65,11 @@
               <li>
                 <div class="info">
                   <strong>{{ item.product.name }}</strong>
-                  <span class="unit">{{ item.product.price | currency: "EUR":"symbol":"1.2-2" }} c/u</span>
+                  <span class="unit">{{ item.product.price | number: "1.2-2" }} € c/u</span>
                 </div>
                 <div class="qty">
                   <button type="button" (click)="decrease(item.product.id)" aria-label="Menos">−</button>
-                  <span>{{ item.quantity }}</span>
+                  <span class="qty-count">{{ item.quantity }}</span>
                   <button
                     type="button"
                     (click)="increase(item.product.id)"
@@ -80,7 +80,7 @@
                     +
                   </button>
                 </div>
-                <span class="line-total">{{ item.product.price * item.quantity | currency: "EUR":"symbol":"1.2-2" }}</span>
+                <span class="line-total">{{ item.product.price * item.quantity | number: "1.2-2" }} €</span>
               </li>
             }
           </ul>
@@ -88,7 +88,7 @@
 
         <div class="total-row">
           <span>Total</span>
-          <strong>{{ cartTotal() | currency: "EUR":"symbol":"1.2-2" }}</strong>
+          <strong>{{ cartTotal() | number: "1.2-2" }} €</strong>
         </div>
 
         <button
@@ -119,7 +119,7 @@
     <p class="error">{{ saleError() }}</p>
   }
 
-  <div class="pay-total">{{ cartTotal() | currency: "EUR":"symbol":"1.2-2" }}</div>
+  <div class="pay-total">{{ cartTotal() | number: "1.2-2" }} €</div>
   <p class="muted pay-label">Total a pagar</p>
 
   <div class="field">
@@ -161,7 +161,7 @@
         (ngModelChange)="amountReceived.set(+$event)"
       />
       @if (change() > 0) {
-        <p class="change">Vuelto: {{ change() | currency: "EUR":"symbol":"1.2-2" }}</p>
+        <p class="change">Vuelto: {{ change() | number: "1.2-2" }} €</p>
       }
       @if (amountReceived() < cartTotal()) {
         <p class="field-error">El monto recibido es inferior al total</p>
