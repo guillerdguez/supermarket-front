@@ -20,12 +20,12 @@ export class ReportDao {
   private readonly http = inject(HttpClient);
   private readonly url = inject(RestPathService);
 
-  private toParams(filter?: ReportFilterRequest): HttpParams {
+  private toParams<T extends object>(filter?: T): HttpParams {
     let params = new HttpParams();
     if (!filter) return params;
-    if (filter.startDate) params = params.set("startDate", filter.startDate);
-    if (filter.endDate) params = params.set("endDate", filter.endDate);
-    if (filter.branchId != null) params = params.set("branchId", filter.branchId);
+    for (const [key, value] of Object.entries(filter)) {
+      if (value !== null && value !== undefined) params = params.set(key, value);
+    }
     return params;
   }
 
@@ -70,11 +70,8 @@ export class ReportDao {
   }
 
   cashRegisterReport(filter?: CashRegisterFilterRequest): Observable<CashRegisterReportResponse> {
-    let params = new HttpParams();
-    if (filter?.startDate) params = params.set("startDate", filter.startDate);
-    if (filter?.endDate) params = params.set("endDate", filter.endDate);
-    if (filter?.branchId != null) params = params.set("branchId", filter.branchId);
-    if (filter?.showOnlyDiscrepancies) params = params.set("showOnlyDiscrepancies", filter.showOnlyDiscrepancies);
-    return this.http.get<CashRegisterReportResponse>(this.url.reportsCashRegisters(), { params });
+    return this.http.get<CashRegisterReportResponse>(this.url.reportsCashRegisters(), {
+      params: this.toParams(filter),
+    });
   }
 }
