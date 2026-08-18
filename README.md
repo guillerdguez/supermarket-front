@@ -89,7 +89,7 @@ El build de producción usa `src/environments/environment.prod.ts` (vía `fileRe
 ## ☁️ Despliegue
 
 El proyecto está desplegado en Railway y disponible en:
-https://supermarket-front-production.up.railway.app
+https://supermarketweb.up.railway.app
 Antes de desplegar, completar apiUrl en src/environments/environment.prod.ts con la URL pública del backend desplegado en Railway.
 Para el despliegue del backend, consulta el README del backend
 
