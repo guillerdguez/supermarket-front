@@ -191,7 +191,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @for (row of performance(); track row.productId) {
+                    @for (row of performance(); track $index) {
                       <tr>
                         <td>{{ row.productName }}</td>
                         <td>{{ row.productCategory }}</td>
@@ -273,7 +273,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @for (row of cr.discrepancies; track row.registerId) {
+                      @for (row of cr.discrepancies; track row.registerId + "_" + row.openingTime) {
                         <tr>
                           <td>{{ row.branchName }}</td>
                           <td>{{ row.openingTime | date: "dd/MM/yyyy HH:mm" }}</td>
